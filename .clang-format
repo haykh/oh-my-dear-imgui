@@ -90,31 +90,11 @@ ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '^"global\.h"'
+  - Regex: '^".*\.h"'
     Priority: 1
-  - Regex: '^"enums\.h"'
-    Priority: 1
-  - Regex: '^"defaults\.h"'
-    Priority: 1
-  - Regex: '^"arch\/.*.h"'
+  - Regex: '^".*\/.*.h"'
     Priority: 2
-  - Regex: '^"utils\/.*.h"'
-    Priority: 2
-  - Regex: '^"metrics\/.*\.h"'
-    Priority: 3
-  - Regex: '^"framework\/.*\.h"'
-    Priority: 4
-  - Regex: '^"engines\/.*\.h"'
-    Priority: 4
-  - Regex: '^"checkpoint\/.*\.h"'
-    Priority: 4
-  - Regex: '^"output\/.*\.h"'
-    Priority: 4
-  - Regex: '^"archetypes\/.*\.h"'
-    Priority: 4
-  - Regex: '^".*\.hpp"'
-    Priority: 6
-  - Regex: '^\<.*\.h'
+  - Regex: "<.*.h>"
     Priority: 7
   - Regex: "<[[:lower:].|_]+>"
     Priority: 8

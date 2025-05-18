@@ -1,13 +1,13 @@
 #include "components/dialog.h"
 
+#include "assets/icons.h"
+
 #include <ImGuiFileDialog.h>
 #include <plog/Log.h>
 
 #include <string>
 #include <utility>
 #include <vector>
-
-#include "assets/icons.h"
 
 namespace ui::dialog {
 

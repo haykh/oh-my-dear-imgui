@@ -1,15 +1,15 @@
 #include "utils.h"
 
+#include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
+#include "assets/generated/fa-regular-400.h"
+#include "assets/generated/fa-solid-900.h"
+#include "assets/icons.h"
+
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <plog/Log.h>
 
 #include <string>
-
-#include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
-#include "assets/generated/fa-regular-400.h"
-#include "assets/generated/fa-solid-900.h"
-#include "assets/icons.h"
 
 namespace ui {
 
