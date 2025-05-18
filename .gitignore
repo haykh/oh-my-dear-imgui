@@ -1,0 +1,62 @@
+# Filesystem specific
+.DS_Store
+
+# Compilation junk
+*.o
+build*/
+bin/
+compile_commands.json
+.cache/
+
+# Python files
+*.ipynb
+__pycache__
+*ipynb_checkpoints
+
+# Notation files
+*.cson
+
+# Temporary files
+*.swp
+*.ini
+*.tmp
+temp*/
+logs/
+*.log
+*.bak
+
+# Trash files
+.trash/
+*~
+
+.vscode/*.log
+
+.venv/
+venv/
+
+# Temporary media files
+*.jpg
+*.png
+*.mov
+*.mp4
+
+# Accidental files
+*.xc
+*.h5
+
+# VSCode files
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+
+# CMake testing files
+Testing/
+
+tags
+.clangd
+.schema.json
+*_old/
+action-token
+*.vim
+ignore-*
+
+imgui.ini

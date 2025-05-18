@@ -1,0 +1,13 @@
+[submodule "extern/imgui"]
+	path = extern/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "extern/ImGuiFileDialog"]
+	path = extern/ImGuiFileDialog
+	url = https://github.com/aiekick/ImGuiFileDialog.git
+[submodule "extern/implot"]
+	path = extern/implot
+	url = https://github.com/epezent/implot.git
+[submodule "extern/plog"]
+	path = extern/plog
+	url = https://github.com/SergiusTheBest/plog.git
