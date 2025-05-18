@@ -4,7 +4,7 @@ A bit more than minimal boilerplate code for ImGui-based applications.
 
 ## Usage
 
-```
+```sh
 # compile
 cmake -B build
 cmake --build build -j
