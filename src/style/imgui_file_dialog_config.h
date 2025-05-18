@@ -1,7 +1,7 @@
 #ifndef CUSTOM_IMGUI_FILE_DIALOG_CONFIG_H
 #define CUSTOM_IMGUI_FILE_DIALOG_CONFIG_H
 
-#include "icons.h"
+#include "../assets/icons.h"
 
 // uncomment and modify defines under for customize ImGuiFileDialog
 

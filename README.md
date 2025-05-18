@@ -36,3 +36,8 @@ Following depedencies are assumed to be installed on the system:
 - includes external font/icon support (see `src/assets/`);
 - includes some third-party `ImGui` plugins (also built in-tree): `ImPlot`, `ImGuiFileDialog`.
 
+## TODO
+
+- [ ] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
+- [ ] custom `ImPlot` renderers
+- [ ] image export (via [`stb`](https://github.com/nothings/stb))

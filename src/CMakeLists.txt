@@ -14,5 +14,5 @@ target_include_directories(${EXEC} PRIVATE ${INC_DIRS})
 target_compile_definitions(
   ${EXEC}
   PUBLIC
-    -DCUSTOM_IMGUIFILEDIALOG_CONFIG="${CMAKE_CURRENT_SOURCE_DIR}/assets/CustomImGuiFileDialogConfig.h"
+    -DCUSTOM_IMGUIFILEDIALOG_CONFIG="${CMAKE_CURRENT_SOURCE_DIR}/style/imgui_file_dialog_config.h"
 )
