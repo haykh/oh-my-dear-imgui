@@ -1,10 +1,11 @@
 #include "components/dialog.h"
 #include "components/menubar.h"
+#include "components/state.h"
 #include "components/toasts.h"
+#include "components/window.h"
 #include "icons.h"
 #include "style/themes.h"
 #include "utils.h"
-#include "window.h"
 
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <plog/Formatters/TxtFormatter.h>
@@ -29,12 +30,19 @@ auto main(int argc, char* argv[]) -> int {
     plog::init(plog::debug, &console_appender);
 
     // configurations
-    auto show_implot_demo = false;
-    auto show_imgui_demo  = false;
+    auto state = ui::state::State();
+    state.set("window_width", 1920);
+    state.set("window_height", 1080);
+    state.set("bg_color", ImVec4(0.45f, 0.55f, 0.60f, 1.00f));
+    state.set("show_implot_demo", false);
+    state.set("show_imgui_demo", false);
+    state.set("theme_idx", 4);
 
-    int theme_idx = 4;
-
-    auto window = ui::Window(1920, 1080, "nttiny", 1, true);
+    auto window = ui::components::Window(state.get<int>("window_width"),
+                                         state.get<int>("window_height"),
+                                         "imgui-boilerplate",
+                                         1,
+                                         true);
 
     // managers
     auto pickerDialogManager = ui::dialog::PickerDialogs();
@@ -45,7 +53,7 @@ auto main(int argc, char* argv[]) -> int {
 
     menubar.addLeft([&]() {
       if (ImGui::BeginMenu("File")) {
-        if (ImGui::MenuItem(ICON_FA_UPLOAD " load")) {
+        if (ImGui::MenuItem("Open")) {
           pickerDialogManager.add([&](IGFD::FileDialog* dialog) {
             const auto fpath_name = dialog->GetFilePathName();
             const auto fpath      = dialog->GetCurrentPath();
@@ -60,21 +68,23 @@ auto main(int argc, char* argv[]) -> int {
     menubar.addLeft([&]() {
       if (ImGui::BeginMenu("UI")) {
         if (ImGui::Combo(ICON_FA_PAINTBRUSH,
-                         &theme_idx,
+                         &state.get<int>("theme_idx"),
                          ui::themes::ALL_THEMES,
                          IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
-          ui::themes::picker(ui::themes::ALL_THEMES[theme_idx], ImGui::GetStyle());
+          ui::themes::picker(
+            ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
+            ImGui::GetStyle());
         }
         ImGui::ColorEdit4(ICON_FA_PAINT_ROLLER " background",
-                          (float*)&window.clear_color(),
+                          (float*)&state.get<ImVec4>("bg_color"),
                           ImGuiColorEditFlags_NoInputs);
         ImGui::EndMenu();
       }
     });
     menubar.addLeft([&]() {
       if (ImGui::BeginMenu("Demo")) {
-        ImGui::Checkbox("Show ImGui demo", &show_imgui_demo);
-        ImGui::Checkbox("Show ImPlot demo", &show_implot_demo);
+        ImGui::Checkbox("Show ImGui demo", &state.get<bool>("show_imgui_demo"));
+        ImGui::Checkbox("Show ImPlot demo", &state.get<bool>("show_implot_demo"));
         ImGui::EndMenu();
       }
     });
@@ -98,22 +108,26 @@ auto main(int argc, char* argv[]) -> int {
     });
 
     // init state
-    ui::themes::picker(ui::themes::ALL_THEMES[theme_idx], ImGui::GetStyle());
+    ui::themes::picker(ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
+                       ImGui::GetStyle());
 
     while (not window.windowShouldClose()) {
       if (window.startFrame()) {
 
-        if (show_imgui_demo) {
-          ImGui::ShowDemoWindow(&show_imgui_demo);
+        if (state.get<bool>("show_imgui_demo")) {
+          ImGui::ShowDemoWindow(&state.get<bool>("show_imgui_demo"));
         }
-        if (show_implot_demo) {
-          ImPlot::ShowDemoWindow(&show_implot_demo);
+        if (state.get<bool>("show_implot_demo")) {
+          ImPlot::ShowDemoWindow(&state.get<bool>("show_implot_demo"));
         }
         menubar.render();
 
         pickerDialogManager.render();
         toastManager.render();
-        window.endFrame();
+
+        window.endFrame(state.get<int>("window_width"),
+                        state.get<int>("window_height"),
+                        state.get<ImVec4>("bg_color"));
       }
     }
   } catch (const std::exception& e) {

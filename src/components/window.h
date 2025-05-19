@@ -10,16 +10,14 @@
 
 #include <string>
 
-namespace ui {
+namespace ui::components {
 
   class Window {
   private:
     GLFWwindow* m_win;
-    int         m_winWidth, m_winHeight;
     std::string m_glsl_version;
 
     ImGuiIO* m_io;
-    ImVec4   m_clear_color;
 
   public:
     Window(int                width,
@@ -31,7 +29,7 @@ namespace ui {
 
     void processInput();
     auto startFrame() -> bool;
-    void endFrame();
+    void endFrame(int&, int&, ImVec4&);
 
     [[nodiscard]]
     auto windowShouldClose() const -> int {
@@ -45,11 +43,6 @@ namespace ui {
     }
 
     [[nodiscard]]
-    auto clear_color() -> ImVec4& {
-      return m_clear_color;
-    }
-
-    [[nodiscard]]
     auto io() -> ImGuiIO* {
       return m_io;
     }
@@ -60,6 +53,6 @@ namespace ui {
     }
   };
 
-} // namespace ui
+} // namespace ui::components
 
 #endif // WINDOW_H

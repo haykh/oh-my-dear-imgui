@@ -15,15 +15,13 @@
 
 #include <string>
 
-namespace ui {
+namespace ui::components {
 
   Window::Window(int                width,
                  int                height,
                  const std::string& name,
                  int                swapInterval,
-                 bool               isResizable)
-    : m_winWidth { width }
-    , m_winHeight { height } {
+                 bool               isResizable) {
     glfwSetErrorCallback([](int error, const char* description) {
       PLOGE << "GLFW Error " << error << ": " << description;
     });
@@ -40,7 +38,7 @@ namespace ui {
       glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     }
 
-    m_win = glfwCreateWindow(m_winWidth, m_winHeight, name.c_str(), nullptr, nullptr);
+    m_win = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
 
     if (m_win == nullptr) {
       PLOGE << "Failed to open window.";
@@ -68,8 +66,6 @@ namespace ui {
 
     ImGui_ImplGlfw_InitForOpenGL(m_win, true);
     ImGui_ImplOpenGL3_Init(m_glsl_version.c_str());
-
-    m_clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
   }
 
   Window::~Window() {
@@ -105,22 +101,21 @@ namespace ui {
     return true;
   }
 
-  void Window::endFrame() {
+  void Window::endFrame(int& width, int& height, ImVec4& bg_color) {
     ImGui::Render();
     if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
       ImGui::UpdatePlatformWindows();
       ImGui::RenderPlatformWindowsDefault();
     }
-    int display_w, display_h;
-    glfwGetFramebufferSize(m_win, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    glClearColor(m_clear_color.x * m_clear_color.w,
-                 m_clear_color.y * m_clear_color.w,
-                 m_clear_color.z * m_clear_color.w,
-                 m_clear_color.w);
+    glfwGetFramebufferSize(m_win, &width, &height);
+    glViewport(0, 0, width, height);
+    glClearColor(bg_color.x * bg_color.w,
+                 bg_color.y * bg_color.w,
+                 bg_color.z * bg_color.w,
+                 bg_color.w);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(m_win);
   }
 
-} // namespace ui
+} // namespace ui::components
