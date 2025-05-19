@@ -1,8 +1,28 @@
 #include "components/menubar.h"
 
+#include "components/safe.h"
+#include "components/toasts.h"
+
 #include <imgui.h>
+#include <plog/Log.h>
 
 namespace ui::menubar {
+
+  void SafeMenu(ui::toasts::Toasts&          toastManager,
+                const std::function<void()>& item,
+                const char*                  label,
+                bool                         enabled) {
+    if (ImGui::BeginMenu(label, enabled)) {
+      try {
+        item();
+      } catch (const std::exception& e) {
+        PLOGE << "Exception in SafeMenu: " << e.what();
+      } catch (...) {
+        PLOGE << "Unknown exception in SafeMenu";
+      }
+      ImGui::EndMenu();
+    }
+  }
 
   auto Menubar::measureWidth(const std::vector<MenuItem>& items) const -> float {
     // Redirect rendering to a dummy window off-screen
@@ -30,12 +50,12 @@ namespace ui::menubar {
     return width;
   }
 
-  void Menubar::render() const {
+  void Menubar::render(ui::toasts::Toasts* toastManager) const {
     if (ImGui::BeginMainMenuBar()) {
       // Render left-aligned items
       for (size_t i = 0; i < m_items_left.size(); ++i) {
         ImGui::PushID((int)i);
-        m_items_left[i].render();
+        ui::safe::Render(m_items_left[i].render, toastManager);
         if (i < m_items_left.size() - 1) {
           ImGui::SameLine();
         }
@@ -56,7 +76,7 @@ namespace ui::menubar {
         ImGui::PushID("RightItems");
         for (size_t i = 0; i < m_items_right.size(); ++i) {
           ImGui::PushID((int)i);
-          m_items_right[i].render();
+          ui::safe::Render(m_items_right[i].render, toastManager);
           if (i < m_items_right.size() - 1) {
             ImGui::SameLine();
           }
@@ -71,7 +91,7 @@ namespace ui::menubar {
         ImGui::PushID("CenterItems");
         for (size_t i = 0; i < m_items_center.size(); ++i) {
           ImGui::PushID((int)i);
-          m_items_center[i].render();
+          ui::safe::Render(m_items_center[i].render, toastManager);
           if (i < m_items_center.size() - 1) {
             ImGui::SameLine();
           }
@@ -79,7 +99,6 @@ namespace ui::menubar {
         }
         ImGui::PopID();
       }
-
       ImGui::EndMainMenuBar();
     }
   }

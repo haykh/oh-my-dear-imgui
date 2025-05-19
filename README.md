@@ -17,10 +17,11 @@ cmake --build build -j
 
 Following depedencies are built in-tree:
 
+- `Plog`
+- `toml11`
 - `ImGui`
 - `ImPlot`
 - `ImGuiFileDialog`
-- `Plog`
 
 ## External dependencies
 

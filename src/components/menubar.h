@@ -1,6 +1,8 @@
 #ifndef COMPONENTS_MENUBAR_H
 #define COMPONENTS_MENUBAR_H
 
+#include "components/toasts.h"
+
 #include <imgui.h>
 
 #include <functional>
@@ -33,7 +35,7 @@ namespace ui::menubar {
       m_items_right.push_back(MenuItem { item });
     }
 
-    void render() const;
+    void render(ui::toasts::Toasts* = nullptr) const;
   };
 
 } // namespace ui::menubar

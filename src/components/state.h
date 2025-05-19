@@ -1,6 +1,8 @@
 #ifndef UI_STATE_H
 #define UI_STATE_H
 
+#include <toml.hpp>
+
 #include <any>
 #include <map>
 #include <stdexcept>
@@ -55,6 +57,9 @@ namespace ui::state {
         return fallback;
       }
     }
+
+    toml::value to_toml() const;
+    void        from_toml(const toml::value& v);
   };
 
 } // namespace ui::state

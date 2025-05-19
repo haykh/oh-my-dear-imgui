@@ -1,16 +1,11 @@
 #include "components/dialog.h"
 #include "components/menubar.h"
+#include "components/safe.h"
 #include "components/state.h"
 #include "components/toasts.h"
 #include "components/window.h"
 #include "icons.h"
 #include "style/themes.h"
-#include "utils.h"
-
-#include <plog/Appenders/ColorConsoleAppender.h>
-#include <plog/Formatters/TxtFormatter.h>
-#include <plog/Init.h>
-#include <plog/Log.h>
 
 #define GL_SILENCE_DEPRECATION
 #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -22,7 +17,14 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
+#include <plog/Appenders/ColorConsoleAppender.h>
+#include <plog/Formatters/TxtFormatter.h>
+#include <plog/Init.h>
 #include <plog/Log.h>
+#include <toml.hpp>
+
+#include <filesystem>
+#include <fstream>
 
 auto main(int argc, char* argv[]) -> int {
   try {
@@ -52,41 +54,80 @@ auto main(int argc, char* argv[]) -> int {
     auto menubar = ui::menubar::Menubar();
 
     menubar.addLeft([&]() {
-      if (ImGui::BeginMenu("File")) {
-        if (ImGui::MenuItem("Open")) {
-          pickerDialogManager.add([&](IGFD::FileDialog* dialog) {
-            const auto fpath_name = dialog->GetFilePathName();
-            const auto fpath      = dialog->GetCurrentPath();
-            toastManager.add(
-              ui::toasts::Type::Success,
-              fmt::format("picked %s %s", fpath_name.c_str(), fpath.c_str()));
-          });
-        }
-        ImGui::EndMenu();
-      }
+      ui::safe::Component(
+        []() {
+          return ImGui::BeginMenu("File");
+        },
+        [&]() {
+          if (ImGui::MenuItem("Open")) {
+            pickerDialogManager.add([&](IGFD::FileDialog* dialog) {
+              const auto fpath_name = dialog->GetFilePathName();
+              const auto fpath      = dialog->GetCurrentPath();
+              toastManager.add(
+                ui::toasts::Type::Success,
+                fmt::format("picked %s %s", fpath_name.c_str(), fpath.c_str()));
+            });
+          }
+          if (ImGui::MenuItem("Save State")) {
+            const auto data = state.to_toml();
+            if (std::filesystem::exists("state.toml")) {
+              toastManager.add(ui::toasts::Type::Warning,
+                               "File already exists, overwriting...");
+            }
+            std::ofstream file("state.toml");
+            if (file.is_open()) {
+              file << data;
+              file.close();
+              toastManager.add(ui::toasts::Type::Success,
+                               "State saved to state.toml");
+            } else {
+              throw std::runtime_error("Failed to open file for writing.");
+            }
+          }
+        },
+        []() {
+          ImGui::EndMenu();
+        },
+        &toastManager);
     });
+
     menubar.addLeft([&]() {
-      if (ImGui::BeginMenu("UI")) {
-        if (ImGui::Combo(ICON_FA_PAINTBRUSH,
-                         &state.get<int>("theme_idx"),
-                         ui::themes::ALL_THEMES,
-                         IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
-          ui::themes::picker(
-            ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
-            ImGui::GetStyle());
-        }
-        ImGui::ColorEdit4(ICON_FA_PAINT_ROLLER " background",
-                          (float*)&state.get<ImVec4>("bg_color"),
-                          ImGuiColorEditFlags_NoInputs);
-        ImGui::EndMenu();
-      }
+      ui::safe::Component(
+        []() {
+          return ImGui::BeginMenu("UI");
+        },
+        [&]() {
+          if (ImGui::Combo(ICON_FA_PAINTBRUSH,
+                           &state.get<int>("theme_idx"),
+                           ui::themes::ALL_THEMES,
+                           IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
+            ui::themes::picker(
+              ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
+              ImGui::GetStyle());
+          }
+          ImGui::ColorEdit4(ICON_FA_PAINT_ROLLER " background",
+                            (float*)&state.get<ImVec4>("bg_color"),
+                            ImGuiColorEditFlags_NoInputs);
+        },
+        []() {
+          ImGui::EndMenu();
+        },
+        &toastManager);
     });
+
     menubar.addLeft([&]() {
-      if (ImGui::BeginMenu("Demo")) {
-        ImGui::Checkbox("Show ImGui demo", &state.get<bool>("show_imgui_demo"));
-        ImGui::Checkbox("Show ImPlot demo", &state.get<bool>("show_implot_demo"));
-        ImGui::EndMenu();
-      }
+      ui::safe::Component(
+        []() {
+          return ImGui::BeginMenu("Demo");
+        },
+        [&]() {
+          ImGui::Checkbox("Show ImGui demo", &state.get<bool>("show_imgui_demo"));
+          ImGui::Checkbox("Show ImPlot demo", &state.get<bool>("show_implot_demo"));
+        },
+        []() {
+          ImGui::EndMenu();
+        },
+        &toastManager);
     });
 
     menubar.addRight([&]() {
@@ -103,7 +144,7 @@ auto main(int argc, char* argv[]) -> int {
       }
       ImGui::SameLine();
       if (ImGui::Button(ICON_FA_CIRCLE_EXCLAMATION)) {
-        toastManager.add(ui::toasts::Type::Error, "This is an error message.");
+        throw std::runtime_error("This is an error message.");
       }
     });
 
@@ -120,7 +161,7 @@ auto main(int argc, char* argv[]) -> int {
         if (state.get<bool>("show_implot_demo")) {
           ImPlot::ShowDemoWindow(&state.get<bool>("show_implot_demo"));
         }
-        menubar.render();
+        menubar.render(&toastManager);
 
         pickerDialogManager.render();
         toastManager.render();
@@ -131,10 +172,10 @@ auto main(int argc, char* argv[]) -> int {
       }
     }
   } catch (const std::exception& e) {
-    PLOGE << "Exception: " << e.what();
+    PLOGF << "Fatal exception: " << e.what();
     return 1;
   } catch (...) {
-    PLOGE << "Unknown exception";
+    PLOGF << "Unknown fatal exception";
     return 1;
   }
   return 0;
