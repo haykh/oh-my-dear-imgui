@@ -158,16 +158,18 @@ namespace ui::toasts {
 
         height += ImGui::GetWindowHeight() + NOTIFY_PADDING_MESSAGE_Y;
 
-        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5.f);
-        auto color = toast->color();
-        color.w    = 0.5f;
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, color);
-        {
-          ImGui::ProgressBar(toast->percent(),
-                             ImVec2(ImGui::GetContentRegionAvail().x, 5.f),
-                             ""); // Progress bar
+        if (toast->dismiss_time() > 0u) {
+          ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5.f);
+          auto color = toast->color();
+          color.w    = 0.5f;
+          ImGui::PushStyleColor(ImGuiCol_PlotHistogram, color);
+          {
+            ImGui::ProgressBar(toast->percent(),
+                               ImVec2(ImGui::GetContentRegionAvail().x, 5.f),
+                               ""); // Progress bar
+          }
+          ImGui::PopStyleColor();
         }
-        ImGui::PopStyleColor();
 
         ImGui::End();
       }

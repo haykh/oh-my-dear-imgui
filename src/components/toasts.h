@@ -195,6 +195,11 @@ namespace ui::toasts {
     }
 
     [[nodiscard]]
+    inline auto dismiss_time() const -> unsigned int {
+      return m_dismiss_time;
+    }
+
+    [[nodiscard]]
     inline auto elapsed_time() const -> std::chrono::nanoseconds {
       return std::chrono::system_clock::now() - m_creation_time;
     }
@@ -210,6 +215,10 @@ namespace ui::toasts {
      */
     [[nodiscard]]
     inline auto fade_phase() const -> Phase {
+      if (m_dismiss_time == 0u) {
+        return Phase::Wait;
+      }
+
       const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
                              elapsed_time())
                              .count();
@@ -228,6 +237,10 @@ namespace ui::toasts {
 
     [[nodiscard]]
     inline auto percent() const -> float {
+      if (m_dismiss_time == 0u) {
+        return 1.f;
+      }
+
       auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
                        elapsed_time())
                        .count();
@@ -236,6 +249,10 @@ namespace ui::toasts {
 
     [[nodiscard]]
     inline auto fade_percent() const -> float {
+      if (m_dismiss_time == 0u) {
+        return 1.f * NOTIFY_OPACITY;
+      }
+
       const auto phase = fade_phase();
       const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
                              elapsed_time())
@@ -261,6 +278,9 @@ namespace ui::toasts {
     Toast(const Type& type)
       : m_type { type }
       , m_creation_time { std::chrono::system_clock::now() } {
+      if (type == Type::Error) {
+        m_dismiss_time = 0u;
+      }
       PLOGD << "Toast created";
     }
 
