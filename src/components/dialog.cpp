@@ -1,7 +1,5 @@
 #include "components/dialog.h"
 
-#include "icons.h"
-
 #include <ImGuiFileDialog.h>
 #include <plog/Log.h>
 
@@ -22,10 +20,6 @@ namespace ui::dialog {
 
     auto dialog = std::make_unique<IGFD::FileDialog>();
     dialog->OpenDialog(title, prompt, filter, config);
-    dialog->SetFileStyle(IGFD_FileStyleByTypeDir,
-                         "",
-                         ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
-                         ICON_FA_FOLDER);
 
     m_dialogs.emplace_back(std::move(dialog), std::move(callback));
     PLOGD << "Opening a dialog " << title << " in " << path;

@@ -107,13 +107,13 @@
 /////////////////////////////////
 
 // locales string
-// #define createDirButtonString "+"
-// #define resetButtonString "R"
+#define createDirButtonString ICON_FA_FOLDER_PLUS
+#define resetButtonString     ICON_FA_ROTATE_LEFT
 // #define devicesButtonString "Devices"
-// #define editPathButtonString "E"
+#define editPathButtonString  ICON_FA_I_CURSOR
 // #define searchString "Search"
-// #define dirEntryString "[DIR] "
-// #define linkEntryString "[LINK] "
+#define dirEntryString        ICON_FA_FOLDER
+#define linkEntryString       ICON_FA_LINK
 // #define fileEntryString "[FILE] "
 // #define fileNameString "File Name : "
 // #define dirNameString "Directory Path :"

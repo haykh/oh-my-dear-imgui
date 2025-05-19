@@ -1,3 +1,11 @@
+/**
+ * A rewrite of the original imgui-notify and its fork, ImGuiNotify, with some
+ * added functionality and C++17 features.
+ *
+ * Original by @patrickcjk: imgui-notify
+ * Original by @TyomaVader: ImGuiNotify
+ */
+
 #ifndef COMPONENTS_TOASTS_H
 #define COMPONENTS_TOASTS_H
 
