@@ -227,6 +227,14 @@ namespace ui::toasts {
     }
 
     [[nodiscard]]
+    inline auto percent() const -> float {
+      auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                       elapsed_time())
+                       .count();
+      return (float)elapsed / (float)m_dismiss_time;
+    }
+
+    [[nodiscard]]
     inline auto fade_percent() const -> float {
       const auto phase = fade_phase();
       const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(

@@ -46,6 +46,10 @@ auto main(int argc, char* argv[]) -> int {
           ImPlot::ShowDemoWindow(&show_implot_demo);
         }
         if (ImGui::BeginMainMenuBar()) {
+          if (ImGui::Button(ICON_FA_BELL)) {
+            toastManager.add(ui::toasts::Type::Warning,
+                             "Hello world! This is a toast message.");
+          }
           if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem(ICON_FA_UPLOAD " load")) {
               pickerDialogManager.add([&](IGFD::FileDialog* dialog) {
