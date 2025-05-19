@@ -37,7 +37,7 @@ set(plog_REPOSITORY "https://github.com/SergiusTheBest/plog.git")
 set(plog_TAG "master")
 
 set(toml11_REPOSITORY "https://github.com/ToruNiina/toml11.git")
-set(toml11_TAG "main")
+set(toml11_TAG "v4.4.0")
 
 set(imgui_REPOSITORY "https://github.com/ocornut/imgui.git")
 set(imgui_TAG "docking")
