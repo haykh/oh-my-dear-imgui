@@ -14,3 +14,6 @@
 [submodule "extern/ImGuiNotify"]
 	path = extern/ImGuiNotify
 	url = https://github.com/TyomaVader/ImGuiNotify.git
+[submodule "extern/toml11"]
+	path = extern/toml11
+	url = https://github.com/ToruNiina/toml11.git

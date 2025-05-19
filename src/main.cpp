@@ -36,7 +36,7 @@ auto main(int argc, char* argv[]) -> int {
     state.set("bg_color", ImVec4(0.45f, 0.55f, 0.60f, 1.00f));
     state.set("show_implot_demo", false);
     state.set("show_imgui_demo", false);
-    state.set("theme_idx", 4);
+    state.set("theme_idx", 0);
 
     auto window = ui::components::Window(state.get<int>("window_width"),
                                          state.get<int>("window_height"),
