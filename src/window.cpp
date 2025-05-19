@@ -59,7 +59,9 @@ namespace ui {
     PLOGD << "ImPlot context created.";
     m_io               = &ImGui::GetIO();
     // m_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_io->ConfigFlags |= ImGuiConfigFlags_None;
+    m_io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    // m_io->ConfigFlags |= ImGuiConfigFlags_None;
+    // m_io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
     ImGui::StyleColorsDark();
     imgui::SetFonts(m_io);
@@ -105,6 +107,10 @@ namespace ui {
 
   void Window::endFrame() {
     ImGui::Render();
+    if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+      ImGui::UpdatePlatformWindows();
+      ImGui::RenderPlatformWindowsDefault();
+    }
     int display_w, display_h;
     glfwGetFramebufferSize(m_win, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);

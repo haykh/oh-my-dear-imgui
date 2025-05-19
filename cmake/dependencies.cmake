@@ -35,22 +35,32 @@ set(imgui_TAG "docking")
 set(ImGuiFileDialog_REPOSITORY "https://github.com/aiekick/ImGuiFileDialog.git")
 set(ImGuiFileDialog_TAG "master")
 
+set(ImGuiNotify_REPOSITORY "https://github.com/TyomaVader/ImGuiNotify.git")
+set(ImGuiNotify_TAG "Dev")
+
 set(implot_REPOSITORY "https://github.com/epezent/implot.git")
 set(implot_TAG "master")
 
 set(plog_REPOSITORY "https://github.com/SergiusTheBest/plog.git")
 set(plog_TAG "master")
 
-function(fetch_library name)
+function(fetch_library name fetch)
   if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/${name}")
     message(STATUS "${Green}${name} is being used as a submodule${ColorReset}")
     set(${name}_SOURCE_DIR
         "${CMAKE_CURRENT_SOURCE_DIR}/extern/${name}"
         CACHE STRING "${name} source directory")
   else()
-    message(STATUS "${Blue}Fetching ${name}${ColorReset}")
-
-    if(${name} STREQUAL "ImGuiFileDialog")
+    if(${fetch})
+      message(STATUS "${Blue}Fetching ${name}${ColorReset}")
+      FetchContent_Declare(
+        ${name}
+        GIT_REPOSITORY ${${name}_REPOSITORY}
+        GIT_TAG ${${name}_TAG}
+        GIT_PROGRESS TRUE)
+      FetchContent_MakeAvailable(${name})
+    else()
+      message(STATUS "${Blue}Cloning ${name}${ColorReset}")
       set(${name}_SOURCE_DIR ${CMAKE_BINARY_DIR}/_deps/${name}-src)
       if(NOT EXISTS ${${name}_SOURCE_DIR})
         execute_process(
@@ -60,13 +70,6 @@ function(fetch_library name)
           message(FATAL_ERROR "Failed to clone ${name}")
         endif()
       endif()
-    else()
-      FetchContent_Declare(
-        ${name}
-        GIT_REPOSITORY ${${name}_REPOSITORY}
-        GIT_TAG ${${name}_TAG}
-        GIT_PROGRESS TRUE)
-      FetchContent_MakeAvailable(${name})
     endif()
     set(${name}_SOURCE_DIR
         ${${name}_SOURCE_DIR}
@@ -79,26 +82,30 @@ function(fetch_library name)
   endif()
 endfunction()
 
-function(declare_library name src_files)
+function(declare_library name src_files fetch)
   if(NOT ${name} STREQUAL "imgui_backends")
-    fetch_library(${name})
+    fetch_library(${name} ${fetch})
   endif()
-  set(full_src_files "")
-  foreach(file ${src_files})
-    list(APPEND full_src_files ${${name}_SOURCE_DIR}/${file})
-  endforeach()
-  message(STATUS "files are: ${full_src_files}")
-  add_library(${name} ${full_src_files})
+  if(NOT "${src_files}" STREQUAL "")
+    set(full_src_files "")
+    foreach(file ${src_files})
+      list(APPEND full_src_files ${${name}_SOURCE_DIR}/${file})
+    endforeach()
+    message(STATUS "files are: ${full_src_files}")
+    add_library(${name} ${full_src_files})
+  endif()
 endfunction()
 
-fetch_library(plog)
-fetch_library(ImGuiFileDialog)
+set(imgui_SRC_FILES imgui.cpp imgui_draw.cpp imgui_widgets.cpp imgui_tables.cpp
+                    imgui_demo.cpp)
+set(imgui_backends_SRC_FILES imgui_impl_glfw.cpp imgui_impl_opengl3.cpp)
+set(implot_SRC_FILES implot.cpp implot_items.cpp implot_demo.cpp)
 
-declare_library(
-  imgui
-  "imgui.cpp;imgui_demo.cpp;imgui_draw.cpp;imgui_widgets.cpp;imgui_tables.cpp")
-declare_library(imgui_backends "imgui_impl_glfw.cpp;imgui_impl_opengl3.cpp")
-declare_library(implot "implot.cpp;implot_items.cpp;implot_demo.cpp")
+declare_library(plog "" TRUE)
+
+declare_library(imgui "${imgui_SRC_FILES}" TRUE)
+declare_library(imgui_backends "${imgui_backends_SRC_FILES}" TRUE)
+declare_library(implot "${implot_SRC_FILES}" TRUE)
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})
 target_include_directories(imgui_backends PUBLIC ${imgui_SOURCE_DIR}
@@ -108,3 +115,6 @@ target_include_directories(implot PUBLIC ${implot_SOURCE_DIR}
 
 target_link_libraries(imgui_backends PUBLIC glfw)
 target_link_libraries(implot PUBLIC imgui)
+
+declare_library(ImGuiFileDialog "" FALSE)
+declare_library(ImGuiNotify "" FALSE)

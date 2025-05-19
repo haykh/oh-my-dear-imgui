@@ -4,6 +4,7 @@
 #include <ImGuiFileDialog.h>
 
 #include <functional>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -11,7 +12,7 @@
 namespace ui::dialog {
   using callback_t = std::function<void(IGFD::FileDialog*)>;
 
-  class Handler {
+  class PickerDialogs {
     std::vector<std::pair<std::unique_ptr<IGFD::FileDialog>, callback_t>> m_dialogs;
 
   public:
@@ -23,13 +24,13 @@ namespace ui::dialog {
      * @param path The initial path to be displayed in the dialog (default = ".").
      * @param filter File extension filter (default = nullptr, pick directory)
      */
-    void add_dialog(callback_t,
-                    const std::string& = "PickerDialog",
-                    const std::string& = "Pick a file or directory",
-                    const std::string& = ".",
-                    const char*        = nullptr);
+    void add(callback_t,
+             const std::string& = "PickerDialog",
+             const std::string& = "Pick a file or directory",
+             const std::string& = ".",
+             const char*        = nullptr);
 
-    void handle();
+    void render();
   };
 
 } // namespace ui::dialog

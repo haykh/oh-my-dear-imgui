@@ -38,6 +38,6 @@ Following depedencies are assumed to be installed on the system:
 
 ## TODO
 
-- [ ] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
+- [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
 - [ ] custom `ImPlot` renderers
 - [ ] image export (via [`stb`](https://github.com/nothings/stb))

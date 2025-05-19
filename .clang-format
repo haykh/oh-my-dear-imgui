@@ -96,6 +96,8 @@ IncludeCategories:
     Priority: 2
   - Regex: "<.*.h>"
     Priority: 7
+  - Regex: "<.*.hpp>"
+    Priority: 7
   - Regex: "<[[:lower:].|_]+>"
     Priority: 8
 IncludeIsMainRegex: "(Test)?$"

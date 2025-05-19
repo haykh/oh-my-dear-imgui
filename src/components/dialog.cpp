@@ -1,21 +1,22 @@
 #include "components/dialog.h"
 
-#include "assets/icons.h"
+#include "icons.h"
 
 #include <ImGuiFileDialog.h>
 #include <plog/Log.h>
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 namespace ui::dialog {
 
-  void Handler::add_dialog(callback_t         callback,
-                           const std::string& title,
-                           const std::string& prompt,
-                           const std::string& path,
-                           const char*        filter) {
+  void PickerDialogs::add(callback_t         callback,
+                          const std::string& title,
+                          const std::string& prompt,
+                          const std::string& path,
+                          const char*        filter) {
     IGFD::FileDialogConfig config;
     config.path = path;
 
@@ -31,7 +32,7 @@ namespace ui::dialog {
     PLOGD << "Total dialogs: " << m_dialogs.size();
   }
 
-  void Handler::handle() {
+  void PickerDialogs::render() {
     auto it = m_dialogs.begin();
     while (it != m_dialogs.end()) {
       auto& [dialog, callback] = *it;
@@ -47,7 +48,7 @@ namespace ui::dialog {
 
         it = m_dialogs.erase(it);
         PLOGD << "Dialog " << key
-              << " removed from handler. Remaining: " << m_dialogs.size();
+              << " removed from the manager. Remaining: " << m_dialogs.size();
       } else {
         ++it;
       }
