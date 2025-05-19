@@ -69,7 +69,7 @@ namespace ui::toasts {
     // Toast opacity: 0 to 1
     static constexpr float        NOTIFY_OPACITY          = 0.8f;
     // Auto dismiss after X ms (default, applied only of no data provided in constructors)
-    static constexpr unsigned int NOTIFY_DEFAULT_DISMISS  = 3000u;
+    static constexpr unsigned int NOTIFY_DEFAULT_DISMISS  = 5000u;
 
     // Setters
     inline void setFlags(const ImGuiWindowFlags& flags) {

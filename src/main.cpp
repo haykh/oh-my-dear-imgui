@@ -1,5 +1,7 @@
 #include "components/dialog.h"
+#include "components/menubar.h"
 #include "components/toasts.h"
+#include "icons.h"
 #include "style/themes.h"
 #include "utils.h"
 #include "window.h"
@@ -26,14 +28,76 @@ auto main(int argc, char* argv[]) -> int {
     plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
     plog::init(plog::debug, &console_appender);
 
-    auto window              = ui::Window(1920, 1080, "nttiny", 1, true);
-    auto pickerDialogManager = ui::dialog::PickerDialogs();
-    auto toastManager        = ui::toasts::Toasts();
-
+    // configurations
     auto show_implot_demo = false;
     auto show_imgui_demo  = false;
 
     int theme_idx = 4;
+
+    auto window = ui::Window(1920, 1080, "nttiny", 1, true);
+
+    // managers
+    auto pickerDialogManager = ui::dialog::PickerDialogs();
+    auto toastManager        = ui::toasts::Toasts();
+
+    // ui elements
+    auto menubar = ui::menubar::Menubar();
+
+    menubar.addLeft([&]() {
+      if (ImGui::BeginMenu("File")) {
+        if (ImGui::MenuItem(ICON_FA_UPLOAD " load")) {
+          pickerDialogManager.add([&](IGFD::FileDialog* dialog) {
+            const auto fpath_name = dialog->GetFilePathName();
+            const auto fpath      = dialog->GetCurrentPath();
+            toastManager.add(
+              ui::toasts::Type::Success,
+              fmt::format("picked %s %s", fpath_name.c_str(), fpath.c_str()));
+          });
+        }
+        ImGui::EndMenu();
+      }
+    });
+    menubar.addLeft([&]() {
+      if (ImGui::BeginMenu("UI")) {
+        if (ImGui::Combo(ICON_FA_PAINTBRUSH,
+                         &theme_idx,
+                         ui::themes::ALL_THEMES,
+                         IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
+          ui::themes::picker(ui::themes::ALL_THEMES[theme_idx], ImGui::GetStyle());
+        }
+        ImGui::ColorEdit4(ICON_FA_PAINT_ROLLER " background",
+                          (float*)&window.clear_color(),
+                          ImGuiColorEditFlags_NoInputs);
+        ImGui::EndMenu();
+      }
+    });
+    menubar.addLeft([&]() {
+      if (ImGui::BeginMenu("Demo")) {
+        ImGui::Checkbox("Show ImGui demo", &show_imgui_demo);
+        ImGui::Checkbox("Show ImPlot demo", &show_implot_demo);
+        ImGui::EndMenu();
+      }
+    });
+
+    menubar.addRight([&]() {
+      if (ImGui::Button(ICON_FA_CIRCLE_INFO)) {
+        toastManager.add(ui::toasts::Type::Info, "This is an info message.");
+      }
+      ImGui::SameLine();
+      if (ImGui::Button(ICON_FA_CIRCLE_CHECK)) {
+        toastManager.add(ui::toasts::Type::Success, "This is a success message.");
+      }
+      ImGui::SameLine();
+      if (ImGui::Button(ICON_FA_TRIANGLE_EXCLAMATION)) {
+        toastManager.add(ui::toasts::Type::Warning, "This is a warning message.");
+      }
+      ImGui::SameLine();
+      if (ImGui::Button(ICON_FA_CIRCLE_EXCLAMATION)) {
+        toastManager.add(ui::toasts::Type::Error, "This is an error message.");
+      }
+    });
+
+    // init state
     ui::themes::picker(ui::themes::ALL_THEMES[theme_idx], ImGui::GetStyle());
 
     while (not window.windowShouldClose()) {
@@ -45,40 +109,8 @@ auto main(int argc, char* argv[]) -> int {
         if (show_implot_demo) {
           ImPlot::ShowDemoWindow(&show_implot_demo);
         }
-        if (ImGui::BeginMainMenuBar()) {
-          if (ImGui::Button(ICON_FA_BELL)) {
-            toastManager.add(ui::toasts::Type::Warning,
-                             "Hello world! This is a toast message.");
-          }
-          if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem(ICON_FA_UPLOAD " load")) {
-              pickerDialogManager.add([&](IGFD::FileDialog* dialog) {
-                const auto fpath_name = dialog->GetFilePathName();
-                const auto fpath      = dialog->GetCurrentPath();
-                toastManager.add(
-                  ui::toasts::Type::Success,
-                  fmt::format("picked %s %s", fpath_name.c_str(), fpath.c_str()));
-              });
-            }
-            ImGui::EndMenu();
-          }
-          if (ImGui::BeginMenu("UI")) {
-            if (ImGui::Combo(ICON_FA_PAINTBRUSH,
-                             &theme_idx,
-                             ui::themes::ALL_THEMES,
-                             IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
-              ui::themes::picker(ui::themes::ALL_THEMES[theme_idx],
-                                 ImGui::GetStyle());
-            }
-            ImGui::ColorEdit4(ICON_FA_PAINT_ROLLER " background",
-                              (float*)&window.clear_color(),
-                              ImGuiColorEditFlags_NoInputs);
-            ImGui::Checkbox("Show ImGui demo", &show_imgui_demo);
-            ImGui::Checkbox("Show ImPlot demo", &show_implot_demo);
-            ImGui::EndMenu();
-          }
-          ImGui::EndMainMenuBar();
-        }
+        menubar.render();
+
         pickerDialogManager.render();
         toastManager.render();
         window.endFrame();
