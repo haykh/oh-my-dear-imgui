@@ -10,7 +10,7 @@ namespace ui::themes {
   constexpr const char* ALL_THEMES[] = {
     "default",        "darkness",       "grey",          "light",  "ue4",
     "enemymouse",     "nord",           "photoshop",     "cherry", "dracula",
-    "ledsynthmaster", "spectrum_light", "spectrum_dark",
+    "ledsynthmaster", "spectrum-light", "spectrum-dark",
   };
 
   void picker(const std::string&, ImGuiStyle&);

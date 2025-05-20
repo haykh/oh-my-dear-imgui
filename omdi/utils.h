@@ -17,19 +17,27 @@ namespace omdi::gl {
 
 namespace omdi::fmt {
 
-  inline auto format(const char* format, ...) -> std::string {
-    va_list args;
-    va_start(args, format);
-    int size = std::vsnprintf(nullptr, 0, format, args);
-    va_end(args);
+  inline auto vformat(const char* format, va_list args) -> std::string {
+    va_list copy;
+    va_copy(copy, args); // copy to avoid modifying original
+    int size = std::vsnprintf(nullptr, 0, format, copy);
+    va_end(copy);
+
     if (size < 0) {
       return "Formatting error!";
     }
+
     std::vector<char> buffer(size + 1);
-    va_start(args, format);
     std::vsnprintf(buffer.data(), buffer.size(), format, args);
-    va_end(args);
     return std::string(buffer.data());
+  }
+
+  inline auto format(const char* format, ...) -> std::string {
+    va_list args;
+    va_start(args, format);
+    std::string result = vformat(format, args);
+    va_end(args);
+    return result;
   }
 
 } // namespace omdi::fmt
@@ -44,7 +52,7 @@ namespace omdi::logger {
   inline void Log(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    std::string msg = omdi::fmt::format(fmt, args);
+    std::string msg = omdi::fmt::vformat(fmt, args);
     va_end(args);
 
     PLOG(S) << msg;
@@ -53,38 +61,33 @@ namespace omdi::logger {
   inline void Debug(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    std::string msg = omdi::fmt::format(fmt, args);
+    PLOG(plog::debug) << omdi::fmt::vformat(fmt, args);
     va_end(args);
-
-    PLOG(plog::debug) << msg;
   }
 
   inline void Warning(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    std::string msg = omdi::fmt::format(fmt, args);
+    PLOG(plog::warning) << omdi::fmt::vformat(fmt, args);
     va_end(args);
-
-    PLOG(plog::warning) << msg;
   }
 
   inline void Error(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    std::string msg = omdi::fmt::format(fmt, args);
+    PLOG(plog::error) << omdi::fmt::vformat(fmt, args);
     va_end(args);
-
-    PLOG(plog::error) << msg;
   }
 
   [[noreturn]]
   inline void Fatal(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    std::string msg = omdi::fmt::format(fmt, args);
+    std::string msg = omdi::fmt::vformat(fmt, args);
+    PLOG(plog::fatal) << msg;
+
     va_end(args);
 
-    PLOG(plog::fatal) << msg;
     throw std::runtime_error(msg);
   }
 

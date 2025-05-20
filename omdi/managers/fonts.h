@@ -13,6 +13,7 @@ namespace omdi::fonts {
     None   = 0,
     Small  = 12,
     Normal = 16,
+    Medium = 20,
     Large  = 24,
     Huge   = 32,
   };
@@ -28,7 +29,7 @@ namespace omdi::fonts {
     Size        m_active_font_size { Size::None };
 
   public:
-    static constexpr Size SIZES[] = { Small, Normal, Large, Huge };
+    std::vector<Size> SIZES = { Small, Normal, Medium, Large, Huge };
 
     [[nodiscard]]
     auto font(const std::string&, Size) -> ImFont*;

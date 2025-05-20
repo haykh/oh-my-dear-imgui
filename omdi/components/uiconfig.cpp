@@ -9,6 +9,7 @@
 #include "style/themes.h"
 #include "utils.h"
 
+#include <cmath>
 #include <imgui.h>
 
 namespace omdi::config {
@@ -43,7 +44,9 @@ namespace omdi::config {
 
         omdi::safe::Component(
           []() {
-            return ImGui::BeginListBox("##");
+            return ImGui::BeginListBox(
+              "##pickfont",
+              ImVec2(ImGui::GetContentRegionAvail().x - 65.0f, 0.0f));
           },
           [&]() {
             for (auto i { 0 }; i < fontnames.size(); ++i) {
@@ -59,7 +62,7 @@ namespace omdi::config {
                     omdi::logger::Debug("Active font changed to %s", fontnames[i]);
                     fontManager.setActiveFont(
                       &io,
-                      state.get<int>("main_font_idx"),
+                      i,
                       state.get<int>("main_fontsize_idx"));
                   }
                 },
@@ -74,19 +77,44 @@ namespace omdi::config {
           },
           &toastManager);
 
-        if (ImGui::Button("Load from file")) {
-          pickerManager.add(
-            [&](IGFD::FileDialog* dialog) {
-              const auto fpath_name = dialog->GetFilePathName();
-              // const auto fpath      = dialog->GetCurrentPath();
-              // fontManager.resetMainFont(fpath_name);
-              omdi::logger::Debug("Loading new fonts from %s", fpath_name.c_str());
-            },
-            "FontPicker",
-            "Pick a font file",
-            ".",
-            ".ttf");
-        }
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(
+          ImGui::GetCursorPosX() +
+          std::fmax(0.0f, ImGui::GetContentRegionAvail().x - 65.0f));
+        omdi::safe::Component(
+          []() {
+            return ImGui::BeginListBox("##pickfontsize", ImVec2(60.0f, 0.0f));
+          },
+          [&]() {
+            const auto active_fontname = fontManager.active_font();
+            for (auto i { 0 }; i < fontsizes.size(); ++i) {
+              omdi::safe::PushPop(
+                [&]() {
+                  ImGui::PushFont(fontManager.font(active_fontname, fontsizes[i]));
+                },
+                [&]() {
+                  const auto size_str = std::to_string(
+                    static_cast<int>(fontsizes[i]));
+                  if (ImGui::Selectable(size_str.c_str(),
+                                        state.get<int>("main_fontsize_idx") == i)) {
+                    state.set("main_fontsize_idx", i);
+                    omdi::logger::Debug("Active fontsize changed to %s",
+                                        size_str.c_str());
+                    fontManager.setActiveFont(&io,
+                                              state.get<int>("main_font_idx"),
+                                              i);
+                  }
+                },
+                []() {
+                  ImGui::PopFont();
+                },
+                &toastManager);
+            }
+          },
+          []() {
+            ImGui::EndListBox();
+          },
+          &toastManager);
       }
       ImGui::End();
     }

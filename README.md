@@ -6,7 +6,7 @@ A bit more than minimal wrapper library for ImGui-based applications.
 
 _@TODO_
 
-## In-tree dependencies
+## Dependencies
 
 Following depedencies are built in-tree:
 
@@ -15,8 +15,6 @@ Following depedencies are built in-tree:
 - `ImGui`
 - `ImPlot`
 - `ImGuiFileDialog`
-
-## External dependencies
 
 Following depedencies are assumed to be installed on the system:
 
@@ -39,3 +37,4 @@ Following depedencies are assumed to be installed on the system:
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
 - [ ] custom `ImPlot` renderers
 - [ ] image export (via [`stb`](https://github.com/nothings/stb))
+- [ ] support for other backends

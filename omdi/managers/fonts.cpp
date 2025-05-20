@@ -1,5 +1,8 @@
 #include "managers/fonts.h"
 
+#include "assets/generated/HersheyComplex.h"
+#include "assets/generated/HersheyDuplex.h"
+#include "assets/generated/HersheySimplex.h"
 #include "assets/generated/JetBrainsMono-Regular.h"
 #include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
 #include "assets/generated/MonaspaceRadonFrozen-Regular.h"
@@ -62,7 +65,7 @@ namespace omdi::fonts {
       omdi::logger::Fatal("Font index out of range: %d", font_idx);
     }
     const auto font_name = m_font_list[font_idx];
-    if (fontsize_idx < 0 || fontsize_idx >= 4) {
+    if (fontsize_idx < 0 || fontsize_idx >= SIZES.size()) {
       omdi::logger::Fatal("Font size index out of range: %d", fontsize_idx);
     }
     const auto fontsize = SIZES[fontsize_idx];
@@ -83,7 +86,7 @@ namespace omdi::fonts {
   void FontManager::initFonts(ImGuiIO* io) {
     clear(io);
 
-    for (auto& size : { Size::Small, Size::Normal, Size::Large, Size::Huge }) {
+    for (auto& size : SIZES) {
       add(io,
           "MonaspaceKr",
           size,
@@ -104,6 +107,21 @@ namespace omdi::fonts {
           size,
           xkcd_script_compressed_data,
           xkcd_script_compressed_size);
+      add(io,
+          "HersheySimplex",
+          size,
+          HersheySimplex_compressed_data,
+          HersheySimplex_compressed_size);
+      add(io,
+          "HersheyComplex",
+          size,
+          HersheyComplex_compressed_data,
+          HersheyComplex_compressed_size);
+      add(io,
+          "HersheyDuplex",
+          size,
+          HersheyDuplex_compressed_data,
+          HersheyDuplex_compressed_size);
     }
     build(io);
   }

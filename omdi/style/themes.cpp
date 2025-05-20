@@ -27,7 +27,7 @@ namespace ui::themes {
       cherry(style);
     } else if (theme == "ue4") {
       ue4(style);
-    } else if (theme == "spectrum_dark") {
+    } else if (theme == "spectrum-dark") {
       spectrum<true>(style);
     } else if (theme == "enemymouse") {
       enemymouse(style);
@@ -37,7 +37,7 @@ namespace ui::themes {
     } else if (theme == "ledsynthmaster") {
       ImGui::StyleColorsLight(&style);
       ledsynthmaster(style);
-    } else if (theme == "spectrum_light") {
+    } else if (theme == "spectrum-light") {
       ImGui::StyleColorsLight(&style);
       spectrum<false>(style);
     } else {
