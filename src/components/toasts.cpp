@@ -1,5 +1,6 @@
 #include "toasts.h"
 
+#include <imgui.h>
 #include <imgui_internal.h>
 
 #include <cstdio>

@@ -2,22 +2,14 @@
 #define UTILS_H
 
 #include <GLFW/glfw3.h>
-#include <imgui.h>
 
+#include <cstdarg>
 #include <string>
 #include <vector>
 
-namespace ui {
-
-  namespace gl {
-    void SetGLVersion(std::string&);
-  } // namespace gl
-
-  namespace imgui {
-    void SetFonts(ImGuiIO*);
-  } // namespace imgui
-
-} // namespace ui
+namespace gl {
+  void SetGLVersion(std::string&);
+} // namespace gl
 
 namespace fmt {
   inline auto format(const char* format, ...) -> std::string {

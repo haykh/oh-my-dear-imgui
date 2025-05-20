@@ -1,10 +1,11 @@
+#include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
 #include "components/dialog.h"
 #include "components/menubar.h"
 #include "components/safe.h"
 #include "components/state.h"
 #include "components/toasts.h"
 #include "components/window.h"
-#include "icons.h"
+#include "style/fonts.h"
 #include "style/themes.h"
 
 #define GL_SILENCE_DEPRECATION
@@ -35,9 +36,10 @@ auto main(int argc, char* argv[]) -> int {
     auto state = ui::state::State();
     state.set("window_width", 1920);
     state.set("window_height", 1080);
-    state.set("bg_color", ImVec4(0.45f, 0.55f, 0.60f, 1.00f));
+    state.set("bg_color", ImVec4(0.24f, 0.24f, 0.24f, 1.00f));
     state.set("show_implot_demo", false);
     state.set("show_imgui_demo", false);
+    state.set("show_style_dialog", false);
     state.set("theme_idx", 0);
 
     auto window = ui::components::Window(state.get<int>("window_width"),
@@ -49,9 +51,15 @@ auto main(int argc, char* argv[]) -> int {
     // managers
     auto pickerDialogManager = ui::dialog::PickerDialogs();
     auto toastManager        = ui::toasts::Toasts();
+    auto fontManager         = ui::fonts::FontManager();
 
     // ui elements
-    auto menubar = ui::menubar::Menubar();
+    auto styleDialog = ui::dialog::StyleDialog();
+    auto menubar     = ui::menubar::Menubar();
+
+    fontManager.resetMainFont(window.io(),
+                              MonaspaceKryptonFrozen_Regular_compressed_data,
+                              MonaspaceKryptonFrozen_Regular_compressed_size);
 
     menubar.addLeft([&]() {
       ui::safe::Component(
@@ -84,30 +92,9 @@ auto main(int argc, char* argv[]) -> int {
               throw std::runtime_error("Failed to open file for writing.");
             }
           }
-        },
-        []() {
-          ImGui::EndMenu();
-        },
-        &toastManager);
-    });
-
-    menubar.addLeft([&]() {
-      ui::safe::Component(
-        []() {
-          return ImGui::BeginMenu("UI");
-        },
-        [&]() {
-          if (ImGui::Combo(ICON_FA_PAINTBRUSH,
-                           &state.get<int>("theme_idx"),
-                           ui::themes::ALL_THEMES,
-                           IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
-            ui::themes::picker(
-              ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
-              ImGui::GetStyle());
+          if (ImGui::MenuItem("Configure UI")) {
+            state.set("show_style_dialog", true);
           }
-          ImGui::ColorEdit4(ICON_FA_PAINT_ROLLER " background",
-                            (float*)&state.get<ImVec4>("bg_color"),
-                            ImGuiColorEditFlags_NoInputs);
         },
         []() {
           ImGui::EndMenu();
@@ -161,7 +148,14 @@ auto main(int argc, char* argv[]) -> int {
         if (state.get<bool>("show_implot_demo")) {
           ImPlot::ShowDemoWindow(&state.get<bool>("show_implot_demo"));
         }
+
+        // ui elements
         menubar.render(&toastManager);
+        if (state.get<bool>("show_style_dialog")) {
+          styleDialog.render(&state.get<bool>("show_style_dialog"),
+                             state,
+                             fontManager);
+        }
 
         pickerDialogManager.render();
         toastManager.render();

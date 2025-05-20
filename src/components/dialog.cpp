@@ -1,5 +1,10 @@
 #include "components/dialog.h"
 
+#include "components/state.h"
+#include "icons.h"
+#include "style/fonts.h"
+#include "style/themes.h"
+
 #include <ImGuiFileDialog.h>
 #include <plog/Log.h>
 
@@ -46,6 +51,34 @@ namespace ui::dialog {
       } else {
         ++it;
       }
+    }
+  }
+
+  void StyleDialog::render(bool*                   open,
+                           ui::state::State&       state,
+                           ui::fonts::FontManager& fontManager) {
+    ImGuiIO& io        = ImGui::GetIO();
+    auto     main_font = io.Fonts->Fonts[0];
+
+    if (ImGui::Begin("Style Dialog", open)) {
+      ImGui::PushFont(
+        fontManager.get(ui::fonts::Type::Icon, ui::fonts::Size::Large));
+      ImGui::Text(ICON_FA_PALETTE);
+      ImGui::PopFont();
+      ImGui::SameLine();
+      if (ImGui::Combo(" theme",
+                       &state.get<int>("theme_idx"),
+                       ui::themes::ALL_THEMES,
+                       IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
+        ui::themes::picker(ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
+                           ImGui::GetStyle());
+      }
+      ImGui::Text(ICON_FA_BRUSH);
+      ImGui::SameLine();
+      ImGui::ColorEdit4(" background",
+                        (float*)&state.get<ImVec4>("bg_color"),
+                        ImGuiColorEditFlags_NoInputs);
+      ImGui::End();
     }
   }
 

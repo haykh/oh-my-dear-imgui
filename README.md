@@ -33,9 +33,11 @@ Following depedencies are assumed to be installed on the system:
 ## Features
 
 - dependencies can be built from the downloaded submodules or fetched with `CMake` at compile time;
-- includes basic manager classes for picker dialogs, toasts (notifications), etc.
-- includes basic ui component classes, e.g., menubars, etc.
-- includes external font/icon support (see `src/assets/`);
+- basic manager classes for picker dialogs, toasts (notifications), etc.;
+- basic ui component classes, e.g., menubars, etc.;
+- app state with optional conversion to/from toml;
+- functionality for error handling (safe rendering + error notification) at runtime;
+- external font/icon support (see `src/assets/`);
 - includes some third-party `ImGui` plugins (also built in-tree): `ImPlot`, `ImGuiFileDialog`.
 
 ## TODO

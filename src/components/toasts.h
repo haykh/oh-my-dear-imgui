@@ -12,7 +12,7 @@
 #include "icons.h"
 #include "utils.h"
 
-#include <imgui_internal.h>
+#include <imgui.h>
 #include <inttypes.h>
 #include <plog/Log.h>
 

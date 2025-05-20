@@ -61,9 +61,6 @@ namespace ui::components {
     // m_io->ConfigFlags |= ImGuiConfigFlags_None;
     // m_io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-    ImGui::StyleColorsDark();
-    imgui::SetFonts(m_io);
-
     ImGui_ImplGlfw_InitForOpenGL(m_win, true);
     ImGui_ImplOpenGL3_Init(m_glsl_version.c_str());
   }

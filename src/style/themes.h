@@ -7,13 +7,15 @@
 
 namespace ui::themes {
 
-  constexpr const char* ALL_THEMES[] = { "default", "dark", "dracula",
-                                         "nord",    "grey", "photoshop",
-                                         "cherry",  "ue4",  "light" };
+  constexpr const char* ALL_THEMES[] = {
+    "default",        "darkness",       "grey",          "light",  "ue4",
+    "enemymouse",     "nord",           "photoshop",     "cherry", "dracula",
+    "ledsynthmaster", "spectrum_light", "spectrum_dark",
+  };
 
   void picker(const std::string&, ImGuiStyle&);
 
-  void dark(ImGuiStyle&);
+  void darkness(ImGuiStyle&);
   void dracula(ImGuiStyle&);
   void nord(ImGuiStyle&);
   void grey(ImGuiStyle&);
@@ -21,7 +23,11 @@ namespace ui::themes {
   void cherry(ImGuiStyle&);
   void ue4(ImGuiStyle&);
   void light(ImGuiStyle&);
+  void ledsynthmaster(ImGuiStyle&);
+  void enemymouse(ImGuiStyle&);
 
+  template <bool IsDark = false>
+  void spectrum(ImGuiStyle&);
 } // namespace ui::themes
 
 #endif // UI_THEMES_THEMES_H
