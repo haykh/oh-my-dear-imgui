@@ -11,9 +11,6 @@
 [submodule "extern/plog"]
 	path = extern/plog
 	url = https://github.com/SergiusTheBest/plog.git
-[submodule "extern/ImGuiNotify"]
-	path = extern/ImGuiNotify
-	url = https://github.com/TyomaVader/ImGuiNotify.git
 [submodule "extern/toml11"]
 	path = extern/toml11
 	url = https://github.com/ToruNiina/toml11.git
