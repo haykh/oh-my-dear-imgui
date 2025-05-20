@@ -23,7 +23,7 @@ auto main(int argc, char* argv[]) -> int {
 
     auto app = omdi::app::App(state.get<int>("window_width"),
                               state.get<int>("window_height"),
-                              "imgui-boilerplate",
+                              "example-app",
                               1,
                               true);
 
