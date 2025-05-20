@@ -114,7 +114,7 @@
 // #define searchString "Search"
 #define dirEntryString        ICON_FA_FOLDER
 #define linkEntryString       ICON_FA_LINK
-// #define fileEntryString "[FILE] "
+#define fileEntryString       ICON_FA_FILE
 // #define fileNameString "File Name : "
 // #define dirNameString "Directory Path :"
 // #define buttonResetSearchString "Reset search"

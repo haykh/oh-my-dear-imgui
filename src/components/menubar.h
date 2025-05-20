@@ -35,7 +35,7 @@ namespace ui::menubar {
       m_items_right.push_back(MenuItem { item });
     }
 
-    void render(ui::toasts::Toasts* = nullptr) const;
+    void render(ui::toasts::ToastManager* = nullptr) const;
   };
 
 } // namespace ui::menubar

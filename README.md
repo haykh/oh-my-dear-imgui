@@ -33,7 +33,7 @@ Following depedencies are assumed to be installed on the system:
 ## Features
 
 - dependencies can be built from the downloaded submodules or fetched with `CMake` at compile time;
-- basic manager classes for picker dialogs, toasts (notifications), etc.;
+- basic manager classes for picker dialogs, toasts (notifications), fonts, etc.;
 - basic ui component classes, e.g., menubars, etc.;
 - app state with optional conversion to/from toml;
 - functionality for error handling (safe rendering + error notification) at runtime;

@@ -12,30 +12,30 @@
 
 namespace ui::toasts {
 
-  void Toasts::add(const Type& type, unsigned int dismiss_time) {
+  void ToastManager::add(const Type& type, unsigned int dismiss_time) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
     m_toasts.push_back(std::move(toast));
   }
 
-  void Toasts::add(const Type& type, const std::string& content) {
+  void ToastManager::add(const Type& type, const std::string& content) {
     auto toast = std::make_unique<Toast>(type);
     toast->setContent(content);
     m_toasts.push_back(std::move(toast));
   }
 
-  void Toasts::add(const Type&        type,
-                   unsigned int       dismiss_time,
-                   const std::string& content) {
+  void ToastManager::add(const Type&        type,
+                         unsigned int       dismiss_time,
+                         const std::string& content) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
     toast->setContent(content);
     m_toasts.push_back(std::move(toast));
   }
 
-  void Toasts::add(const Type&                  type,
-                   unsigned int                 dismiss_time,
-                   const std::string&           content,
-                   const std::string&           button_label,
-                   const std::function<void()>& button_callback) {
+  void ToastManager::add(const Type&                  type,
+                         unsigned int                 dismiss_time,
+                         const std::string&           content,
+                         const std::string&           button_label,
+                         const std::function<void()>& button_callback) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
     toast->setContent(content);
 
@@ -45,7 +45,7 @@ namespace ui::toasts {
     m_toasts.push_back(std::move(toast));
   }
 
-  void Toasts::render() {
+  void ToastManager::render() {
     const ImVec2 mainWindowSize = ImGui::GetMainViewport()->Size;
 
     float height = 0.f;

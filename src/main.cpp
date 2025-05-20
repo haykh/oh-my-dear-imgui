@@ -1,9 +1,9 @@
-#include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
-#include "components/dialog.h"
 #include "components/menubar.h"
+#include "components/picker.h"
 #include "components/safe.h"
 #include "components/state.h"
 #include "components/toasts.h"
+#include "components/uiconfig.h"
 #include "components/window.h"
 #include "style/fonts.h"
 #include "style/themes.h"
@@ -32,7 +32,6 @@ auto main(int argc, char* argv[]) -> int {
     plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
     plog::init(plog::debug, &console_appender);
 
-    // configurations
     auto state = ui::state::State();
     state.set("window_width", 1920);
     state.set("window_height", 1080);
@@ -40,6 +39,8 @@ auto main(int argc, char* argv[]) -> int {
     state.set("show_implot_demo", false);
     state.set("show_imgui_demo", false);
     state.set("show_style_dialog", false);
+    state.set("main_font_idx", 0);
+    state.set("main_fontsize_idx", 1);
     state.set("theme_idx", 0);
 
     auto window = ui::components::Window(state.get<int>("window_width"),
@@ -49,17 +50,18 @@ auto main(int argc, char* argv[]) -> int {
                                          true);
 
     // managers
-    auto pickerDialogManager = ui::dialog::PickerDialogs();
-    auto toastManager        = ui::toasts::Toasts();
+    auto pickerDialogManager = ui::picker::PickerManager();
+    auto toastManager        = ui::toasts::ToastManager();
     auto fontManager         = ui::fonts::FontManager();
 
     // ui elements
-    auto styleDialog = ui::dialog::StyleDialog();
+    auto styleDialog = ui::config::StyleDialog();
     auto menubar     = ui::menubar::Menubar();
 
-    fontManager.resetMainFont(window.io(),
-                              MonaspaceKryptonFrozen_Regular_compressed_data,
-                              MonaspaceKryptonFrozen_Regular_compressed_size);
+    fontManager.initFonts(window.io());
+    fontManager.setActiveFont(window.io(),
+                              state.get<int>("main_font_idx"),
+                              state.get<int>("main_fontsize_idx"));
 
     menubar.addLeft([&]() {
       ui::safe::Component(
@@ -154,7 +156,9 @@ auto main(int argc, char* argv[]) -> int {
         if (state.get<bool>("show_style_dialog")) {
           styleDialog.render(&state.get<bool>("show_style_dialog"),
                              state,
-                             fontManager);
+                             pickerDialogManager,
+                             fontManager,
+                             toastManager);
         }
 
         pickerDialogManager.render();
@@ -163,6 +167,7 @@ auto main(int argc, char* argv[]) -> int {
         window.endFrame(state.get<int>("window_width"),
                         state.get<int>("window_height"),
                         state.get<ImVec4>("bg_color"));
+        // fontManager.reset(window.io());
       }
     }
   } catch (const std::exception& e) {

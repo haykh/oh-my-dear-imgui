@@ -2,7 +2,7 @@ EXECUTABLE = build/binary_to_compressed_c
 ICON_NAMES = fa-regular-400 fa-solid-900
 ICONS = $(foreach icon, $(ICON_NAMES), generated/$(icon).h)
 
-FONT_NAMES = Cousine-Regular JetBrainsMono-Regular MonaspaceKryptonFrozen-Regular
+FONT_NAMES = Cousine-Regular JetBrainsMono-Regular MonaspaceKryptonFrozen-Regular MonaspaceRadonFrozen-Regular xkcd-script
 FONTS = $(foreach font, $(FONT_NAMES), generated/$(font).h)
 
 ${EXECUTABLE} : build/binary_to_compressed_c.o
@@ -29,6 +29,10 @@ build/binary_to_compressed_c.o : build/binary_to_compressed_c.cpp
 		wget --directory-prefix ttf https://github.com/JetBrains/JetBrainsMono/raw/refs/heads/master/fonts/ttf/JetBrainsMono-Regular.ttf; \
 	elif [ "$*" = "MonaspaceKryptonFrozen-Regular" ]; then \
 		wget --directory-prefix ttf https://github.com/githubnext/monaspace/raw/refs/heads/main/fonts/frozen/MonaspaceKryptonFrozen-Regular.ttf; \
+	elif [ "$*" = "MonaspaceRadonFrozen-Regular" ]; then \
+		wget --directory-prefix ttf https://github.com/githubnext/monaspace/raw/refs/heads/main/fonts/frozen/MonaspaceRadonFrozen-Regular.ttf; \
+	elif [ "$*" = "xkcd-script" ]; then \
+	  wget --directory-prefix ttf https://github.com/ipython/xkcd-font/blob/master/xkcd-script/font/xkcd-script.ttf; \
 	else \
 		echo "Unknown font: $*"; exit 1; \
 	fi

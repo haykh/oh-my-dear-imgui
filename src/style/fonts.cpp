@@ -1,39 +1,116 @@
 #include "style/fonts.h"
 
-// #include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
+#include "assets/generated/JetBrainsMono-Regular.h"
+#include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
+#include "assets/generated/MonaspaceRadonFrozen-Regular.h"
 #include "assets/generated/fa-regular-400.h"
 #include "assets/generated/fa-solid-900.h"
+#include "assets/generated/xkcd-script.h"
 #include "icons.h"
 
 #include <imgui.h>
+#include <imgui_impl_opengl3.h>
 #include <plog/Log.h>
 
-#include <utility>
-#include <vector>
+#include <algorithm>
+#include <stdexcept>
+#include <string>
 
 namespace ui::fonts {
 
-  auto FontManager::get(Type type, Size size) -> ImFont* {
-    if (type == Type::Text) {
-      auto it = m_textfonts.find(size);
-      if (it != m_textfonts.end()) {
-        return it->second;
+  auto FontManager::font(const std::string& name, Size size) -> ImFont* {
+    auto it = m_fonts.find(name);
+    if (it != m_fonts.end()) {
+      auto it2 = it->second.find(size);
+      if (it2 != it->second.end()) {
+        return it2->second;
       } else {
-        PLOGE << "Font not found for size: " << size;
-        throw std::runtime_error("Font not found");
-      }
-    } else if (type == Type::Icon) {
-      auto it = m_iconfonts.find(size);
-      if (it != m_iconfonts.end()) {
-        return it->second;
-      } else {
-        PLOGE << "Font not found for size: " << size;
-        throw std::runtime_error("Font not found");
+        PLOGE << "Font size not found for name: " << name << ", size: " << size;
+        throw std::runtime_error("Font size not found");
       }
     } else {
-      PLOGE << "Invalid font type: " << type;
-      throw std::runtime_error("Invalid font type");
+      PLOGE << "Font not found for size: " << size;
+      throw std::runtime_error("Font not found");
     }
+  }
+
+  auto FontManager::icon(const std::string& name, Size size) -> ImFont* {
+    auto it = m_icons.find(name);
+    if (it != m_icons.end()) {
+      auto it2 = it->second.find(size);
+      if (it2 != it->second.end()) {
+        return it2->second;
+      } else {
+        PLOGE << "Icon size not found for name: " << name << ", size: " << size;
+        throw std::runtime_error("Icon size not found");
+      }
+    } else {
+      PLOGE << "Icon not found for size: " << size;
+      throw std::runtime_error("Icon not found");
+    }
+  }
+
+  auto FontManager::fontnames() const -> std::vector<const char*> {
+    std::vector<const char*> names;
+    for (const auto& name : m_font_list) {
+      names.push_back(name.c_str());
+    }
+    return names;
+  }
+
+  void FontManager::setActiveFont(ImGuiIO* io, int font_idx, int fontsize_idx) {
+    if (font_idx >= m_font_list.size()) {
+      PLOGE << "Font index out of range: " << font_idx;
+      throw std::runtime_error("Font index out of range");
+    }
+    const auto font_name = m_font_list[font_idx];
+    if (fontsize_idx < 0 || fontsize_idx >= 4) {
+      PLOGE << "Font size index out of range: " << fontsize_idx;
+      throw std::runtime_error("Font size index out of range");
+    }
+    const auto fontsize = SIZES[fontsize_idx];
+    if (m_fonts.find(font_name) == m_fonts.end()) {
+      PLOGE << "Font not found: " << font_name;
+      throw std::runtime_error("Font not found");
+    }
+    if (m_fonts[font_name].find(fontsize) == m_fonts[font_name].end()) {
+      PLOGE << "Font size not found: " << fontsize;
+      throw std::runtime_error("Font size not found");
+    }
+
+    m_active_font_idx  = font_idx;
+    m_active_font      = font_name;
+    m_active_font_size = fontsize;
+
+    io->FontDefault = m_fonts[font_name][fontsize];
+  }
+
+  void FontManager::initFonts(ImGuiIO* io) {
+    clear(io);
+
+    for (auto& size : { Size::Small, Size::Normal, Size::Large, Size::Huge }) {
+      add(io,
+          "MonaspaceKr",
+          size,
+          MonaspaceKryptonFrozen_Regular_compressed_data,
+          MonaspaceKryptonFrozen_Regular_compressed_size);
+      add(io,
+          "MonaspaceRn",
+          size,
+          MonaspaceRadonFrozen_Regular_compressed_data,
+          MonaspaceRadonFrozen_Regular_compressed_size);
+      add(io,
+          "JetBrainsMono",
+          size,
+          JetBrainsMono_Regular_compressed_data,
+          JetBrainsMono_Regular_compressed_size);
+      add(io,
+          "xkcd-script",
+          size,
+          xkcd_script_compressed_data,
+          xkcd_script_compressed_size);
+    }
+    build(io);
   }
 
   void FontManager::clear(ImGuiIO* io) const {
@@ -44,97 +121,102 @@ namespace ui::fonts {
     io->Fonts->Build();
   }
 
-  void FontManager::add(ImGuiIO*       io,
-                        Type           type,
-                        Size           size,
-                        const void*    data,
-                        int            data_size,
-                        const ImWchar* ranges) {
-    auto        font_config = new ImFontConfig();
-    const float font_size   = static_cast<float>(size);
+  void FontManager::add(ImGuiIO*           io,
+                        const std::string& name,
+                        Size               size,
+                        const void*        data,
+                        int                data_size,
+                        const ImWchar*     ranges) {
+    const float font_size = static_cast<float>(size);
+
+    auto font_config        = new ImFontConfig();
     font_config->PixelSnapH = true;
-    if (type == Type::Text) {
-      m_textfonts[size] = io->Fonts->AddFontFromMemoryCompressedTTF(data,
-                                                                    data_size,
-                                                                    font_size,
-                                                                    font_config,
-                                                                    ranges);
-    } else if (type == Type::Icon) {
-      m_iconfonts[size] = io->Fonts->AddFontFromMemoryCompressedTTF(data,
-                                                                    data_size,
-                                                                    font_size,
-                                                                    font_config,
-                                                                    ranges);
+
+    static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+
+    auto icon_config        = new ImFontConfig();
+    icon_config->PixelSnapH = true;
+    icon_config->MergeMode  = true;
+
+    auto it = m_fonts.find(name);
+
+    if (it == m_fonts.end()) {
+      m_fonts[name] = {};
     }
+    auto it2 = m_fonts[name].find(size);
+    if (it2 != m_fonts[name].end()) {
+      PLOGW << "Font already exists: " << name << ", size: " << size;
+    } else {
+      m_fonts[name][size] = io->Fonts->AddFontFromMemoryCompressedTTF(data,
+                                                                      data_size,
+                                                                      font_size,
+                                                                      font_config,
+                                                                      ranges);
+      if (std::find(m_font_list.begin(), m_font_list.end(), name) ==
+          m_font_list.end()) {
+        m_font_list.push_back(name);
+      }
+    }
+    io->Fonts->AddFontFromMemoryCompressedTTF(fa_regular_400_compressed_data,
+                                              fa_regular_400_compressed_size,
+                                              static_cast<float>(size),
+                                              icon_config,
+                                              icon_ranges);
+    io->Fonts->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data,
+                                              fa_solid_900_compressed_size,
+                                              static_cast<float>(size),
+                                              icon_config,
+                                              icon_ranges);
   }
 
   void FontManager::add(ImGuiIO*           io,
-                        Type               type,
+                        const std::string& name,
                         Size               size,
                         const std::string& fontfile,
                         const ImWchar*     ranges) {
     auto        font_config = new ImFontConfig();
     const float font_size   = static_cast<float>(size);
     font_config->PixelSnapH = true;
-    if (type == Type::Text) {
-      m_textfonts[size] = io->Fonts->AddFontFromFileTTF(fontfile.c_str(),
-                                                        font_size,
-                                                        font_config,
-                                                        ranges);
-    } else if (type == Type::Icon) {
-      m_iconfonts[size] = io->Fonts->AddFontFromFileTTF(fontfile.c_str(),
-                                                        font_size,
-                                                        font_config,
-                                                        ranges);
+    auto it                 = m_fonts.find(name);
+    if (it == m_fonts.end()) {
+      m_fonts[name] = {};
     }
-  }
-
-  void FontManager::add(ImGuiIO*                                        io,
-                        Type                                            type,
-                        Size                                            size,
-                        const std::vector<std::pair<const void*, int>>& data,
-                        const ImWchar* ranges) {
-    auto        font_config = new ImFontConfig();
-    const float font_size   = static_cast<float>(size);
-    font_config->PixelSnapH = true;
-    font_config->MergeMode  = true;
-    for (const auto& [font_data, font_data_size] : data) {
-      if (type == Type::Text) {
-        m_textfonts[size] = io->Fonts->AddFontFromMemoryCompressedTTF(font_data,
-                                                                      font_data_size,
-                                                                      font_size,
-                                                                      font_config,
-                                                                      ranges);
-      } else if (type == Type::Icon) {
-        m_iconfonts[size] = io->Fonts->AddFontFromMemoryCompressedTTF(font_data,
-                                                                      font_data_size,
-                                                                      font_size,
-                                                                      font_config,
-                                                                      ranges);
+    auto it2 = m_fonts[name].find(size);
+    if (it2 != m_fonts[name].end()) {
+      PLOGW << "Font already exists: " << name << ", size: " << size;
+    } else {
+      m_fonts[name][size] = io->Fonts->AddFontFromFileTTF(fontfile.c_str(),
+                                                          font_size,
+                                                          font_config,
+                                                          ranges);
+      if (std::find(m_font_list.begin(), m_font_list.end(), name) ==
+          m_font_list.end()) {
+        m_font_list.push_back(name);
       }
     }
   }
 
-  void FontManager::addFontAwesomeIcons(ImGuiIO* io, Size size) {
-    static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
-    add(io,
-        ui::fonts::Type::Icon,
-        size,
-        {
-          { fa_regular_400_compressed_data, fa_regular_400_compressed_size },
-          {   fa_solid_900_compressed_data,   fa_solid_900_compressed_size }
-    },
-        icon_ranges);
-  };
-
-  void FontManager::resetMainFont(ImGuiIO* io, const void* data, int data_size) {
-    clear(io);
-    for (auto& size : { Size::Normal, Size::Small, Size::Large, Size::Huge }) {
-      add(io, ui::fonts::Type::Text, size, data, data_size);
-      addFontAwesomeIcons(io, size);
-    }
-    build(io);
-  }
+  // void FontManager::reset(ImGuiIO* io) {
+  //   if (m_staged_data != std::pair<const void*, int> {}) {
+  //     clear(io);
+  //     for (auto& size : { Size::Normal, Size::Small, Size::Large, Size::Huge }) {
+  //       add(io, ui::fonts::Type::Text, size, m_staged_data.first, m_staged_data.second);
+  //       addFontAwesomeIcons(io, size);
+  //     }
+  //     build(io);
+  //     ImGui_ImplOpenGL3_CreateDeviceObjects();
+  //     m_staged_data = {};
+  //   } else if (!m_staged_fontfile.empty()) {
+  //     clear(io);
+  //     for (auto& size : { Size::Normal, Size::Small, Size::Large, Size::Huge }) {
+  //       add(io, ui::fonts::Type::Text, size, m_staged_fontfile);
+  //       addFontAwesomeIcons(io, size);
+  //     }
+  //     build(io);
+  //     ImGui_ImplOpenGL3_CreateDeviceObjects();
+  //     m_staged_fontfile = "";
+  //   }
+  // }
 
   // auto AddFontFromMem(ImGuiIO*       io,
   //                     const void*    font_data,

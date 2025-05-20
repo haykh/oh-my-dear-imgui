@@ -6,7 +6,8 @@
 
 namespace ui::safe {
 
-  void Render(const std::function<void()>& item, ui::toasts::Toasts* toastManager) {
+  void Render(const std::function<void()>& item,
+              ui::toasts::ToastManager*    toastManager) {
     try {
       item();
     } catch (const std::exception& e) {
@@ -22,10 +23,19 @@ namespace ui::safe {
     }
   }
 
+  void PushPop(const std::function<void()>& push,
+               const std::function<void()>& item,
+               const std::function<void()>& pop,
+               ui::toasts::ToastManager*    toastManager) {
+    push();
+    Render(item, toastManager);
+    pop();
+  }
+
   void Component(const std::function<bool()>& opener,
                  const std::function<void()>& item,
                  const std::function<void()>& closer,
-                 ui::toasts::Toasts*          toastManager) {
+                 ui::toasts::ToastManager*    toastManager) {
     if (opener()) {
       Render(item, toastManager);
       closer();

@@ -1,9 +1,6 @@
 #ifndef COMPONENTS_DIALOG_H
 #define COMPONENTS_DIALOG_H
 
-#include "components/state.h"
-#include "style/fonts.h"
-
 #include <ImGuiFileDialog.h>
 #include <imgui.h>
 
@@ -13,13 +10,13 @@
 #include <utility>
 #include <vector>
 
-namespace ui::dialog {
+namespace ui::picker {
   using callback_t = std::function<void(IGFD::FileDialog*)>;
 
   /**
    * @brief Dialogues to handle file/directory picking.
    */
-  class PickerDialogs {
+  class PickerManager {
     std::vector<std::pair<std::unique_ptr<IGFD::FileDialog>, callback_t>> m_dialogs;
 
   public:
@@ -40,15 +37,6 @@ namespace ui::dialog {
     void render();
   };
 
-  /**
-   * @brief A dialog to handle style changes.
-   */
-  class StyleDialog {
-
-  public:
-    void render(bool*, ui::state::State&, ui::fonts::FontManager&);
-  };
-
-} // namespace ui::dialog
+} // namespace ui::picker
 
 #endif // COMPONENTS_DIALOG_H

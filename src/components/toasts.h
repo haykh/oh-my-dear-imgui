@@ -300,7 +300,7 @@ namespace ui::toasts {
     }
   };
 
-  class Toasts {
+  class ToastManager {
     // Max number of toasts to render
     static constexpr unsigned int RENDER_LIMIT             = 10u;
     // Bottom-left X padding

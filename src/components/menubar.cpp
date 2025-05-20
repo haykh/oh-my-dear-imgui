@@ -8,7 +8,7 @@
 
 namespace ui::menubar {
 
-  void SafeMenu(ui::toasts::Toasts&          toastManager,
+  void SafeMenu(ui::toasts::ToastManager&    toastManager,
                 const std::function<void()>& item,
                 const char*                  label,
                 bool                         enabled) {
@@ -50,7 +50,7 @@ namespace ui::menubar {
     return width;
   }
 
-  void Menubar::render(ui::toasts::Toasts* toastManager) const {
+  void Menubar::render(ui::toasts::ToastManager* toastManager) const {
     if (ImGui::BeginMainMenuBar()) {
       // Render left-aligned items
       for (size_t i = 0; i < m_items_left.size(); ++i) {
