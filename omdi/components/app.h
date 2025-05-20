@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef COMPONENTS_APP_H
+#define COMPONENTS_APP_H
 
 #define GL_SILENCE_DEPRECATION
 #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -10,9 +10,9 @@
 
 #include <string>
 
-namespace ui::components {
+namespace omdi::app {
 
-  class Window {
+  class App {
   private:
     GLFWwindow* m_win;
     std::string m_glsl_version;
@@ -20,12 +20,12 @@ namespace ui::components {
     ImGuiIO* m_io;
 
   public:
-    Window(int                width,
-           int                height,
-           const std::string& name,
-           int                swapInterval,
-           bool               isResizable = true);
-    ~Window();
+    App(int                width,
+        int                height,
+        const std::string& name,
+        int                swapInterval,
+        bool               isResizable = true);
+    ~App();
 
     void processInput();
     auto startFrame() -> bool;
@@ -53,6 +53,6 @@ namespace ui::components {
     }
   };
 
-} // namespace ui::components
+} // namespace omdi::app
 
-#endif // WINDOW_H
+#endif // COMPONENTS_APP_H

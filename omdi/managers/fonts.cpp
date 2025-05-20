@@ -1,4 +1,4 @@
-#include "style/fonts.h"
+#include "managers/fonts.h"
 
 #include "assets/generated/JetBrainsMono-Regular.h"
 #include "assets/generated/MonaspaceKryptonFrozen-Regular.h"
@@ -6,17 +6,16 @@
 #include "assets/generated/fa-regular-400.h"
 #include "assets/generated/fa-solid-900.h"
 #include "assets/generated/xkcd-script.h"
-#include "icons.h"
+#include "style/icons.h"
+#include "utils.h"
 
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
-#include <plog/Log.h>
 
 #include <algorithm>
-#include <stdexcept>
 #include <string>
 
-namespace ui::fonts {
+namespace omdi::fonts {
 
   auto FontManager::font(const std::string& name, Size size) -> ImFont* {
     auto it = m_fonts.find(name);
@@ -25,12 +24,12 @@ namespace ui::fonts {
       if (it2 != it->second.end()) {
         return it2->second;
       } else {
-        PLOGE << "Font size not found for name: " << name << ", size: " << size;
-        throw std::runtime_error("Font size not found");
+        omdi::logger::Fatal("Font size not found for name: %s, size: %d",
+                            name.c_str(),
+                            size);
       }
     } else {
-      PLOGE << "Font not found for size: " << size;
-      throw std::runtime_error("Font not found");
+      omdi::logger::Fatal("Font not found for size: %d", size);
     }
   }
 
@@ -41,12 +40,12 @@ namespace ui::fonts {
       if (it2 != it->second.end()) {
         return it2->second;
       } else {
-        PLOGE << "Icon size not found for name: " << name << ", size: " << size;
-        throw std::runtime_error("Icon size not found");
+        omdi::logger::Fatal("Icon size not found for name: %s, size: %d",
+                            name.c_str(),
+                            size);
       }
     } else {
-      PLOGE << "Icon not found for size: " << size;
-      throw std::runtime_error("Icon not found");
+      omdi::logger::Fatal("Icon not found for size: %d", size);
     }
   }
 
@@ -60,22 +59,18 @@ namespace ui::fonts {
 
   void FontManager::setActiveFont(ImGuiIO* io, int font_idx, int fontsize_idx) {
     if (font_idx >= m_font_list.size()) {
-      PLOGE << "Font index out of range: " << font_idx;
-      throw std::runtime_error("Font index out of range");
+      omdi::logger::Fatal("Font index out of range: %d", font_idx);
     }
     const auto font_name = m_font_list[font_idx];
     if (fontsize_idx < 0 || fontsize_idx >= 4) {
-      PLOGE << "Font size index out of range: " << fontsize_idx;
-      throw std::runtime_error("Font size index out of range");
+      omdi::logger::Fatal("Font size index out of range: %d", fontsize_idx);
     }
     const auto fontsize = SIZES[fontsize_idx];
     if (m_fonts.find(font_name) == m_fonts.end()) {
-      PLOGE << "Font not found: " << font_name;
-      throw std::runtime_error("Font not found");
+      omdi::logger::Fatal("Font not found: %s", font_name.c_str());
     }
     if (m_fonts[font_name].find(fontsize) == m_fonts[font_name].end()) {
-      PLOGE << "Font size not found: " << fontsize;
-      throw std::runtime_error("Font size not found");
+      omdi::logger::Fatal("Font size not found: %s, %d", font_name.c_str(), fontsize);
     }
 
     m_active_font_idx  = font_idx;
@@ -145,7 +140,7 @@ namespace ui::fonts {
     }
     auto it2 = m_fonts[name].find(size);
     if (it2 != m_fonts[name].end()) {
-      PLOGW << "Font already exists: " << name << ", size: " << size;
+      omdi::logger::Warning("Font already exists: %s, size: %d", name.c_str(), size);
     } else {
       m_fonts[name][size] = io->Fonts->AddFontFromMemoryCompressedTTF(data,
                                                                       data_size,
@@ -183,7 +178,7 @@ namespace ui::fonts {
     }
     auto it2 = m_fonts[name].find(size);
     if (it2 != m_fonts[name].end()) {
-      PLOGW << "Font already exists: " << name << ", size: " << size;
+      omdi::logger::Warning("Font already exists: %s, size: %d", name.c_str(), size);
     } else {
       m_fonts[name][size] = io->Fonts->AddFontFromFileTTF(fontfile.c_str(),
                                                           font_size,
@@ -284,4 +279,4 @@ namespace ui::fonts {
   //   BuildFonts(io);
   // }
 
-} // namespace ui::fonts
+} // namespace omdi::fonts

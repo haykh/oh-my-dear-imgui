@@ -1,14 +1,15 @@
-#include "components/picker.h"
+#include "managers/picker.h"
+
+#include "utils.h"
 
 #include <ImGuiFileDialog.h>
-#include <plog/Log.h>
 
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace ui::picker {
+namespace omdi::picker {
 
   void PickerManager::add(callback_t         callback,
                           const std::string& title,
@@ -22,8 +23,8 @@ namespace ui::picker {
     dialog->OpenDialog(title, prompt, filter, config);
 
     m_dialogs.emplace_back(std::move(dialog), std::move(callback));
-    PLOGD << "Opening a dialog " << title << " in " << path;
-    PLOGD << "Total dialogs: " << m_dialogs.size();
+    omdi::logger::Debug("Dialog %s opened in %s", title.c_str(), path.c_str());
+    omdi::logger::Debug("Total dialogs: %d", m_dialogs.size());
   }
 
   void PickerManager::render() {
@@ -37,20 +38,21 @@ namespace ui::picker {
       const auto key = dialog->GetOpenedKey();
       if (dialog->Display(key)) {
         if (dialog->IsOk()) {
-          PLOGD << "Callback for dialog " << key;
+          omdi::logger::Debug("Dialog %s is OK", key.c_str());
           callback(dialog.get());
         } else {
-          PLOGD << "Dialog " << key << " is closed";
+          omdi::logger::Debug("Dialog %s is Cancelled", key.c_str());
         }
         dialog->Close();
 
         it = m_dialogs.erase(it);
-        PLOGD << "Dialog " << key
-              << " removed from the manager. Remaining: " << m_dialogs.size();
+        omdi::logger::Debug("Dialog %s removed from the manager. Remaining: %d",
+                            key.c_str(),
+                            m_dialogs.size());
       } else {
         ++it;
       }
     }
   }
 
-} // namespace ui::picker
+} // namespace omdi::picker

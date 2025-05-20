@@ -6,15 +6,14 @@
  * Original by @TyomaVader: ImGuiNotify
  */
 
-#ifndef COMPONENTS_TOASTS_H
-#define COMPONENTS_TOASTS_H
+#ifndef MANAGERS_TOASTS_H
+#define MANAGERS_TOASTS_H
 
-#include "icons.h"
+#include "style/icons.h"
 #include "utils.h"
 
 #include <imgui.h>
 #include <inttypes.h>
-#include <plog/Log.h>
 
 #include <chrono>
 #include <functional>
@@ -22,7 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace ui::toasts {
+namespace omdi::toasts {
 
   enum class Type : uint8_t {
     None,
@@ -91,7 +90,7 @@ namespace ui::toasts {
     inline void setTitle(const char* format, ...) {
       va_list args;
       va_start(args, format);
-      m_title = fmt::format(format, args);
+      m_title = omdi::fmt::format(format, args);
       va_end(args);
     }
 
@@ -102,7 +101,7 @@ namespace ui::toasts {
     inline void setButtonLabel(const char* format, ...) {
       va_list args;
       va_start(args, format);
-      m_button_label = fmt::format(format, args);
+      m_button_label = omdi::fmt::format(format, args);
       va_end(args);
     }
 
@@ -289,14 +288,14 @@ namespace ui::toasts {
       if (type == Type::Error) {
         m_dismiss_time = 0u;
       }
-      PLOGD << "Toast created";
+      omdi::logger::Debug("Toast created");
     }
 
     Toast(const Type& type, unsigned int dismiss_time)
       : m_type { type }
       , m_dismiss_time { dismiss_time }
       , m_creation_time { std::chrono::system_clock::now() } {
-      PLOGD << "Toast created with dismiss time";
+      omdi::logger::Debug("Toast created with dismiss time");
     }
   };
 
@@ -324,6 +323,6 @@ namespace ui::toasts {
 
     void render();
   };
-} // namespace ui::toasts
+} // namespace omdi::toasts
 
-#endif // COMPONENTS_TOASTS_H
+#endif // MANAGERS_TOASTS_H

@@ -1,4 +1,4 @@
-#include "window.h"
+#include "components/app.h"
 
 #include "utils.h"
 
@@ -11,28 +11,26 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
-#include <plog/Log.h>
 
 #include <string>
 
-namespace ui::components {
+namespace omdi::app {
 
-  Window::Window(int                width,
-                 int                height,
-                 const std::string& name,
-                 int                swapInterval,
-                 bool               isResizable) {
+  App::App(int                width,
+           int                height,
+           const std::string& name,
+           int                swapInterval,
+           bool               isResizable) {
     glfwSetErrorCallback([](int error, const char* description) {
-      PLOGE << "GLFW Error " << error << ": " << description;
+      omdi::logger::Fatal("GLFW Error %d : %s", error, description);
     });
     if (not glfwInit()) {
-      PLOGE << "Failed to initialize GLFW.";
-      throw std::runtime_error("Failed to initialize GLFW.");
+      omdi::logger::Fatal("Failed to initialize GLFW.");
     } else {
-      PLOGD << "GLFW initialized.";
+      omdi::logger::Debug("GLFW initialized.");
     }
 
-    gl::SetGLVersion(m_glsl_version);
+    omdi::gl::SetGLVersion(m_glsl_version);
 
     if (!isResizable) {
       glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -41,10 +39,9 @@ namespace ui::components {
     m_win = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
 
     if (m_win == nullptr) {
-      PLOGE << "Failed to open window.";
-      throw std::runtime_error("Failed to open window.");
+      omdi::logger::Fatal("Failed to open window.");
     } else {
-      PLOGD << "Window opened.";
+      omdi::logger::Debug("Window opened.");
     }
 
     glfwMakeContextCurrent(m_win);
@@ -52,9 +49,9 @@ namespace ui::components {
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    PLOGD << "ImGui context created.";
+    omdi::logger::Debug("ImGui context created.");
     ImPlot::CreateContext();
-    PLOGD << "ImPlot context created.";
+    omdi::logger::Debug("ImPlot context created.");
     m_io               = &ImGui::GetIO();
     // m_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     m_io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -65,26 +62,26 @@ namespace ui::components {
     ImGui_ImplOpenGL3_Init(m_glsl_version.c_str());
   }
 
-  Window::~Window() {
+  App::~App() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImPlot::DestroyContext();
-    PLOGD << "ImPlot context destroyed.";
+    omdi::logger::Debug("ImPlot context destroyed.");
     ImGui::DestroyContext();
-    PLOGD << "ImGui context destroyed.";
+    omdi::logger::Debug("ImGui context destroyed.");
 
     glfwDestroyWindow(m_win);
     glfwTerminate();
-    PLOGD << "GLFW terminated.";
+    omdi::logger::Debug("GLFW terminated.");
   }
 
-  void Window::processInput() {
+  void App::processInput() {
     if (glfwGetKey(m_win, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       glfwSetWindowShouldClose(m_win, true);
     }
   }
 
-  auto Window::startFrame() -> bool {
+  auto App::startFrame() -> bool {
     glfwPollEvents();
     processInput();
     if (glfwGetWindowAttrib(m_win, GLFW_ICONIFIED) != 0) {
@@ -98,7 +95,7 @@ namespace ui::components {
     return true;
   }
 
-  void Window::endFrame(int& width, int& height, ImVec4& bg_color) {
+  void App::endFrame(int& width, int& height, ImVec4& bg_color) {
     ImGui::Render();
     if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
       ImGui::UpdatePlatformWindows();
@@ -115,4 +112,4 @@ namespace ui::components {
     glfwSwapBuffers(m_win);
   }
 
-} // namespace ui::components
+} // namespace omdi::app

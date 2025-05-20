@@ -1,5 +1,5 @@
-#ifndef COMPONENTS_DIALOG_H
-#define COMPONENTS_DIALOG_H
+#ifndef MANAGERS_PICKER_H
+#define MANAGERS_PICKER_H
 
 #include <ImGuiFileDialog.h>
 #include <imgui.h>
@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-namespace ui::picker {
+namespace omdi::picker {
   using callback_t = std::function<void(IGFD::FileDialog*)>;
 
   /**
@@ -37,6 +37,6 @@ namespace ui::picker {
     void render();
   };
 
-} // namespace ui::picker
+} // namespace omdi::picker
 
-#endif // COMPONENTS_DIALOG_H
+#endif // MANAGERS_PICKER_H

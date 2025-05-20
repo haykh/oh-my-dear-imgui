@@ -1,14 +1,13 @@
-#ifndef UI_FONTS_H
-#define UI_FONTS_H
+#ifndef MANAGERS_FONTS_H
+#define MANAGERS_FONTS_H
 
 #include <imgui.h>
-#include <plog/Log.h>
 
 #include <map>
 #include <string>
 #include <vector>
 
-namespace ui::fonts {
+namespace omdi::fonts {
 
   enum Size : int {
     None   = 0,
@@ -90,6 +89,6 @@ namespace ui::fonts {
   void AddFontAwesomeIcons(ImGuiIO*, float = 16.f);
   void SetDefaultFonts(ImGuiIO*);
 
-} // namespace ui::fonts
+} // namespace omdi::fonts
 
-#endif // UI_FONTS_H
+#endif // MANAGERS_FONTS_H

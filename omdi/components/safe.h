@@ -1,26 +1,24 @@
 #ifndef COMPONENTS_SAFE_H
 #define COMPONENTS_SAFE_H
 
-#include "components/toasts.h"
-
-#include <plog/Log.h>
+#include "managers/toasts.h"
 
 #include <functional>
 
-namespace ui::safe {
+namespace omdi::safe {
 
-  void Render(const std::function<void()>&, ui::toasts::ToastManager* = nullptr);
+  void Render(const std::function<void()>&, omdi::toasts::ToastManager* = nullptr);
 
   void PushPop(const std::function<void()>&,
                const std::function<void()>&,
                const std::function<void()>&,
-               ui::toasts::ToastManager* = nullptr);
+               omdi::toasts::ToastManager* = nullptr);
 
   void Component(const std::function<bool()>&,
                  const std::function<void()>&,
                  const std::function<void()>&,
-                 ui::toasts::ToastManager* = nullptr);
+                 omdi::toasts::ToastManager* = nullptr);
 
-} // namespace ui::safe
+} // namespace omdi::safe
 
 #endif // COMPONENTS_SAFE_H

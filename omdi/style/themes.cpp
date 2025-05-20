@@ -1,7 +1,8 @@
 #include "style/themes.h"
 
+#include "utils.h"
+
 #include <imgui.h>
-#include <plog/Log.h>
 
 #include <string>
 
@@ -40,7 +41,7 @@ namespace ui::themes {
       ImGui::StyleColorsLight(&style);
       spectrum<false>(style);
     } else {
-      PLOGE << "Unknown theme: " << theme;
+      omdi::logger::Fatal("Unknown theme: %s", theme.c_str());
     }
   }
 

@@ -1,11 +1,11 @@
-#include "components/state.h"
+#include "managers/state.h"
 
 #include <imgui.h>
 #include <toml.hpp>
 
 #include <string>
 
-namespace ui::state {
+namespace omdi::state {
 
   bool State::has(const std::string& key) const {
     return m_state_vars.find(key) != m_state_vars.end();
@@ -130,4 +130,4 @@ namespace ui::state {
     }
   }
 
-} // namespace ui::state
+} // namespace omdi::state

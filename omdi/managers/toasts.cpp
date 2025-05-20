@@ -1,4 +1,4 @@
-#include "toasts.h"
+#include "managers/toasts.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -10,7 +10,7 @@
   #include <stdexcept>
 #endif
 
-namespace ui::toasts {
+namespace omdi::toasts {
 
   void ToastManager::add(const Type& type, unsigned int dismiss_time) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
@@ -178,4 +178,4 @@ namespace ui::toasts {
     }
   }
 
-} // namespace ui::toasts
+} // namespace omdi::toasts

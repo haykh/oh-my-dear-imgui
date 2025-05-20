@@ -1,22 +1,23 @@
 #include "components/uiconfig.h"
 
-#include "components/picker.h"
 #include "components/safe.h"
-#include "components/state.h"
-#include "components/toasts.h"
 #include "components/uiconfig.h"
-#include "style/fonts.h"
+#include "managers/fonts.h"
+#include "managers/picker.h"
+#include "managers/state.h"
+#include "managers/toasts.h"
 #include "style/themes.h"
+#include "utils.h"
 
 #include <imgui.h>
 
-namespace ui::config {
+namespace omdi::config {
 
-  void StyleDialog::render(bool*                      open,
-                           ui::state::State&          state,
-                           ui::picker::PickerManager& pickerManager,
-                           ui::fonts::FontManager&    fontManager,
-                           ui::toasts::ToastManager&  toastManager) {
+  void StyleDialog::render(bool*                        open,
+                           omdi::state::State&          state,
+                           omdi::picker::PickerManager& pickerManager,
+                           omdi::fonts::FontManager&    fontManager,
+                           omdi::toasts::ToastManager&  toastManager) {
     ImGuiIO& io = ImGui::GetIO();
 
     if (ImGui::Begin("Style Dialog", open)) {
@@ -40,13 +41,13 @@ namespace ui::config {
         const auto fontnames = fontManager.fontnames();
         const auto fontsizes = fontManager.SIZES;
 
-        ui::safe::Component(
+        omdi::safe::Component(
           []() {
             return ImGui::BeginListBox("##");
           },
           [&]() {
             for (auto i { 0 }; i < fontnames.size(); ++i) {
-              ui::safe::PushPop(
+              omdi::safe::PushPop(
                 [&]() {
                   ImGui::PushFont(
                     fontManager.font(fontnames[i], fontManager.active_font_size()));
@@ -55,8 +56,7 @@ namespace ui::config {
                   if (ImGui::Selectable(fontnames[i],
                                         state.get<int>("main_font_idx") == i)) {
                     state.set("main_font_idx", i);
-                    PLOGD << "Active font changed to "
-                          << fontnames[state.get<int>("main_font_idx")];
+                    omdi::logger::Debug("Active font changed to %s", fontnames[i]);
                     fontManager.setActiveFont(
                       &io,
                       state.get<int>("main_font_idx"),
@@ -80,7 +80,7 @@ namespace ui::config {
               const auto fpath_name = dialog->GetFilePathName();
               // const auto fpath      = dialog->GetCurrentPath();
               // fontManager.resetMainFont(fpath_name);
-              PLOGD << "Loading new fonts from " << fpath_name;
+              omdi::logger::Debug("Loading new fonts from %s", fpath_name.c_str());
             },
             "FontPicker",
             "Pick a font file",
@@ -92,4 +92,4 @@ namespace ui::config {
     }
   }
 
-} // namespace ui::config
+} // namespace omdi::config

@@ -1,11 +1,14 @@
 #include "utils.h"
 
 #include <GLFW/glfw3.h>
+#include <plog/Appenders/ColorConsoleAppender.h>
+#include <plog/Formatters/TxtFormatter.h>
+#include <plog/Init.h>
 #include <plog/Log.h>
 
 #include <string>
 
-void gl::SetGLVersion(std::string& glsl_version) {
+void omdi::gl::SetGLVersion(std::string& glsl_version) {
   // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
   // GL ES 2.0 + GLSL 100 (WebGL 1.0)
@@ -42,4 +45,9 @@ void gl::SetGLVersion(std::string& glsl_version) {
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+}
+
+void omdi::logger::Init(const omdi::logger::Severity& severity) {
+  static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
+  plog::init(severity, &console_appender);
 }

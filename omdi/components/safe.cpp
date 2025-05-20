@@ -1,24 +1,25 @@
 #include "components/safe.h"
 
-#include "components/toasts.h"
+#include "managers/toasts.h"
+#include "utils.h"
 
 #include <functional>
 
-namespace ui::safe {
+namespace omdi::safe {
 
   void Render(const std::function<void()>& item,
-              ui::toasts::ToastManager*    toastManager) {
+              omdi::toasts::ToastManager*  toastManager) {
     try {
       item();
     } catch (const std::exception& e) {
-      PLOGE << e.what();
+      omdi::logger::Error("Exception: %s", e.what());
       if (toastManager != nullptr) {
-        toastManager->add(ui::toasts::Type::Error, std::string(e.what()));
+        toastManager->add(omdi::toasts::Type::Error, std::string(e.what()));
       }
     } catch (...) {
-      PLOGE << "Unknown exception";
+      omdi::logger::Error("Unknown exception");
       if (toastManager != nullptr) {
-        toastManager->add(ui::toasts::Type::Error, "Unknown exception");
+        toastManager->add(omdi::toasts::Type::Error, "Unknown exception");
       }
     }
   }
@@ -26,7 +27,7 @@ namespace ui::safe {
   void PushPop(const std::function<void()>& push,
                const std::function<void()>& item,
                const std::function<void()>& pop,
-               ui::toasts::ToastManager*    toastManager) {
+               omdi::toasts::ToastManager*  toastManager) {
     push();
     Render(item, toastManager);
     pop();
@@ -35,11 +36,11 @@ namespace ui::safe {
   void Component(const std::function<bool()>& opener,
                  const std::function<void()>& item,
                  const std::function<void()>& closer,
-                 ui::toasts::ToastManager*    toastManager) {
+                 omdi::toasts::ToastManager*  toastManager) {
     if (opener()) {
       Render(item, toastManager);
       closer();
     }
   }
 
-} // namespace ui::safe
+} // namespace omdi::safe

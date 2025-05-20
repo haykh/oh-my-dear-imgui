@@ -1,14 +1,14 @@
 #ifndef COMPONENTS_MENUBAR_H
 #define COMPONENTS_MENUBAR_H
 
-#include "components/toasts.h"
+#include "managers/toasts.h"
 
 #include <imgui.h>
 
 #include <functional>
 #include <vector>
 
-namespace ui::menubar {
+namespace omdi::menubar {
 
   struct MenuItem {
     std::function<void()> render;
@@ -35,9 +35,9 @@ namespace ui::menubar {
       m_items_right.push_back(MenuItem { item });
     }
 
-    void render(ui::toasts::ToastManager* = nullptr) const;
+    void render(omdi::toasts::ToastManager* = nullptr) const;
   };
 
-} // namespace ui::menubar
+} // namespace omdi::menubar
 
 #endif // COMPONENTS_MENUBAR_H

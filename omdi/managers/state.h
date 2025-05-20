@@ -1,5 +1,5 @@
-#ifndef UI_STATE_H
-#define UI_STATE_H
+#ifndef MANAGERS_STATE_H
+#define MANAGERS_STATE_H
 
 #include <toml.hpp>
 
@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace ui::state {
+namespace omdi::state {
 
   class State {
     std::map<std::string, std::any> m_state_vars;
@@ -62,6 +62,6 @@ namespace ui::state {
     void        from_toml(const toml::value& v);
   };
 
-} // namespace ui::state
+} // namespace omdi::state
 
-#endif // UI_STATE_H
+#endif // MANAGERS_STATE_H

@@ -1,17 +1,10 @@
-# ImGui Boilerplate
+# Oh My Dear ImGui (OMDI)
 
-A bit more than minimal boilerplate code for ImGui-based applications.
+A bit more than minimal wrapper library for ImGui-based applications.
 
 ## Usage
 
-```sh
-# compile
-cmake -B build
-cmake --build build -j
-
-# run
-./build/src/imgui-boilerplate.xc
-```
+_@TODO_
 
 ## In-tree dependencies
 
@@ -42,6 +35,7 @@ Following depedencies are assumed to be installed on the system:
 
 ## TODO
 
+- [ ] documentation
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
 - [ ] custom `ImPlot` renderers
 - [ ] image export (via [`stb`](https://github.com/nothings/stb))
