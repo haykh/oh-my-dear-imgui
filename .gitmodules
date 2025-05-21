@@ -14,3 +14,7 @@
 [submodule "extern/toml11"]
 	path = extern/toml11
 	url = https://github.com/ToruNiina/toml11.git
+[submodule "extern/imgui-node-editor"]
+	path = extern/imgui-node-editor
+	url = https://github.com/thedmd/imgui-node-editor.git
+	branch = develop

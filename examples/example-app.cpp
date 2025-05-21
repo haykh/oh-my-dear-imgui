@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include <imgui_node_editor.h>
 #include <implot.h>
 #include <omdi.hpp>
 #include <toml.hpp>
@@ -120,28 +121,56 @@ auto main(int argc, char* argv[]) -> int {
     ui::themes::picker(ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
                        ImGui::GetStyle());
 
+    namespace ed = ax::NodeEditor;
+
+    auto ed_ctx = ed::CreateEditor();
+
     while (not app.windowShouldClose()) {
       if (app.startFrame()) {
 
-        if (state.get<bool>("show_imgui_demo")) {
-          ImGui::ShowDemoWindow(&state.get<bool>("show_imgui_demo"));
-        }
-        if (state.get<bool>("show_implot_demo")) {
-          ImPlot::ShowDemoWindow(&state.get<bool>("show_implot_demo"));
-        }
+        auto& io = ImGui::GetIO();
 
-        // ui elements
-        menubar.render(&toastManager);
-        if (state.get<bool>("show_style_dialog")) {
-          styleDialog.render(&state.get<bool>("show_style_dialog"),
-                             state,
-                             pickerDialogManager,
-                             fontManager,
-                             toastManager);
-        }
+        ImGui::Text("FPS: %.2f (%.2gms)",
+                    io.Framerate,
+                    io.Framerate ? 1000.0f / io.Framerate : 0.0f);
 
-        pickerDialogManager.render();
-        toastManager.render();
+        ImGui::Separator();
+
+        ed::SetCurrentEditor(ed_ctx);
+        ed::Begin("My Editor", ImVec2(0.0, 0.0f));
+        int uniqueId = 1;
+        // Start drawing nodes.
+        ed::BeginNode(uniqueId++);
+        ImGui::Text("Node A");
+        ed::BeginPin(uniqueId++, ed::PinKind::Input);
+        ImGui::Text("-> In");
+        ed::EndPin();
+        ImGui::SameLine();
+        ed::BeginPin(uniqueId++, ed::PinKind::Output);
+        ImGui::Text("Out ->");
+        ed::EndPin();
+        ed::EndNode();
+        ed::End();
+        ed::SetCurrentEditor(nullptr);
+        // if (state.get<bool>("show_imgui_demo")) {
+        //   ImGui::ShowDemoWindow(&state.get<bool>("show_imgui_demo"));
+        // }
+        // if (state.get<bool>("show_implot_demo")) {
+        //   ImPlot::ShowDemoWindow(&state.get<bool>("show_implot_demo"));
+        // }
+        //
+        // // ui elements
+        // menubar.render(&toastManager);
+        // if (state.get<bool>("show_style_dialog")) {
+        //   styleDialog.render(&state.get<bool>("show_style_dialog"),
+        //                      state,
+        //                      pickerDialogManager,
+        //                      fontManager,
+        //                      toastManager);
+        // }
+        //
+        // pickerDialogManager.render();
+        // toastManager.render();
 
         app.endFrame(state.get<int>("window_width"),
                      state.get<int>("window_height"),

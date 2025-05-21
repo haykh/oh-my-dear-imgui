@@ -45,6 +45,10 @@ set(imgui_TAG "docking")
 set(ImGuiFileDialog_REPOSITORY "https://github.com/aiekick/ImGuiFileDialog.git")
 set(ImGuiFileDialog_TAG "master")
 
+set(imgui-node-editor_REPOSITORY
+    "https://github.com/thedmd/imgui-node-editor.git")
+set(imgui-node-editor_TAG "develop")
+
 set(implot_REPOSITORY "https://github.com/epezent/implot.git")
 set(implot_TAG "master")
 
@@ -197,7 +201,10 @@ function(
   set(full_src_files "")
   if(${${name}_AS_SUBMODULE} OR ${${name}_CLONED})
     if("${src_files}" STREQUAL "")
-      file(GLOB_RECURSE full_src_files "${${name}_SOURCE_DIR}/src/*.cpp")
+      # fot toml11, take all source files from src/ directory
+      if("${name}" STREQUAL "toml11")
+        file(GLOB_RECURSE full_src_files "${${name}_SOURCE_DIR}/src/*.cpp")
+      endif()
     else()
       set(source_dir "${${name}_SOURCE_DIR}")
       files_to_fullpath("${src_files}" "${source_dir}" full_src_files)
@@ -237,12 +244,21 @@ set(imgui_SRC_FILES imgui.cpp imgui_draw.cpp imgui_widgets.cpp imgui_tables.cpp
                     imgui_demo.cpp)
 set(imgui_backends_SRC_FILES imgui_impl_glfw.cpp imgui_impl_opengl3.cpp)
 set(implot_SRC_FILES implot.cpp implot_items.cpp implot_demo.cpp)
+set(imgui-node-editor_SRC_FILES
+    imgui_canvas.cpp
+    imgui_node_editor.cpp
+    imgui_node_editor_api.cpp
+    crude_json.cpp
+    imgui_bezier_math.inl
+    imgui_extra_math.inl
+    imgui_node_editor_internal.inl)
 
 fetch_library(plog "FETCH")
 fetch_library(toml11 "FETCH")
 fetch_library(imgui "FETCH")
 fetch_library(implot "FETCH")
 fetch_library(ImGuiFileDialog "CLONE")
+fetch_library(imgui-node-editor "FETCH")
 
 set(imgui_backends_SOURCE_DIR "${imgui_SOURCE_DIR}/backends")
 set(imgui_backends_AS_SUBMODULE FALSE)
@@ -257,6 +273,13 @@ build_library(imgui_backends "${imgui_backends_SRC_FILES}"
               "${imgui_SOURCE_DIR};${imgui_backends_SOURCE_DIR}" "glfw" "" "")
 build_library(implot "${implot_SRC_FILES}"
               "${implot_SOURCE_DIR};${imgui_SOURCE_DIR}" "imgui" "" "")
+build_library(
+  imgui-node-editor
+  "${imgui-node-editor_SRC_FILES}"
+  "${imgui-node-editor_SOURCE_DIR};${imgui_SOURCE_DIR};${imgui_backends_SOURCE_DIR}"
+  "imgui"
+  ""
+  "")
 
 set(LIBRARIES
     "${LIBS}"
