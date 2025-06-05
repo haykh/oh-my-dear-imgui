@@ -49,6 +49,46 @@ set(implot_REPOSITORY "https://github.com/epezent/implot.git")
 set(implot_TAG "master")
 
 # -----------------------------------------------------------------------------
+# dir_non_empty
+#
+# Description:
+#
+# * Check if a directory is non-empty
+#
+# Arguments:
+#
+# * dir (string) - The directory to check
+#
+# Returns:
+#
+# * is_non_empty (bool) - Whether the directory is non-empty
+#
+# Notes:
+#
+# * This function checks if the directory exists and contains at least one file
+#   or subdirectory
+#
+# -----------------------------------------------------------------------------
+function(dir_non_empty dir is_non_empty)
+  if(EXISTS "${dir}" AND IS_DIRECTORY "${dir}")
+    file(GLOB files "${dir}/*")
+    if(files)
+      set(${is_non_empty}
+          TRUE
+          PARENT_SCOPE)
+    else()
+      set(${is_non_empty}
+          FALSE
+          PARENT_SCOPE)
+    endif()
+  else()
+    set(${is_non_empty}
+        FALSE
+        PARENT_SCOPE)
+  endif()
+endfunction()
+
+# -----------------------------------------------------------------------------
 # fetch_library
 #
 # Description:
@@ -83,7 +123,9 @@ set(implot_TAG "master")
 # * "CLONE" uses git clone to fetch the library
 # -----------------------------------------------------------------------------
 function(fetch_library name method)
-  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/${name}")
+  # if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/${name}"
+  dir_non_empty("${CMAKE_CURRENT_SOURCE_DIR}/extern/${name}" is_non_empty)
+  if(is_non_empty)
     set(${name}_AS_SUBMODULE TRUE)
     set(${name}_FETCHED FALSE)
     set(${name}_CLONED FALSE)
