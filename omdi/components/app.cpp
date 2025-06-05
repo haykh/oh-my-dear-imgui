@@ -95,12 +95,15 @@ namespace omdi::app {
     return true;
   }
 
-  void App::endFrame(int& width, int& height, ImVec4& bg_color) {
+  void App::render() {
     ImGui::Render();
     if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
       ImGui::UpdatePlatformWindows();
       ImGui::RenderPlatformWindowsDefault();
     }
+  }
+
+  void App::endFrame(int& width, int& height, ImVec4& bg_color) {
     glfwGetFramebufferSize(m_win, &width, &height);
     glViewport(0, 0, width, height);
     glClearColor(bg_color.x * bg_color.w,

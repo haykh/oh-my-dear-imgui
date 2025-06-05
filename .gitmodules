@@ -14,3 +14,6 @@
 [submodule "extern/toml11"]
 	path = extern/toml11
 	url = https://github.com/ToruNiina/toml11.git
+[submodule "extern/stb"]
+	path = extern/stb
+	url = https://github.com/nothings/stb.git

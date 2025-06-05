@@ -31,6 +31,7 @@ auto main(int argc, char* argv[]) -> int {
     auto pickerDialogManager = omdi::picker::PickerManager();
     auto toastManager        = omdi::toasts::ToastManager();
     auto fontManager         = omdi::fonts::FontManager();
+    auto screenshotManager   = omdi::save::ScreenshotManager();
 
     // ui elements
     auto styleDialog = omdi::config::StyleDialog();
@@ -75,6 +76,9 @@ auto main(int argc, char* argv[]) -> int {
           }
           if (ImGui::MenuItem("Configure UI")) {
             state.set("show_style_dialog", true);
+          }
+          if (ImGui::MenuItem("Save Image")) {
+            screenshotManager.request();
           }
         },
         []() {
@@ -131,18 +135,20 @@ auto main(int argc, char* argv[]) -> int {
         }
 
         // ui elements
-        menubar.render(&toastManager);
-        if (state.get<bool>("show_style_dialog")) {
-          styleDialog.render(&state.get<bool>("show_style_dialog"),
-                             state,
-                             pickerDialogManager,
-                             fontManager,
-                             toastManager);
+        if (not screenshotManager.processing()) {
+          menubar.render(&toastManager);
         }
+        styleDialog.render(&state.get<bool>("show_style_dialog"),
+                           state,
+                           pickerDialogManager,
+                           fontManager,
+                           toastManager);
 
         pickerDialogManager.render();
         toastManager.render();
 
+        app.render();
+        screenshotManager.process(&toastManager);
         app.endFrame(state.get<int>("window_width"),
                      state.get<int>("window_height"),
                      state.get<ImVec4>("bg_color"));

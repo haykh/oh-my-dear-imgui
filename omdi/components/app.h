@@ -29,6 +29,7 @@ namespace omdi::app {
 
     void processInput();
     auto startFrame() -> bool;
+    void render();
     void endFrame(int&, int&, ImVec4&);
 
     [[nodiscard]]

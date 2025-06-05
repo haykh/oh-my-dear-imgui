@@ -2,8 +2,9 @@
 
 set(LIB ${PROJECT_NAME})
 set(LIBS "${LIBRARIES};glfw;OpenGL::GL")
-set(INC_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/style
-             ${plog_SOURCE_DIR}/include ${ImGuiFileDialog_SOURCE_DIR})
+set(INC_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/style
+    ${stb_SOURCE_DIR}/ ${plog_SOURCE_DIR}/include ${ImGuiFileDialog_SOURCE_DIR})
 
 file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 list(FILTER SRC EXCLUDE REGEX "assets")
