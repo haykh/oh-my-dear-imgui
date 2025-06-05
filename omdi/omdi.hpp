@@ -7,6 +7,7 @@
 #include "components/uiconfig.h"
 #include "managers/fonts.h"
 #include "managers/picker.h"
+#include "managers/screenshot.h"
 #include "managers/state.h"
 #include "managers/toasts.h"
 #include "style/icons.h"

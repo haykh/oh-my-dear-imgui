@@ -61,3 +61,4 @@ ignore-*
 
 imgui.ini
 *.toml
+screenshots/
