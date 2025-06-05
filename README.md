@@ -33,6 +33,7 @@ Following depedencies are built in-tree:
 
 - `Plog`
 - `toml11`
+- `stb`
 - `ImGui`
 - `ImPlot`
 - `ImGuiFileDialog`
@@ -44,7 +45,7 @@ Following depedencies are assumed to be installed on the system:
 
 ## Features
 
-- basic manager classes for picker dialogs, toasts (notifications), fonts, etc.;
+- basic manager classes for picker dialogs, toasts (notifications), screenshots, fonts, etc.;
 - basic ui component classes, e.g., menubars, etc.;
 - app state with optional conversion to/from toml;
 - functionality for error handling (safe rendering + error notification) at runtime;
