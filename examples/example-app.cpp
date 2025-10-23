@@ -121,8 +121,8 @@ auto main(int argc, char* argv[]) -> int {
     });
 
     // init state
-    ui::themes::picker(ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
-                       ImGui::GetStyle());
+    omdi::themes::picker(omdi::themes::ALL_THEMES[state.get<int>("theme_idx")],
+                         ImGui::GetStyle());
 
     while (not app.windowShouldClose()) {
       if (app.startFrame()) {

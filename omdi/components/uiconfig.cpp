@@ -27,10 +27,10 @@ namespace omdi::config {
           ImGui::SeparatorText("Colors");
           if (ImGui::Combo(" theme",
                            &state.get<int>("theme_idx"),
-                           ui::themes::ALL_THEMES,
-                           IM_ARRAYSIZE(ui::themes::ALL_THEMES))) {
-            ui::themes::picker(
-              ui::themes::ALL_THEMES[state.get<int>("theme_idx")],
+                           omdi::themes::ALL_THEMES,
+                           IM_ARRAYSIZE(omdi::themes::ALL_THEMES))) {
+            omdi::themes::picker(
+              omdi::themes::ALL_THEMES[state.get<int>("theme_idx")],
               ImGui::GetStyle());
           }
           ImGui::ColorEdit4(" background color",

@@ -6,7 +6,7 @@
 
 #include <string>
 
-namespace ui::themes {
+namespace omdi::themes {
 
   void picker(const std::string& theme, ImGuiStyle& style) {
     style = ImGuiStyle();
@@ -941,4 +941,4 @@ namespace ui::themes {
     colors[ImGuiCol_ModalWindowDimBg]      = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
   }
 
-} // namespace ui::themes
+} // namespace omdi::themes

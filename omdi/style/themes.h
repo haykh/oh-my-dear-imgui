@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace ui::themes {
+namespace omdi::themes {
 
   constexpr const char* ALL_THEMES[] = {
     "default",        "darkness",       "grey",          "light",  "ue4",
@@ -28,6 +28,6 @@ namespace ui::themes {
 
   template <bool IsDark = false>
   void spectrum(ImGuiStyle&);
-} // namespace ui::themes
+} // namespace omdi::themes
 
 #endif // UI_THEMES_THEMES_H
