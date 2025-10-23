@@ -7,6 +7,9 @@
 
 namespace omdi::save {
 
+  /**
+   * @brief Manager for taking and saving screenshots of the application window.
+   */
   class ScreenshotManager {
     bool m_screenshot_requested = false;
 

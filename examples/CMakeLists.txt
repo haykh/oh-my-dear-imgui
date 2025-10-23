@@ -1,5 +1,7 @@
-set(EXEC example-app)
-set(SRC example-app.cpp)
-add_executable(${EXEC} ${SRC})
+set(examples "example-app" "example-min")
 
-target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui)
+foreach(example ${examples})
+  set(SRC ${example}.cpp)
+  add_executable(${example} ${SRC})
+  target_link_libraries(${example} PRIVATE oh-my-dear-imgui)
+endforeach()

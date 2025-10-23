@@ -14,12 +14,12 @@ namespace omdi::safe {
     } catch (const std::exception& e) {
       omdi::logger::Error("Exception: %s", e.what());
       if (toastManager != nullptr) {
-        toastManager->add(omdi::toasts::Type::Error, std::string(e.what()));
+        toastManager->Add(omdi::toasts::Type::Error, std::string(e.what()));
       }
     } catch (...) {
       omdi::logger::Error("Unknown exception");
       if (toastManager != nullptr) {
-        toastManager->add(omdi::toasts::Type::Error, "Unknown exception");
+        toastManager->Add(omdi::toasts::Type::Error, "Unknown exception");
       }
     }
   }

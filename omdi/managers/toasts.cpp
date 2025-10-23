@@ -12,18 +12,18 @@
 
 namespace omdi::toasts {
 
-  void ToastManager::add(const Type& type, unsigned int dismiss_time) {
+  void ToastManager::Add(const Type& type, unsigned int dismiss_time) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
     m_toasts.push_back(std::move(toast));
   }
 
-  void ToastManager::add(const Type& type, const std::string& content) {
+  void ToastManager::Add(const Type& type, const std::string& content) {
     auto toast = std::make_unique<Toast>(type);
     toast->setContent(content);
     m_toasts.push_back(std::move(toast));
   }
 
-  void ToastManager::add(const Type&        type,
+  void ToastManager::Add(const Type&        type,
                          unsigned int       dismiss_time,
                          const std::string& content) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
@@ -31,7 +31,7 @@ namespace omdi::toasts {
     m_toasts.push_back(std::move(toast));
   }
 
-  void ToastManager::add(const Type&                  type,
+  void ToastManager::Add(const Type&                  type,
                          unsigned int                 dismiss_time,
                          const std::string&           content,
                          const std::string&           button_label,

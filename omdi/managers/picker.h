@@ -22,13 +22,13 @@ namespace omdi::picker {
   public:
     /**
      * @brief Add a picker dialog to the handler.
-     * @param callback The callback function to be called when the dialog is closed.
-     * @param title The title of the dialog (default = "PickerDialog").
-     * @param prompt The prompt message to be displayed in the dialog (default = "Pick a file or directory").
-     * @param path The initial path to be displayed in the dialog (default = ".").
-     * @param filter File extension filter (default = nullptr, pick directory)
+     * @param {std::function<void(IGFD::FileDialog*)>} callback - The callback function to be called when the dialog is closed
+     * @param {std::string} title - The title of the dialog (default = "PickerDialog")
+     * @param {std::string} prompt - The prompt message to be displayed in the dialog (default = "Pick a file or directory")
+     * @param {std::string} path - The initial path to be displayed in the dialog (default = ".")
+     * @param {char*} filter - File extension filter (default = nullptr, pick directory)
      */
-    void add(callback_t,
+    void Add(callback_t,
              const std::string& = "PickerDialog",
              const std::string& = "Pick a file or directory",
              const std::string& = ".",

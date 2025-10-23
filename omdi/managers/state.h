@@ -10,6 +10,9 @@
 
 namespace omdi::state {
 
+  /**
+   * @brief State manager for storing and retrieving application state variables.
+   */
   class State {
     std::map<std::string, std::any> m_state_vars;
 

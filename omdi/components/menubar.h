@@ -14,6 +14,9 @@ namespace omdi::menubar {
     std::function<void()> render;
   };
 
+  /**
+   * @brief Top menubar component for omdi applications.
+   */
   class Menubar {
     std::vector<MenuItem> m_items_left;
     std::vector<MenuItem> m_items_center;
@@ -23,15 +26,15 @@ namespace omdi::menubar {
     auto measureWidth(const std::vector<MenuItem>& items) const -> float;
 
   public:
-    void addLeft(const std::function<void()>& item) {
+    void AddLeft(const std::function<void()>& item) {
       m_items_left.push_back(MenuItem { item });
     }
 
-    void addCenter(const std::function<void()>& item) {
+    void AddCenter(const std::function<void()>& item) {
       m_items_center.push_back(MenuItem { item });
     }
 
-    void addRight(const std::function<void()>& item) {
+    void AddRight(const std::function<void()>& item) {
       m_items_right.push_back(MenuItem { item });
     }
 

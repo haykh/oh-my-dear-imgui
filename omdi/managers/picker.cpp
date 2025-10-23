@@ -11,7 +11,7 @@
 
 namespace omdi::picker {
 
-  void PickerManager::add(callback_t         callback,
+  void PickerManager::Add(callback_t         callback,
                           const std::string& title,
                           const std::string& prompt,
                           const std::string& path,

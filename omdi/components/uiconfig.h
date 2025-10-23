@@ -15,10 +15,10 @@ namespace omdi::config {
 
   public:
     void render(bool*,
-                omdi::state::State&,
-                omdi::picker::PickerManager&,
-                omdi::fonts::FontManager&,
-                omdi::toasts::ToastManager&);
+                omdi::state::State*,
+                omdi::picker::PickerManager*,
+                omdi::fonts::FontManager*,
+                omdi::toasts::ToastManager*);
   };
 
 } // namespace omdi::config

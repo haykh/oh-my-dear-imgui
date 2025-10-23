@@ -4,6 +4,8 @@ A bit more than minimal wrapper library for ImGui-based applications.
 
 ## Usage
 
+### Cross-compiling OMDI
+
 Add the library as a dependency to your app in your `CMakeLists.txt`:
 
 ```cmake
@@ -26,6 +28,71 @@ add_executable(${EXEC} ${SRC})
 
 target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui)
 ```
+
+### Using in applications
+
+Below is a minimal example for using OMDI in your application:
+
+```cpp
+#include <omdi.hpp> // import the main omdi header
+
+auto main() -> int {
+  auto state = omdi::state::State(); // define the application state
+  auto app   = omdi::app::App(&state); // define the application object
+
+  app.Init(&state); // initialize the application
+  app.Render(&state); // enter the render loop
+
+  return 0;
+}
+```
+
+You can also use some or all of the built-in components by passing them to the app renderer which will process these automatically:
+
+```cpp
+// managers
+auto pickerDialogManager = omdi::picker::PickerManager();
+auto toastManager        = omdi::toasts::ToastManager();
+auto fontManager         = omdi::fonts::FontManager();
+auto screenshotManager   = omdi::save::ScreenshotManager();
+
+// ui elements
+auto styleDialog = omdi::config::StyleDialog();
+auto menubar     = omdi::menubar::Menubar();
+
+auto components = omdi::components_t {
+  {      "menubar",     &menubar },
+  { "style_dialog", &styleDialog }
+};
+auto managers = omdi::managers_t {
+  {      "toast_manager",        &toastManager },
+  {       "font_manager",         &fontManager },
+  { "screenshot_manager",   &screenshotManager },
+  {     "picker_manager", &pickerDialogManager }
+};
+
+app.Init(&state, managers);
+
+app.Render(
+  &state,
+  [&]() {
+    // custom rendering routine
+  },
+  components,
+  managers);
+```
+
+### Examples
+
+A few standalone examples can be found in the `examples/` directory. These can be compiled using simply:
+
+```sh
+cmake -B build
+cmake --build build -j
+```
+
+from the root of the repository.
+
 
 ## Dependencies
 
@@ -58,5 +125,5 @@ Following depedencies are assumed to be installed on the system:
 - [ ] documentation
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
 - [ ] custom `ImPlot` renderers
-- [ ] image export (via [`stb`](https://github.com/nothings/stb))
+- [x] image export (via [`stb`](https://github.com/nothings/stb))
 - [ ] support for other backends

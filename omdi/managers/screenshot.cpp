@@ -47,7 +47,7 @@ namespace omdi::save {
 
     stbi_write_png((m_path / m_fname).c_str(), W, H, 4, pixels.data(), 4 * W);
     if (toasts != nullptr) {
-      toasts->add(omdi::toasts::Type::Info,
+      toasts->Add(omdi::toasts::Type::Info,
                   omdi::fmt::format("Saved screenshot to %s/%s",
                                     m_path.string().c_str(),
                                     m_fname.string().c_str()));

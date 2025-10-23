@@ -299,6 +299,9 @@ namespace omdi::toasts {
     }
   };
 
+  /**
+   * @brief Manager class for handling toast notifications.
+   */
   class ToastManager {
     // Max number of toasts to render
     static constexpr unsigned int RENDER_LIMIT             = 10u;
@@ -312,10 +315,10 @@ namespace omdi::toasts {
     std::vector<std::unique_ptr<Toast>> m_toasts;
 
   public:
-    void add(const Type&, unsigned int = Toast::NOTIFY_DEFAULT_DISMISS);
-    void add(const Type&, unsigned int, const std::string&);
-    void add(const Type&, const std::string&);
-    void add(const Type&,
+    void Add(const Type&, unsigned int = Toast::NOTIFY_DEFAULT_DISMISS);
+    void Add(const Type&, unsigned int, const std::string&);
+    void Add(const Type&, const std::string&);
+    void Add(const Type&,
              unsigned int,
              const std::string&,
              const std::string&,
