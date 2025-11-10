@@ -11,6 +11,9 @@ list(FILTER SRC EXCLUDE REGEX "assets")
 list(APPEND SRC ${ImGuiFileDialog_SOURCE_DIR}/ImGuiFileDialog.cpp)
 
 add_library(${LIB} ${SRC})
+if(NOT TARGET ${PROJECT_NAME}::${PROJECT_NAME})
+  add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${LIB})
+endif()
 target_link_libraries(${LIB} PUBLIC ${LIBS})
 target_include_directories(${LIB} PUBLIC ${INC_DIRS})
 
