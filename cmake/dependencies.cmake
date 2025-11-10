@@ -314,62 +314,63 @@ if(TARGET imgui)
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include/imgui)
+    INCLUDES
+    DESTINATION include/imgui)
   install(
     DIRECTORY ${imgui_SOURCE_DIR}/
     DESTINATION include/imgui
     FILES_MATCHING
-      PATTERN "*.h"
-      PATTERN "*.hpp"
-      PATTERN "*.inl")
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+    PATTERN "*.inl")
 endif()
 
 if(TARGET imgui_backends)
   target_include_directories(
-    imgui_backends
-    PUBLIC
-      "$<INSTALL_INTERFACE:include/imgui>"
-      "$<INSTALL_INTERFACE:include/imgui/backends>")
+    imgui_backends PUBLIC "$<INSTALL_INTERFACE:include/imgui>"
+                          "$<INSTALL_INTERFACE:include/imgui/backends>")
   install(
     TARGETS imgui_backends
     EXPORT oh-my-dear-imguiTargets
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include/imgui)
+    INCLUDES
+    DESTINATION include/imgui)
 endif()
 
 if(TARGET implot)
-  target_include_directories(implot PUBLIC "$<INSTALL_INTERFACE:include/implot>")
+  target_include_directories(implot
+                             PUBLIC "$<INSTALL_INTERFACE:include/implot>")
   install(
     TARGETS implot
     EXPORT oh-my-dear-imguiTargets
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include/implot)
+    INCLUDES
+    DESTINATION include/implot)
   install(
     DIRECTORY ${implot_SOURCE_DIR}/
     DESTINATION include/implot
     FILES_MATCHING
-      PATTERN "*.h"
-      PATTERN "*.hpp"
-      PATTERN "*.inl")
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+    PATTERN "*.inl")
 endif()
 
 if(TARGET toml11)
   target_include_directories(
-    toml11
-    PUBLIC
-      "$<BUILD_INTERFACE:${toml11_SOURCE_DIR}/include>"
-      "$<INSTALL_INTERFACE:include>")
+    toml11 PUBLIC "$<BUILD_INTERFACE:${toml11_SOURCE_DIR}/include>"
+                  "$<INSTALL_INTERFACE:include>")
   install(
     TARGETS toml11
     EXPORT oh-my-dear-imguiTargets
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include)
+    INCLUDES
+    DESTINATION include)
 endif()
 
 if(EXISTS ${plog_SOURCE_DIR}/include)
@@ -385,9 +386,9 @@ if(EXISTS ${stb_SOURCE_DIR})
     DIRECTORY ${stb_SOURCE_DIR}/
     DESTINATION include
     FILES_MATCHING
-      PATTERN "*.h"
-      PATTERN "*.hpp"
-      PATTERN "*.inl")
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+    PATTERN "*.inl")
 endif()
 
 if(EXISTS ${ImGuiFileDialog_SOURCE_DIR})
@@ -395,8 +396,8 @@ if(EXISTS ${ImGuiFileDialog_SOURCE_DIR})
     DIRECTORY ${ImGuiFileDialog_SOURCE_DIR}/
     DESTINATION include/ImGuiFileDialog
     FILES_MATCHING
-      PATTERN "*.h"
-      PATTERN "*.hpp")
+    PATTERN "*.h"
+    PATTERN "*.hpp")
 endif()
 
 set(LIBRARIES

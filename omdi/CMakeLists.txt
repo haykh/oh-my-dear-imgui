@@ -14,22 +14,22 @@ endif()
 target_link_libraries(${LIB} PUBLIC ${LIBS})
 target_include_directories(
   ${LIB}
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/style>
-    $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${plog_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${ImGuiFileDialog_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${implot_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:include/oh-my-dear-imgui>
-    $<INSTALL_INTERFACE:include>
-    $<INSTALL_INTERFACE:include/imgui>
-    $<INSTALL_INTERFACE:include/implot>
-    $<INSTALL_INTERFACE:include/ImGuiFileDialog>)
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/style>
+         $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
+         $<BUILD_INTERFACE:${plog_SOURCE_DIR}/include>
+         $<BUILD_INTERFACE:${ImGuiFileDialog_SOURCE_DIR}>
+         $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
+         $<BUILD_INTERFACE:${implot_SOURCE_DIR}>
+         $<INSTALL_INTERFACE:include/oh-my-dear-imgui>
+         $<INSTALL_INTERFACE:include>
+         $<INSTALL_INTERFACE:include/imgui>
+         $<INSTALL_INTERFACE:include/implot>
+         $<INSTALL_INTERFACE:include/ImGuiFileDialog>)
 
 target_compile_definitions(
-  ${LIB} PUBLIC CUSTOM_IMGUIFILEDIALOG_CONFIG="style/imgui_file_dialog_config.h")
+  ${LIB}
+  PUBLIC CUSTOM_IMGUIFILEDIALOG_CONFIG="style/imgui_file_dialog_config.h")
 
 install(
   TARGETS ${LIB}
@@ -37,14 +37,15 @@ install(
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include/oh-my-dear-imgui)
+  INCLUDES
+  DESTINATION include/oh-my-dear-imgui)
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
   DESTINATION include/oh-my-dear-imgui
   FILES_MATCHING
-    PATTERN "*.h"
-    PATTERN "*.hpp")
+  PATTERN "*.h"
+  PATTERN "*.hpp")
 
 set(${LIB}_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}

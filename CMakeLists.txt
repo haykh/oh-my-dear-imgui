@@ -13,7 +13,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies.cmake)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/omdi)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
+
+set(omdi_BUILD_EXAMPLES
+    "OFF"
+    CACHE BOOL "Build omdi examples")
+
+if(${omdi_BUILD_EXAMPLES})
+  message(STATUS "Building examples")
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
+else()
+  message(STATUS "Skipping examples")
+endif()
 
 include(CMakePackageConfigHelpers)
 
@@ -35,8 +45,6 @@ install(
   FILE oh-my-dear-imguiTargets.cmake
   DESTINATION ${INSTALL_CONFIGDIR})
 
-install(
-  FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfigVersion.cmake
-  DESTINATION ${INSTALL_CONFIGDIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfig.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfigVersion.cmake
+        DESTINATION ${INSTALL_CONFIGDIR})
