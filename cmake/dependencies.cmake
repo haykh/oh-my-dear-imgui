@@ -357,6 +357,21 @@ if(TARGET implot)
       PATTERN "*.inl")
 endif()
 
+if(TARGET toml11)
+  target_include_directories(
+    toml11
+    PUBLIC
+      "$<BUILD_INTERFACE:${toml11_SOURCE_DIR}/include>"
+      "$<INSTALL_INTERFACE:include>")
+  install(
+    TARGETS toml11
+    EXPORT oh-my-dear-imguiTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include)
+endif()
+
 if(EXISTS ${plog_SOURCE_DIR}/include)
   install(DIRECTORY ${plog_SOURCE_DIR}/include/ DESTINATION include)
 endif()
