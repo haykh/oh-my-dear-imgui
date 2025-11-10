@@ -9,6 +9,18 @@ A bit more than minimal wrapper library for ImGui-based applications.
 Add the library as a dependency to your app in your `CMakeLists.txt`:
 
 ```cmake
+find_package(oh-my-dear-imgui CONFIG REQUIRED)
+
+set(EXEC main)
+set(SRC main.cpp)
+add_executable(${EXEC} ${SRC})
+
+target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui::oh-my-dear-imgui)
+```
+
+Alternatively, you can fetch OMDI as part of your build using `FetchContent`:
+
+```cmake
 set(FETCHCONTENT_QUIET FALSE)
 include(FetchContent)
 FetchContent_Declare(
@@ -17,16 +29,12 @@ FetchContent_Declare(
   GIT_TAG master
   GIT_PROGRESS TRUE)
 FetchContent_MakeAvailable(oh-my-dear-imgui)
-```
 
-Then simply link with it:
-
-```cmake
 set(EXEC main)
 set(SRC main.cpp)
 add_executable(${EXEC} ${SRC})
 
-target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui)
+target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui::oh-my-dear-imgui)
 ```
 
 ### Using in applications

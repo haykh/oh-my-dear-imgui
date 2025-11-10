@@ -14,3 +14,29 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies.cmake)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/omdi)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
+
+include(CMakePackageConfigHelpers)
+
+set(INSTALL_CONFIGDIR lib/cmake/oh-my-dear-imgui)
+
+configure_package_config_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/oh-my-dear-imguiConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfig.cmake
+  INSTALL_DESTINATION ${INSTALL_CONFIGDIR})
+
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion)
+
+install(
+  EXPORT oh-my-dear-imguiTargets
+  NAMESPACE oh-my-dear-imgui::
+  FILE oh-my-dear-imguiTargets.cmake
+  DESTINATION ${INSTALL_CONFIGDIR})
+
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/oh-my-dear-imguiConfigVersion.cmake
+  DESTINATION ${INSTALL_CONFIGDIR})
