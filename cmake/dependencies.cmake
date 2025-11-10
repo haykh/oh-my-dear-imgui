@@ -264,7 +264,9 @@ function(
   if(NOT "${full_src_files}" STREQUAL "")
     add_library("${name}" "${full_src_files}")
     if(NOT "${inc_dirs}" STREQUAL "")
-      target_include_directories("${name}" PUBLIC "${inc_dirs}")
+      foreach(dir ${inc_dirs})
+        target_include_directories("${name}" PUBLIC "$<BUILD_INTERFACE:${dir}>")
+      endforeach()
     endif()
     if(NOT "${links}" STREQUAL "")
       target_link_libraries("${name}" "${links}")
@@ -303,6 +305,100 @@ build_library(imgui_backends "${imgui_backends_SRC_FILES}"
               "${imgui_SOURCE_DIR};${imgui_backends_SOURCE_DIR}" "glfw" "" "")
 build_library(implot "${implot_SRC_FILES}"
               "${implot_SOURCE_DIR};${imgui_SOURCE_DIR}" "imgui" "" "")
+
+if(TARGET imgui)
+  target_include_directories(imgui PUBLIC "$<INSTALL_INTERFACE:include/imgui>")
+  install(
+    TARGETS imgui
+    EXPORT oh-my-dear-imguiTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES
+    DESTINATION include/imgui)
+  install(
+    DIRECTORY ${imgui_SOURCE_DIR}/
+    DESTINATION include/imgui
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+    PATTERN "*.inl")
+endif()
+
+if(TARGET imgui_backends)
+  target_include_directories(
+    imgui_backends PUBLIC "$<INSTALL_INTERFACE:include/imgui>"
+                          "$<INSTALL_INTERFACE:include/imgui/backends>")
+  install(
+    TARGETS imgui_backends
+    EXPORT oh-my-dear-imguiTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES
+    DESTINATION include/imgui)
+endif()
+
+if(TARGET implot)
+  target_include_directories(implot
+                             PUBLIC "$<INSTALL_INTERFACE:include/implot>")
+  install(
+    TARGETS implot
+    EXPORT oh-my-dear-imguiTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES
+    DESTINATION include/implot)
+  install(
+    DIRECTORY ${implot_SOURCE_DIR}/
+    DESTINATION include/implot
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+    PATTERN "*.inl")
+endif()
+
+if(TARGET toml11)
+  target_include_directories(
+    toml11 PUBLIC "$<BUILD_INTERFACE:${toml11_SOURCE_DIR}/include>"
+                  "$<INSTALL_INTERFACE:include>")
+  install(
+    TARGETS toml11
+    EXPORT oh-my-dear-imguiTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES
+    DESTINATION include)
+endif()
+
+if(EXISTS ${plog_SOURCE_DIR}/include)
+  install(DIRECTORY ${plog_SOURCE_DIR}/include/ DESTINATION include)
+endif()
+
+if(EXISTS ${toml11_SOURCE_DIR}/include)
+  install(DIRECTORY ${toml11_SOURCE_DIR}/include/ DESTINATION include)
+endif()
+
+if(EXISTS ${stb_SOURCE_DIR})
+  install(
+    DIRECTORY ${stb_SOURCE_DIR}/
+    DESTINATION include
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+    PATTERN "*.inl")
+endif()
+
+if(EXISTS ${ImGuiFileDialog_SOURCE_DIR})
+  install(
+    DIRECTORY ${ImGuiFileDialog_SOURCE_DIR}/
+    DESTINATION include/ImGuiFileDialog
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp")
+endif()
 
 set(LIBRARIES
     "${LIBS}"

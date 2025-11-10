@@ -6,7 +6,37 @@ A bit more than minimal wrapper library for ImGui-based applications.
 
 ### Cross-compiling OMDI
 
-Add the library as a dependency to your app in your `CMakeLists.txt`:
+#### Pre-installing
+
+You can compile and install `oh-my-dear-imgui`:
+
+```sh
+cmake -B build -D CMAKE_INSTALL_PREFIX=/install-path-for/omdi/
+cmake --build build --config Release -j
+cmake --install build
+```
+
+Add the library as a dependency to your app:
+
+```cmake
+find_package(oh-my-dear-imgui CONFIG REQUIRED)
+
+set(EXEC main)
+set(SRC main.cpp)
+add_executable(${EXEC} ${SRC})
+
+target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui::oh-my-dear-imgui)
+```
+
+Then simply point to the install directory when compiling your application:
+
+```sh
+cmake -B build -D CMAKE_PREFIX_PATH=/install-path-for/omdi/
+```
+
+#### In-tree building
+
+Alternatively, you can fetch OMDI as part of your build using `FetchContent` to build the library in-tree:
 
 ```cmake
 set(FETCHCONTENT_QUIET FALSE)
@@ -17,16 +47,12 @@ FetchContent_Declare(
   GIT_TAG master
   GIT_PROGRESS TRUE)
 FetchContent_MakeAvailable(oh-my-dear-imgui)
-```
 
-Then simply link with it:
-
-```cmake
 set(EXEC main)
 set(SRC main.cpp)
 add_executable(${EXEC} ${SRC})
 
-target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui)
+target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui::oh-my-dear-imgui)
 ```
 
 ### Using in applications
@@ -87,7 +113,7 @@ app.Render(
 A few standalone examples can be found in the `examples/` directory. These can be compiled using simply:
 
 ```sh
-cmake -B build
+cmake -B build -D omdi_BUILD_EXAMPLES=ON
 cmake --build build -j
 ```
 
