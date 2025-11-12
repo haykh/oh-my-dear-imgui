@@ -10,7 +10,7 @@ auto main(int argc, char* argv[]) -> int {
   try {
     omdi::logger::Init();
 
-    auto state = omdi::state::State();
+    auto state = omdi::State();
     state.set("window_width", 1920);
     state.set("window_height", 1080);
     state.set("bg_color", ImVec4(0.24f, 0.24f, 0.24f, 1.00f));
@@ -21,7 +21,7 @@ auto main(int argc, char* argv[]) -> int {
     state.set("main_fontsize_idx", 1);
     state.set("theme_idx", 0);
 
-    auto app = omdi::app::App(&state, "example-app", 1, true);
+    auto app = omdi::App(&state, "example-app", 1, true);
 
     // managers
     auto pickerDialogManager = omdi::picker::PickerManager();

@@ -2,8 +2,8 @@
 
 auto main(int argc, char* argv[]) -> int {
   try {
-    auto state = omdi::state::State();
-    auto app   = omdi::app::App(&state);
+    auto state = omdi::State();
+    auto app   = omdi::App(&state);
 
     app.Init(&state);
     app.Render(&state);

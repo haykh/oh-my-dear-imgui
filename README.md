@@ -37,8 +37,8 @@ Below is a minimal example for using OMDI in your application:
 #include <omdi.hpp> // import the main omdi header
 
 auto main() -> int {
-  auto state = omdi::state::State(); // define the application state
-  auto app   = omdi::app::App(&state); // define the application object
+  auto state = omdi::State(); // define the application state
+  auto app   = omdi::App(&state); // define the application object
 
   app.Init(&state); // initialize the application
   app.Render(&state); // enter the render loop

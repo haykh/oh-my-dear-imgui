@@ -23,6 +23,11 @@ namespace omdi::app {
    * @param {std::string} name - window name [optional]
    * @param {int} swapInterval - swap interval for VSync [optional]
    * @param {bool} isResizable - whether the window is resizable [optional]
+   *
+   * @brief State uses the following optional keys:
+   * - "window_width" (int): width of the window
+   * - "window_height" (int): height of the window
+   * - "bg_color" (ImVec4): background color of the window
    */
   class App {
   private:

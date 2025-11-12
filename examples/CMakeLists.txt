@@ -1,4 +1,4 @@
-set(examples "example-app" "example-min")
+set(examples "example-app" "example-min" "example-plotting")
 
 foreach(example ${examples})
   set(SRC ${example}.cpp)

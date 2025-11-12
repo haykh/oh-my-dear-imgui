@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <plog/Log.h>
 
+#include <chrono>
 #include <cstdarg>
 #include <stdexcept>
 #include <string>
@@ -92,5 +93,42 @@ namespace omdi::logger {
   }
 
 } // namespace omdi::logger
+
+namespace omdi::timer {
+
+  class Timer {
+    std::chrono::time_point<std::chrono::high_resolution_clock>       m_now;
+    const std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
+    std::size_t m_frame { 0u };
+    double      m_delta { 1.0 };
+    double      m_elapsed { 0.0 };
+
+  public:
+    Timer()
+      : m_now { std::chrono::high_resolution_clock::now() }
+      , m_start { m_now } {}
+
+    void tick() {
+      auto new_now = std::chrono::high_resolution_clock::now();
+      m_elapsed    = std::chrono::duration<double>(new_now - m_start).count();
+      m_delta      = std::chrono::duration<double>(new_now - m_now).count();
+      m_now        = new_now;
+      ++m_frame;
+    }
+
+    auto frame() const -> std::size_t {
+      return m_frame;
+    }
+
+    auto delta() const -> double {
+      return m_delta;
+    }
+
+    auto elapsed() const -> double {
+      return m_elapsed;
+    }
+  };
+
+} // namespace omdi::timer
 
 #endif // UTILS_H
