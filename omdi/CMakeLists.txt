@@ -3,7 +3,8 @@
 set(LIB ${PROJECT_NAME})
 set(LIBS "${LIBRARIES};glfw;OpenGL::GL")
 
-file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 list(FILTER SRC EXCLUDE REGEX "assets")
 list(APPEND SRC ${ImGuiFileDialog_SOURCE_DIR}/ImGuiFileDialog.cpp)
 
@@ -16,6 +17,7 @@ target_include_directories(
   ${LIB}
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/style>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
          $<BUILD_INTERFACE:${plog_SOURCE_DIR}/include>
          $<BUILD_INTERFACE:${ImGuiFileDialog_SOURCE_DIR}>
@@ -30,6 +32,8 @@ target_include_directories(
 target_compile_definitions(
   ${LIB}
   PUBLIC CUSTOM_IMGUIFILEDIALOG_CONFIG="style/imgui_file_dialog_config.h")
+
+target_compile_definitions(${LIB} PRIVATE IMPLOT_BACKEND_ENABLE_OPENGL3)
 
 install(
   TARGETS ${LIB}
