@@ -1,5 +1,6 @@
 #include "examples/field.h"
 #include "examples/pointcloud.h"
+#include "examples/sim.h"
 
 #include <imgui.h>
 #include <implot.h>
@@ -16,50 +17,41 @@ auto main(int argc, char* argv[]) -> int {
 
     auto plots = std::vector<omdi::Plot*> {};
 
-    // auto sim = omdi::examples::RotatingPointcloud({
-    //   { "athenians", 1000 },
-    //   {  "spartans",  300 },
-    //   {   "thebans",  500 }
-    // });
-    // plots.push_back(new omdi::ScatterPlot { sim.get_data(), "ParticlesScatter" });
+    auto sim1 = omdi::examples::RotatingPointcloud({
+      { "athenians", 1000 },
+      {  "spartans",  300 },
+      {   "thebans",  500 }
+    });
 
-    auto sim = omdi::examples::OscillatingFields(
+    auto sim2 = omdi::examples::OscillatingFields(
       {
-        { "Wave1",
+        { "Wavey",
          [](float x, float y, double t) {
             return std::sin(x * (2.0 * M_PI) + 0.25 * t) *
                    std::cos(y * (2.0 * M_PI) + 0.2 * t);
-            // return std::cos(y + 0.2 * t);
-            // return std::sin(x + 0.2 * t);
           } },
-        //        { "Wave2",
-        //         [](float x, float y, double t) {
-        // return std::sin(2.0f * x - 0.5 * t) * std::cos(0.5f * y + 0.5 * t);
-        // } },
-        //        { "Wave3",
-        //         [](float x, float y, double t) {
-        // return std::sin(0.5f * x - t * t) * std::cos(2.0f * y - t * t);
-        // } }
     },
-      { -2.0f, 2.0f, 1024 },
-      { -3.0f, 3.0f, 1280 });
+      { -2.0f, 2.0f, 128 },
+      { -3.0f, 3.0f, 256 });
 
-    plots.push_back(new omdi::PcolorPlot { sim.get_data(), "FieldsScatter" });
+    plots.push_back(new omdi::ScatterPlot { sim1.get_data(), "ScatterExample" });
+    plots.push_back(new omdi::PcolorPlot { sim2.get_data(), "PcolorExample" });
 
     app.Init(&state);
     app.Render(&state, [&]() {
       for (auto& plot : plots) {
-        plot->plot();
+        if (ImGui::Begin(plot->label().c_str())) {
+          plot->plot();
+          ImGui::End();
+        }
       }
-      // sim.update(timer.elapsed(), timer.delta());
+      for (auto sim : std::vector<omdi::examples::Sim*> { &sim1, &sim2 }) {
+        sim->update(timer.elapsed(), timer.delta());
+      }
       omdi::logger::Log("FPS: %.3f", 1.0 / timer.delta());
       timer.tick();
       // ImGui::ShowDemoWindow();
       // ImPlot::ShowDemoWindow();
-      // if (ImPlot::BeginPlot("Scatter", ImVec2(-1, -1), ImPlotFlags_Equal)) {
-      //   ImPlot::PlotScatter("Particles", xPos, yPos, npoints);
-      //   ImPlot::EndPlot();
-      // }
     });
 
   } catch (const std::exception& e) {

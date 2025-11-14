@@ -1,5 +1,5 @@
 #include "components/app.h"
-#include "implot_wrapper/implot_wrapper.h"
+#include "implot-gpu/implot.h"
 
 #include "components/defaults.h"
 #include "components/menubar.h"
@@ -73,8 +73,8 @@ namespace omdi::app {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     omdi::logger::Debug("ImGui context created.");
-    omdi::implot::CreateContext();
-    omdi::logger::Debug("ImPlot context created.");
+    omdi::implot::Init();
+
     m_io               = &ImGui::GetIO();
     // m_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     m_io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -88,8 +88,7 @@ namespace omdi::app {
   App::~App() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    omdi::implot::DestroyContext();
-    omdi::logger::Debug("ImPlot context destroyed.");
+    omdi::implot::Destroy();
     ImGui::DestroyContext();
     omdi::logger::Debug("ImGui context destroyed.");
 

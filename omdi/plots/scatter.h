@@ -9,18 +9,18 @@
 
 namespace omdi::plots {
 
-  struct ScatterPlot : public Plot {
-    bool        aspect_equal = true;
-    std::string label        = "ScatterPlot";
+  class ScatterPlot : public Plot {
+    bool m_aspect_equal = true;
 
-    std::map<std::string, const Points* const> data;
+    std::map<std::string, const Points* const> m_data;
 
+  public:
     ScatterPlot(const std::map<std::string, const Points* const>& data,
                 const std::string& label        = "ScatterPlot",
                 bool               aspect_equal = true)
-      : data { data }
-      , aspect_equal { aspect_equal }
-      , label { label } {}
+      : Plot { label }
+      , m_data { data }
+      , m_aspect_equal { aspect_equal } {}
 
     void plot() override;
   };

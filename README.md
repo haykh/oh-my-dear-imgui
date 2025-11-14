@@ -144,12 +144,13 @@ Following depedencies are assumed to be installed on the system:
 - functionality for error handling (safe rendering + error notification) at runtime;
 - external font/icon support (see `src/assets/`);
 - dependencies can be built from the downloaded submodules or fetched with `CMake` at compile time;
-- includes some third-party `ImGui` plugins (also built in-tree): `ImPlot`, `ImGuiFileDialog`.
+- includes some third-party `ImGui` plugins (also built in-tree): `ImPlot`, `ImGuiFileDialog`;
+- includes GPU-accelerated version of `ImPlot`-s `PlotHeatmap` (courtesy of unmerged [`backends` branch](https://github.com/epezent/implot/tree/backends)).
 
 ## TODO
 
 - [ ] documentation
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
-- [ ] custom `ImPlot` renderers
+- [x] custom `ImPlot` renderers
 - [x] image export (via [`stb`](https://github.com/nothings/stb))
 - [ ] support for other backends

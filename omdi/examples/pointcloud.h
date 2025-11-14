@@ -1,6 +1,7 @@
 #ifndef EXAMPLES_POINTCLOUD_H
 #define EXAMPLES_POINTCLOUD_H
 
+#include "examples/sim.h"
 #include "plots/containers.h"
 
 #include <map>
@@ -10,7 +11,7 @@
 
 namespace omdi::examples {
 
-  class RotatingPointcloud {
+  class RotatingPointcloud : public Sim {
     std::vector<float*>      m_xPos;
     std::vector<float*>      m_yPos;
     std::vector<std::size_t> m_npoints;
@@ -21,7 +22,7 @@ namespace omdi::examples {
 
     ~RotatingPointcloud();
 
-    void update(double, double);
+    void update(double, double) override;
 
     auto n_groups() const -> std::size_t {
       return m_labels.size();
