@@ -48,18 +48,10 @@
 
 .. |check| raw:: html
 
-    <input checked=""  type="checkbox">
-
-.. |check_| raw:: html
-
-    <input checked=""  disabled="" type="checkbox">
+    <input checked="" style="pointer-events: none; margin-right: 4px;" type="checkbox">
 
 .. |uncheck| raw:: html
 
-    <input type="checkbox">
-
-.. |uncheck_| raw:: html
-
-    <input disabled="" type="checkbox">
+    <input type="checkbox" style="pointer-events: none; margin-right: 4px;" disabled="">
 
 .. Adapted from (c) Lilian Besson, 2011-2016, https://bitbucket.org/lbesson/web-sphinx/
