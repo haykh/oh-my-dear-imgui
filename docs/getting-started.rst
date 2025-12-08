@@ -215,7 +215,7 @@ Let's go further and add a font picker to the style dialog. By default, this set
 Again, we will be able to add more managers later. Now, we need to pass the ``managers`` dictionary to both the ``Init`` and the ``Render`` functions:
 
 .. code-block:: cpp
-  :emphasize-lines: 1, 9
+  :emphasize-lines: 1, 7
 
   app.Init(&state, managers);
 
