@@ -38,7 +38,7 @@ namespace omdi::config {
                             ImGuiColorEditFlags_NoInputs);
         }
 
-        {
+        if (fontManager != nullptr) {
           ImGui::SeparatorText("Fonts");
           const auto fontnames = fontManager->fontnames();
           const auto fontsizes = fontManager->SIZES;

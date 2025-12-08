@@ -61,6 +61,13 @@ namespace omdi::state {
       }
     }
 
+    template <typename T>
+    void ensure(const std::string& key, const T& default_value) {
+      if (not has(key)) {
+        set(key, default_value);
+      }
+    }
+
     toml::value to_toml() const;
     void        from_toml(const toml::value& v);
   };

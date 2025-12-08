@@ -46,6 +46,13 @@ done
 echo -e "${BLUE}oh-my-dear-imgui${NC} will be built and installed to: $INSTALL_DIR"
 echo "---------------------------------------------------"
 
+echo ""
+echo "0. Syncing the submodules"
+echo "==================================================="
+
+git submodule update --init --recursive -j $(nproc)
+
+echo "==================================================="
 echo -e "1. Configuring ${BLUE}oh-my-dear-imgui${NC}"
 echo "==================================================="
 

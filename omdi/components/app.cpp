@@ -26,19 +26,12 @@ namespace omdi::app {
            const std::string&  name,
            int                 swapInterval,
            bool                isResizable) {
-    const int width  = state->getOr<int>("window_width",
-                                        omdi::defaults::WINDOW_WIDTH);
-    const int height = state->getOr<int>("window_height",
-                                         omdi::defaults::WINDOW_HEIGHT);
-    if (not state->has("window_width")) {
-      state->set("window_width", width);
-    }
-    if (not state->has("window_height")) {
-      state->set("window_height", height);
-    }
-    if (not state->has("bg_color")) {
-      state->set("bg_color", omdi::defaults::BG_COLOR);
-    }
+    state->ensure("window_width", omdi::defaults::WINDOW_WIDTH);
+    state->ensure("window_height", omdi::defaults::WINDOW_HEIGHT);
+    state->ensure("bg_color", omdi::defaults::BG_COLOR);
+
+    const int width  = state->get<int>("window_width");
+    const int height = state->get<int>("window_height");
     glfwSetErrorCallback([](int error, const char* description) {
       omdi::logger::Fatal("GLFW Error %d : %s", error, description);
     });
@@ -132,19 +125,22 @@ namespace omdi::app {
 
   void App::Init(omdi::state::State*                 state,
                  const std::map<std::string, void*>& managers) {
-    omdi::themes::picker(
-      omdi::themes::ALL_THEMES[state->getOr<int>("theme_idx", omdi::defaults::THEME_IDX)],
-      ImGui::GetStyle());
+    state->ensure<int>("theme_idx", omdi::defaults::THEME_IDX);
+    state->ensure<bool>("show_style_dialog", false);
+    state->ensure<int>("main_font_idx", omdi::defaults::MAIN_FONT_IDX);
+    state->ensure<int>("main_fontsize_idx", omdi::defaults::MAIN_FONTSIZE_IDX);
+
+    omdi::themes::picker(omdi::themes::ALL_THEMES[state->get<int>("theme_idx")],
+                         ImGui::GetStyle());
     omdi::fonts::FontManager* fontManager = is_in_map("font_manager", managers)
                                               ? static_cast<omdi::fonts::FontManager*>(
                                                   managers.at("font_manager"))
                                               : nullptr;
     if (fontManager != nullptr) {
       fontManager->initFonts(io());
-      fontManager->setActiveFont(
-        io(),
-        state->getOr<int>("main_font_idx", omdi::defaults::MAIN_FONT_IDX),
-        state->getOr<int>("main_fontsize_idx", omdi::defaults::MAIN_FONTSIZE_IDX));
+      fontManager->setActiveFont(io(),
+                                 state->get<int>("main_font_idx"),
+                                 state->get<int>("main_fontsize_idx"));
     }
   }
 

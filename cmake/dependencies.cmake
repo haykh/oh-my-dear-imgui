@@ -138,7 +138,7 @@ function(fetch_library name method)
   else()
     message(
       FATAL_ERROR
-        "${Red}Fetching is not supported yet, please clone the repository with the `--recurse-submodules` option or instantiate the submodules with `git submodule --init --recursive`.${ColorReset}"
+        "${Red}Fetching is not supported yet, please clone the repository with the `--recurse-submodules` option or instantiate the submodules with `git submodule update --init --recursive`.${ColorReset}"
     )
     set(${name}_AS_SUBMODULE FALSE)
     if("${method}" STREQUAL "FETCH")
