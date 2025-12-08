@@ -23,8 +23,9 @@ target_include_directories(
          $<BUILD_INTERFACE:${ImGuiFileDialog_SOURCE_DIR}>
          $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
          $<BUILD_INTERFACE:${implot_SOURCE_DIR}>
-         $<INSTALL_INTERFACE:include/oh-my-dear-imgui>
          $<INSTALL_INTERFACE:include>
+         $<INSTALL_INTERFACE:include/oh-my-dear-imgui>
+         $<INSTALL_INTERFACE:include/oh-my-dear-imgui/gl>
          $<INSTALL_INTERFACE:include/imgui>
          $<INSTALL_INTERFACE:include/implot>
          $<INSTALL_INTERFACE:include/ImGuiFileDialog>)
