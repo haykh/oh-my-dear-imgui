@@ -11,14 +11,10 @@ Start by making a source cpp file, ``main.cpp``, and a ``CMakeLists.txt`` file i
 .. code-block:: cmake
   :caption: CMakeLists.txt
 
-  cmake_minimum_required(VERSION 3.16)
-
   set(NAME omdi-demo)
 
   project(${NAME})
 
-  set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
   find_package(oh-my-dear-imgui CONFIG REQUIRED)
@@ -203,6 +199,10 @@ To control when the style dialog is shown, we can again add a toggle to the menu
 
 If you compile and run -- you should be able to see a "UI" menu and a "Style dialog" item in it. Clicking on it will open the style configuration dialog, where you can pick one of the preset styles or change the background color. 
 
+.. tip::
+
+   Notice, that you can have multiple ``AddLeft``, ``AddCenter``, and ``AddRight`` calls to add more menus, which will automatically be stacked in the correct order.
+
 Let's go further and add a font picker to the style dialog. By default, this setting is disabled to avoid unnecessary use of resources, but we can easily enable it by adding a font manager to the application. First, let's declare it before initializing the app and put it in the ``managers`` dictionary:
 
 .. code-block:: cpp
@@ -227,12 +227,201 @@ Again, we will be able to add more managers later. Now, we need to pass the ``ma
 
 Now when you open the style dialog, you should see a new section to tweak the family and the size of the font used in the application.
 
-Plotting
------------
+Plotting with ``ImPlot``
+---------------------------
 
-``omdi`` comes with a few built-in plotting components, but also supports default ``ImPlot`` plotting functionality out of the box. 
+``omdi`` comes with a few built-in plotting components, but also supports default ``ImPlot`` plotting functionality out of the box. For the purposes of this exercise, let's add four side-by-side plots: a line plot, a simple shaded plot, a bar plot, and a scatter plot. First of all, let's generate some mock data to plot:
+
+.. code-block:: cpp
+
+  const auto npointsNoisy = 20;
+  auto       noisyX       = new float[npointsNoisy];
+  auto       noisyY1      = new float[npointsNoisy];
+  auto       noisyY2      = new float[npointsNoisy];
+  for (auto i = 0; i < npointsNoisy; ++i) {
+    noisyX[i]  = i * 0.05f;
+    noisyY1[i] = 0.5f + 0.1f * ((float)rand() / RAND_MAX);
+    noisyY2[i] = 0.5f + 0.1f * ((float)rand() / RAND_MAX);
+  }
+
+  const auto npointsShaded = 1000;
+  auto       shadeXs       = new float[npointsShaded];
+  auto       shadeYUps     = new float[npointsShaded];
+  auto       shadeYDwns    = new float[npointsShaded];
+
+  for (auto i = 0; i < npointsShaded; ++i) {
+    shadeXs[i]    = i * 0.001f;
+    shadeYUps[i]  = 0.75f + 0.2f * sinf(25 * shadeXs[i]);
+    shadeYDwns[i] = 0.75f + 0.1f * cosf(25 * shadeXs[i]);
+  }
+
+Here we're using simple C++ pointers, but any STL container (e.g., ``std::vector``, or ``std::array``) would work just as well, as long as we have an access to the raw data pointer. ``ImPlot`` uses a very similar workflow as ``ImGui``; we first create a plotting context, the add individual plots inside it. Let's add the following code to the render loop:
+
+.. code-block:: cpp
+  :emphasize-lines: 3-6
+
+  app.Render(&state, [&]() {
+    // ...
+    if (ImPlot::BeginSubplots("Plots", 2, 2, ImVec2(-1, -1))) {
+      // plotting functions go here
+      ImPlot::EndSubplots();
+    }
+  }, components, managers);
+
+Here, we are creating a 2x2 grid of subplots that will automatically adjust to the size of the window (``ImVec2`` object is just a tuple of pixel sizes in ``x`` and ``y``, where ``-1`` means auto-adjustment). Now, let's fill in the individual plots one by one.
+
+.. code-block:: cpp
+
+  app.Render(&state, [&]() {
+    // ...
+    if (ImPlot::BeginSubplots("Plots", 2, 2, ImVec2(-1, -1))) {
+      if (ImPlot::BeginPlot("NoisyPlot")) {
+        ImPlot::PlotLine("Noisy", noisyX, noisyY1, npointsNoisy);
+        ImPlot::EndPlot();
+      }
+      if (ImPlot::BeginPlot("ShadedPlot")) {
+        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
+        ImPlot::PlotShaded("Shaded", shadeXs, shadeYUps, shadeYDwns, npointsShaded);
+        ImPlot::PlotLine("Shaded", shadeXs, shadeYUps, npointsShaded);
+        ImPlot::PlotLine("Shaded", shadeXs, shadeYDwns, npointsShaded);
+        ImPlot::PopStyleVar();
+        ImPlot::EndPlot();
+      }
+      if (ImPlot::BeginPlot("BarPlot")) {
+        ImPlot::PlotBars("Bars", noisyY1, npointsNoisy);
+        ImPlot::EndPlot();
+      }
+      if (ImPlot::BeginPlot("ScatterPlot")) {
+        ImPlot::PlotScatter("Scatter", noisyY1, noisyY2, npointsNoisy);
+        ImPlot::EndPlot();
+      }
+      ImPlot::EndSubplots();
+    }
+  }, components, managers);
+
+The usage is fairly similar to ``ImGui``: you create a context (``BeginPlot``), add the plot components (``PlotLine``, ``PlotShaded``, etc.), and then close the context (``EndPlot``). Note that for the shaded plot, we are also pushing and popping a style variable to adjust the transparency of the shaded area. Other stuff, like legends, axis labels, shared axes, ticks, etc can be adjusted using the relevant ``ImPlot`` functions. Now, when you compile and run the application, you should see four different plots arranged in a 2x2 grid.
 
 
 .. hint::
 
    Again, perhaps the best way to explore all the features of ``ImPlot`` is to check out their `interactive demo <https://traineq.org/implot_demo/src/implot_demo.html>`_.
+
+
+You can also mix ``ImGui`` and ``ImPlot`` components freely. For example, let's adapt our previously defined color picker to change the color for all the lines in our subplots. 
+
+.. code-block:: cpp
+  :emphasize-lines: 2-5, 7
+
+  if (ImPlot::BeginSubplots("Plots", 2, 2, ImVec2(-1, -1))) {
+    auto color = state.get<float*>("my_color");
+    ImGui::ColorEdit4("Color", color);
+    ImPlot::PushStyleColor(ImPlotCol_Line,
+                           ImVec4(color[0], color[1], color[2], color[3]));
+    // plotting routines
+    ImPlot::PopStyleColor();
+    ImPlot::EndSubplots();
+  }
+  
+
+GPU-accelerated 2D rendering with ``omdi``
+------------------------------------------
+
+``omdi`` includes a couple of built-in plotting functions, and one of them -- the 2D plotter -- is an order of magnitude faster than the built-in ``ImPlot`` heatmap functionality.
+
+.. note::
+
+  Currently, there are just two built-in plotters -- the ``PcolorPlot`` (for 2D rendering) and ``ScatterPlot``. More plotters will be added in future releases.
+
+To use it, we first need to define the plotter object outside the render loop and bind some data to it. First, let's define some data:
+
+.. code-block:: cpp
+
+  const auto nx = 512u;
+  const auto ny = 512u;
+  auto       xs = new float[nx];
+  auto       ys = new float[ny];
+
+  for (auto i = 0u; i < nx; ++i) {
+    xs[i] = i * 0.01f - 2.56f;
+  }
+  for (auto j = 0u; j < ny; ++j) {
+    ys[j] = j * 0.015f;
+  }
+
+  auto zfunc = [](float x, float y, float t) {
+    return std::sinf(x * (2.0 * M_PI) + t) *
+           std::cosf(y * (2.0 * M_PI) + 1.5 * t) * std::expf(-4.0 * (x * x));
+  };
+
+  auto zs = new float[nx * ny];
+  for (auto j = 0u; j < ny; ++j) {
+    for (auto i = 0u; i < nx; ++i) {
+      auto x         = xs[i];
+      auto y         = ys[j];
+      zs[j * nx + i] = zfunc(x, y, 0.0f);
+    }
+  }
+
+Here we create a 2D grid of ``(x, y)`` coordinates and computed the corresponding ``z`` values from a simple function, ``zfunc``. Let's now create the plotter object and bind the data to it:
+
+.. code-block:: cpp
+
+  auto pcolorPlot = new omdi::PcolorPlot {
+    { { "zfunc", new omdi::GridXY { xs, ys, nx, ny, zs } } },
+    "PcolorExample"
+  };
+
+Because the ``PcolorPlot`` has to know the data layout, we need to wrap the raw data pointers inside a special ``omdi::GridXY`` container. Now we can simply call the plotter's ``plot()`` method inside the render loop to display the plot:
+
+.. code-block:: cpp
+  :emphasize-lines: 3
+
+  app.Render(&state, [&]() {
+    // ...
+    pcolorPlot->plot();
+  }, components, managers);
+
+
+To see how performant the plotter is, let's add a timer object to keep track of the number of frames rendered per second. At the top of the ``main`` function, add the following:
+
+.. code-block:: cpp
+
+   auto timer = omdi::utils::Timer();
+
+While we're there, let's also initialize the built-in logger which adds color-coded messages for different log-levels:
+
+.. code-block:: cpp
+
+   omdi::logger::Init();
+
+At the end of your render loop, add the following code to compute and display the FPS, and update the timer:
+
+.. code-block:: cpp
+  :emphasize-lines: 5-6
+
+  app.Render(&state, [&]() {
+    // ...
+    pcolorPlot->plot();
+
+    omdi::logger::Log("FPS: %.3f", 1.0f / timer.delta());
+    timer.tick();
+  }, components, managers);
+
+
+Finally, let's make the plot a bit more interesting by updating the ``z`` values every frame based on the elapsed time. Add the following code at the end of the render loop:
+
+.. code-block:: cpp
+
+  for (auto j = 0u; j < ny; ++j) {
+    for (auto i = 0u; i < nx; ++i) {
+      auto x         = xs[i];
+      auto y         = ys[j];
+      zs[j * nx + i] = zfunc(x, y, timer.elapsed());
+    }
+  }
+
+
+More things to try
+-------------------
+
+

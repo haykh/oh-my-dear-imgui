@@ -46,3 +46,4 @@ TODO
   Home <self>
   install
   getting-started
+  references
