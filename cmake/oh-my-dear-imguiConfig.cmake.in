@@ -1,9 +1,0 @@
-@PACKAGE_INIT@
-
-include(CMakeFindDependencyMacro)
-find_dependency(OpenGL REQUIRED)
-find_dependency(glfw3 REQUIRED)
-
-include("${CMAKE_CURRENT_LIST_DIR}/oh-my-dear-imguiTargets.cmake")
-
-check_required_components(oh-my-dear-imgui)

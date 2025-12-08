@@ -1,1 +1,0 @@
-Parts of this code were adapted from the `backends` [branch](https://github.com/epezent/implot/blob/backends) of the original `ImPlot` which has since moved on without implementing the GPU-accelerated backend.
