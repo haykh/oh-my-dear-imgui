@@ -36,7 +36,22 @@ In which case the library will be installed in ``$HOME/.omdi``, or you can do th
   cmake --build build --config Release -j $(nproc)
   cmake --install build --prefix=/install-path-for/omdi/
 
-Then you can add the library as a dependency to your app:
+.. tip::
+
+  Make sure to clone the repository with all the submodules if doing things manually:
+
+  .. code-block:: shell
+    
+    git clone --recurse-submodules -j $(nproc)
+
+  If you have already cloned the repository without the submodules, you can initialize them using:
+
+  .. code-block:: shell
+    
+    git submodule update --init --recursive -j $(nproc)
+
+
+After the library is compiled and installed, you can add it as a dependency to your app:
 
 .. code-block:: cmake
   :emphasize-lines: 1, 7

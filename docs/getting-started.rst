@@ -135,6 +135,37 @@ Now, when you compile and run the application, you should see a "Help" menu in t
 
   ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ImGui element as an ``omdi::safe::component`` is fairly straightforward.
 
+Adding ``ImGui`` components
+----------------------------
+
+Adding any other ImGui elements to the application is as simple as putting them inside the render function. For example, let's create a simple window with a text and a color picker which stores the color in the application state. First of all, let's add the state variable to hold the color (after defining the ``state`` variable):
+
+.. code-block:: cpp
+
+  state.set("my_color", new float[4] { 0.0f, 0.5f, 0.5f, 1.0f });
+
+Next, inside the render loop, let's add a new window with the following components:
+
+.. code-block:: cpp
+
+  app.Render(&state, [&]() {
+    // ... 
+    if (ImGui::Begin("Test Window")) {
+      ImGui::Text("Pick a random color");
+      ImGui::ColorEdit4("Color", state.get<float*>("my_color"));
+      const auto color = state.get<float*>("my_color");
+      ImGui::Text("You picked: %.2f, %.2f, %.2f, %.2f",
+                  color[0],
+                  color[1],
+                  color[2],
+                  color[3]);
+      ImGui::End();
+    }
+  }, components);
+ 
+.. hint::
+
+  The best way to find all the components for Dear ImGui is to check out their `official interactive demo <https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html>`_, which conveniently links each component to the relevant sections of the code.
 
 Customizing the UI
 --------------------
@@ -151,7 +182,7 @@ Customizing the UI
     { "style_dialog", &styleDialog }
   };
 
-If you attempt to compile and run it now, you won't see anything, since the style dialog is hidden by default. To show it, we can add a toggle to the menubar similar to how we did for the demo window before:
+To control when the style dialog is shown, we can again add a toggle to the menubar, modifying a special attribute of the ``state`` variable called ``show_style_dialog`` when the menu item is clicked:
 
 .. code-block:: cpp
 
@@ -170,4 +201,28 @@ If you attempt to compile and run it now, you won't see anything, since the styl
       });
   });
 
-Notice, that the ``show_style_dialog`` state variable here is internal, and is automatically handled by the ``StyleDialog`` component. Now, when you run the application, you should see a "UI" menu in the menubar with a "Style dialog" item. Clicking on it will open the style dialog, allowing you to customize various aspects of the UI, such as colors, fonts, and other style settings.
+If you compile and run -- you should be able to see a "UI" menu and a "Style dialog" item in it. Clicking on it will open the style configuration dialog, where you can pick one of the preset styles or change the background color. 
+
+Let's go further and add a font picker to the style dialog. By default, this setting is disabled to avoid unnecessary use of resources, but we can easily enable it by adding a font manager to the application. First, let's declare it before initializing the app and put it in the ``managers`` dictionary:
+
+.. code-block:: cpp
+
+  auto fontManager = omdi::fonts::FontManager();
+  auto managers = omdi::managers_t {
+    { "font_manager", &fontManager }
+  };
+
+Again, we will be able to add more managers later. Now, we need to pass the ``managers`` dictionary to both the ``Init`` and the ``Render`` functions:
+
+.. code-block:: cpp
+  :emphasize-lines: 1, 9
+
+  app.Init(&state, managers);
+
+  app.Render(&state, [&]() {
+    // ...
+  }, 
+  components, 
+  managers);
+
+Now when you open the style dialog, you should see a new section to tweak the family and the size of the font used in the application.
