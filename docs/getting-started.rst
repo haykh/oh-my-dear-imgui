@@ -62,7 +62,7 @@ To compile and run the application, navigate to the directory containing your ``
 
 If everything goes well, you should see an empty window popping up! You can safely close it for now using the Escape key or the window's close button.
 
-To test that it indeed renders ImGui, you can add a simple ImGui window in the render loop. Modify the ``Render`` call as follows:
+To test that it indeed renders ImGui, you can add a simple ``ImGui`` window in the render loop. Modify the ``Render`` call as follows:
 
 .. code-block:: cpp
 
@@ -70,7 +70,7 @@ To test that it indeed renders ImGui, you can add a simple ImGui window in the r
     ImGui::ShowDemoWindow();
   });
 
-Don't forget to recompile, and then run the application again. You should now see the classic ImGui demo window! That second argument that we passed to ``Render`` is a lambda function that gets called every frame, allowing us to add anything we like to be executed every time a frame is rendered.
+Don't forget to recompile, and then run the application again. You should now see the classic ``ImGui`` demo window! That second argument that we passed to ``Render`` is a lambda function that gets called every frame, allowing us to add anything we like to be executed every time a frame is rendered.
 
 Adding a menubar
 ----------------
@@ -109,14 +109,14 @@ Now, let's add a "Help" menu to the left of the menubar with a toggle item for t
         return ImGui::BeginMenu("Help");
       },
       [&]() {
-        ImGui::Checkbox("Show ImGui demo", &state.get<bool>("show_imgui_demo"));
+        ImGui::Checkbox("Show ``ImGui`` demo", &state.get<bool>("show_imgui_demo"));
       },
       []() {
         ImGui::EndMenu();
       });
   });
 
-Notice, that we are essentially passing a lambda function to the ``AddLeft`` method, which calls a special built-in function ``omdi::safe::Component``. The component function itself takes three delta functions: the initialization (which must returns the status of ``ImGui::BeginMenu`` -- a built-in ImGui function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls ``ImGui::EndMenu``). The checkbox itself is bound to the state variable we created earlier via the ``state.get<bool>`` call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to ``omdi`` components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.
+Notice, that we are essentially passing a lambda function to the ``AddLeft`` method, which calls a special built-in function ``omdi::safe::Component``. The component function itself takes three delta functions: the initialization (which must returns the status of ``ImGui::BeginMenu`` -- a built-in ``ImGui`` function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls ``ImGui::EndMenu``). The checkbox itself is bound to the state variable we created earlier via the ``state.get<bool>`` call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to ``omdi`` components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.
 
 Ok, finally, we need to modify our render loop to only display the demo window when the corresponding state variable is true:
 
@@ -125,20 +125,20 @@ Ok, finally, we need to modify our render loop to only display the demo window w
 
   app.Render(&state, [&]() {
     if (state.get<bool>("show_imgui_demo")) {
-      ImGui::ShowDemoWindow();
+      ImGui::ShowDemoWindow(&state.get<bool>("show_imgui_demo"));
     }
   }, components);
 
-Now, when you compile and run the application, you should see a "Help" menu in the menubar. Clicking on it will reveal a "Show ImGui demo" checkbox, which you can toggle to show or hide the ImGui demo window.
+Note, that we are passing a pointer to the state variable so that the ``ImGui`` demo window can automatically close it through its built-in close button. Now, when you compile and run the application, you should see a "Help" menu in the menubar. Clicking on it will reveal a "Show ``ImGui`` demo" checkbox, which you can toggle to show or hide the ``ImGui`` demo window.
 
 .. hint::
 
-  ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ImGui element as an ``omdi::safe::component`` is fairly straightforward.
+  ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ``ImGui`` element as an ``omdi::safe::component`` is fairly straightforward.
 
 Adding ``ImGui`` components
 ----------------------------
 
-Adding any other ImGui elements to the application is as simple as putting them inside the render function. For example, let's create a simple window with a text and a color picker which stores the color in the application state. First of all, let's add the state variable to hold the color (after defining the ``state`` variable):
+Adding any other ``ImGui`` elements to the application is as simple as putting them inside the render function. For example, let's create a simple window with a text and a color picker which stores the color in the application state. First of all, let's add the state variable to hold the color (after defining the ``state`` variable):
 
 .. code-block:: cpp
 
@@ -165,7 +165,7 @@ Next, inside the render loop, let's add a new window with the following componen
  
 .. hint::
 
-  The best way to find all the components for Dear ImGui is to check out their `official interactive demo <https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html>`_, which conveniently links each component to the relevant sections of the code.
+  The best way to find all the components for Dear ``ImGui`` is to check out their `official interactive demo <https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html>`_, which conveniently links each component to the relevant sections of the code.
 
 Customizing the UI
 --------------------
@@ -226,3 +226,13 @@ Again, we will be able to add more managers later. Now, we need to pass the ``ma
   managers);
 
 Now when you open the style dialog, you should see a new section to tweak the family and the size of the font used in the application.
+
+Plotting
+-----------
+
+``omdi`` comes with a few built-in plotting components, but also supports default ``ImPlot`` plotting functionality out of the box. 
+
+
+.. hint::
+
+   Again, perhaps the best way to explore all the features of ``ImPlot`` is to check out their `interactive demo <https://traineq.org/implot_demo/src/implot_demo.html>`_.
