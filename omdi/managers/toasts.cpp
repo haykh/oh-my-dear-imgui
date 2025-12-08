@@ -75,11 +75,11 @@ namespace omdi::toasts {
 
       char window_name[50];
 #if defined(_WIN32)
-      sprintf_s(windowName, "##TOAST%d", (int)i);
+      sprintf_s(window_name, "##TOAST%d", (int)i);
 #elif defined(__linux__) || defined(__EMSCRIPTEN__)
       std::sprintf(window_name, "##TOAST%d", (int)idx);
 #elif defined(__APPLE__)
-      std::snprintf(windowName, 50, "##TOAST%d", (int)i);
+      std::snprintf(window_name, 50, "##TOAST%d", (int)i);
 #else
       throw "Unsupported platform";
 #endif

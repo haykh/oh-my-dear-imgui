@@ -13,7 +13,6 @@
 #include "utils.h"
 
 #include <imgui.h>
-#include <inttypes.h>
 
 #include <chrono>
 #include <functional>

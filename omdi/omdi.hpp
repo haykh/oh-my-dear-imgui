@@ -25,6 +25,11 @@ namespace omdi {
   using namespace state;
   using namespace app;
   using namespace plots;
+
+  namespace utils {
+    using namespace timer;
+  } // namespace utils
+
 } // namespace omdi
 
 namespace omdi {
