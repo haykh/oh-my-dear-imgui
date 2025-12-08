@@ -8,15 +8,21 @@ A bit more than minimal wrapper library for ImGui-based applications.
 
 #### Pre-installing
 
-You can compile and install `oh-my-dear-imgui`:
+You can compile and install `oh-my-dear-imgui` using the install script:
 
 ```sh
-cmake -B build -D CMAKE_INSTALL_PREFIX=/install-path-for/omdi/
-cmake --build build --config Release -j
-cmake --install build
+./install.sh [-h]
 ```
 
-Add the library as a dependency to your app:
+In which case the library will be installed in `$HOME/.omdi`, or you can do that manually
+
+```sh
+cmake -B build
+cmake --build build --config Release -j $(nproc)
+cmake --install build --prefix=/install-path-for/omdi/
+```
+
+Then you can add the library as a dependency to your app:
 
 ```cmake
 find_package(oh-my-dear-imgui CONFIG REQUIRED)
@@ -28,7 +34,7 @@ add_executable(${EXEC} ${SRC})
 target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui::oh-my-dear-imgui)
 ```
 
-Then simply point to the install directory when compiling your application:
+And simply point to the install directory when compiling your application:
 
 ```sh
 cmake -B build -D CMAKE_PREFIX_PATH=/install-path-for/omdi/
@@ -54,6 +60,8 @@ add_executable(${EXEC} ${SRC})
 
 target_link_libraries(${EXEC} PRIVATE oh-my-dear-imgui::oh-my-dear-imgui)
 ```
+
+This typically takes a couple of minutes though, so is not recommended.
 
 ### Using in applications
 
@@ -144,12 +152,13 @@ Following depedencies are assumed to be installed on the system:
 - functionality for error handling (safe rendering + error notification) at runtime;
 - external font/icon support (see `src/assets/`);
 - dependencies can be built from the downloaded submodules or fetched with `CMake` at compile time;
-- includes some third-party `ImGui` plugins (also built in-tree): `ImPlot`, `ImGuiFileDialog`.
+- includes some third-party `ImGui` plugins (also built in-tree): `ImPlot`, `ImGuiFileDialog`;
+- includes GPU-accelerated version of `ImPlot`-s `PlotHeatmap` (courtesy of unmerged [`backends` branch](https://github.com/epezent/implot/tree/backends)).
 
 ## TODO
 
 - [ ] documentation
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
-- [ ] custom `ImPlot` renderers
+- [x] GPU-accelerated heatmap
 - [x] image export (via [`stb`](https://github.com/nothings/stb))
 - [ ] support for other backends

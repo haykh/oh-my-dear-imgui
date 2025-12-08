@@ -90,10 +90,14 @@ ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 IncludeBlocks: Regroup
 IncludeCategories:
+  - Regex: '^"implot.*.h"'
+    Priority: 0
   - Regex: '^".*\.h"'
     Priority: 1
   - Regex: '^".*\/.*.h"'
     Priority: 2
+  - Regex: "<glad/glad.h>"
+    Priority: 6
   - Regex: "<.*.h>"
     Priority: 7
   - Regex: "<.*.hpp>"

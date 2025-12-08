@@ -1,4 +1,5 @@
 #include "components/app.h"
+#include "implot-gpu/implot.h"
 
 #include "components/defaults.h"
 #include "components/menubar.h"
@@ -48,6 +49,7 @@ namespace omdi::app {
     }
 
     omdi::gl::SetGLVersion(m_glsl_version);
+    omdi::logger::Debug("Using GLSL version: %s", m_glsl_version.c_str());
 
     if (!isResizable) {
       glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
@@ -64,11 +66,15 @@ namespace omdi::app {
     glfwMakeContextCurrent(m_win);
     glfwSwapInterval(swapInterval);
 
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+      omdi::logger::Fatal("Failed to initialize OpenGL context.");
+    }
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     omdi::logger::Debug("ImGui context created.");
-    ImPlot::CreateContext();
-    omdi::logger::Debug("ImPlot context created.");
+    omdi::implot::Init();
+
     m_io               = &ImGui::GetIO();
     // m_io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     m_io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -82,8 +88,7 @@ namespace omdi::app {
   App::~App() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    ImPlot::DestroyContext();
-    omdi::logger::Debug("ImPlot context destroyed.");
+    omdi::implot::Destroy();
     ImGui::DestroyContext();
     omdi::logger::Debug("ImGui context destroyed.");
 

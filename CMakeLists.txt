@@ -4,7 +4,7 @@ set(PROJECT_NAME oh-my-dear-imgui)
 
 project(
   ${PROJECT_NAME}
-  VERSION 1.2.0
+  VERSION 2.0.0
   DESCRIPTION "Wrapper library for ImGui based applications")
 
 set(CMAKE_CXX_STANDARD 17)

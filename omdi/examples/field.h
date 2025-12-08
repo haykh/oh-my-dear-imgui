@@ -1,6 +1,7 @@
 #ifndef EXAMPLES_FIELD_H
 #define EXAMPLES_FIELD_H
 
+#include "examples/sim.h"
 #include "plots/containers.h"
 
 #include <functional>
@@ -11,7 +12,7 @@
 
 namespace omdi::examples {
 
-  class OscillatingFields {
+  class OscillatingFields : public Sim {
     std::vector<std::function<float(float, float, double)>> m_functions;
     std::vector<float*>                                     m_fields;
     std::vector<std::string>                                m_labels;
@@ -29,7 +30,7 @@ namespace omdi::examples {
 
     ~OscillatingFields();
 
-    void update(double, double);
+    void update(double, double) override;
 
     auto n_groups() const -> std::size_t {
       return m_labels.size();
