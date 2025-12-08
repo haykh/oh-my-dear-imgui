@@ -25,8 +25,8 @@ namespace omdi::plots {
           omdi::implot::PlotHeatmap(
             name.c_str(),
             grid->z,
-            grid->nx,
             grid->ny,
+            grid->nx,
             -1.0,
             1.0,
             ImPlotPoint(grid->x[0], grid->y[0]),

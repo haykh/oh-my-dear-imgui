@@ -151,6 +151,6 @@ Following depedencies are assumed to be installed on the system:
 
 - [ ] documentation
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
-- [x] custom `ImPlot` renderers
+- [x] GPU-accelerated heatmap
 - [x] image export (via [`stb`](https://github.com/nothings/stb))
 - [ ] support for other backends

@@ -28,7 +28,7 @@ auto main(int argc, char* argv[]) -> int {
         { "Wavey",
          [](float x, float y, double t) {
             return std::sin(x * (2.0 * M_PI) + 0.25 * t) *
-                   std::cos(y * (2.0 * M_PI) + 0.2 * t);
+                   std::cos(y * (2.0 * M_PI) + 0.2 * t) * std::exp(-4.0 * (x * x));
           } },
     },
       { -2.0f, 2.0f, 128 },
