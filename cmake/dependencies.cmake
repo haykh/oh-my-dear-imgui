@@ -136,6 +136,10 @@ function(fetch_library name method)
     message(STATUS "${Green}${name} is being used as a submodule${ColorReset}")
     set(${name}_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/${name}")
   else()
+    message(
+      FATAL_ERROR
+        "${Red}Fetching is not supported yet, please clone the repository with the `--recurse-submodules` option or instantiate the submodules with `git submodule --init --recursive`.${ColorReset}"
+    )
     set(${name}_AS_SUBMODULE FALSE)
     if("${method}" STREQUAL "FETCH")
       message(STATUS "${Blue}Fetching ${name} from git${ColorReset}")
@@ -148,6 +152,7 @@ function(fetch_library name method)
 
       set(${name}_FETCHED TRUE)
       set(${name}_CLONED FALSE)
+      message(STATUS "${Green}${name} fetched successfully${ColorReset}")
     elseif("${method}" STREQUAL "CLONE")
       message(STATUS "${Blue}Cloning ${name} from git${ColorReset}")
       set(${name}_SOURCE_DIR ${CMAKE_BINARY_DIR}/_deps/${name}-src)
@@ -162,6 +167,7 @@ function(fetch_library name method)
 
       set(${name}_FETCHED FALSE)
       set(${name}_CLONED TRUE)
+      message(STATUS "${Green}${name} cloned successfully${ColorReset}")
     endif()
   endif()
 
@@ -249,14 +255,16 @@ function(
     endif()
   elseif(${${name}_FETCHED})
     FetchContent_MakeAvailable(${name})
+    set(source_dir "${${name}_SOURCE_DIR}")
     if(NOT "${src_files}" STREQUAL "")
-      set(source_dir "${${name}_SOURCE_DIR}")
       files_to_fullpath("${src_files}" "${source_dir}" full_src_files)
     elseif(NOT "${altname}" STREQUAL "")
       set(LIBS
           "${LIBS};${altname}"
           PARENT_SCOPE)
     endif()
+    message(
+      STATUS "${Green}${name} made available in ${source_dir}${ColorReset}")
   else()
     message(
       FATAL_ERROR "Library ${name} not fetched/cloned and is not a submodule")
@@ -300,6 +308,7 @@ set(imgui_backends_CLONED TRUE)
 build_library(plog "" "" "" "" "")
 build_library(toml11 "" "${toml11_SOURCE_DIR}/include" ""
               "-DTOML11_COMPILE_SOURCES" "toml11::toml11")
+build_library(stb "" "" "" "" "")
 build_library(imgui "${imgui_SRC_FILES}" "${imgui_SOURCE_DIR}" "" "" "")
 build_library(imgui_backends "${imgui_backends_SRC_FILES}"
               "${imgui_SOURCE_DIR};${imgui_backends_SOURCE_DIR}" "glfw" "" "")
@@ -360,9 +369,9 @@ if(TARGET implot)
 endif()
 
 if(TARGET toml11)
-  target_include_directories(
-    toml11 PUBLIC "$<BUILD_INTERFACE:${toml11_SOURCE_DIR}/include>"
-                  "$<INSTALL_INTERFACE:include>")
+  # target_include_directories( toml11 PUBLIC
+  # "$<BUILD_INTERFACE:${toml11_SOURCE_DIR}/include>"
+  # "$<INSTALL_INTERFACE:include>")
   install(
     TARGETS toml11
     EXPORT oh-my-dear-imguiTargets
