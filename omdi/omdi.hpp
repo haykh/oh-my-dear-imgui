@@ -4,6 +4,8 @@
 #include "core/app.h"
 #include "core/state.h"
 /**/
+#include "implot-gpu/plotters.h"
+
 #include "components/menubar.h"
 #include "components/safe.h"
 #include "components/uiconfig.h"
