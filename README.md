@@ -1,12 +1,20 @@
 # Oh My Dear ImGui (OMDI)
 
-A bit more than minimal wrapper library for ImGui-based applications.
+A bit more than minimal wrapper library for ImGui-based applications. For more details, see the [documentation](https://haykh.github.io/oh-my-dear-imgui/index.html).
 
 ## Usage
 
 ### Cross-compiling OMDI
 
 #### Pre-installing
+
+First of all, download this repository with all of its submodules:
+
+```sh
+git clone --recurse-submodules -j $(nproc)
+# or after downloading without submodules:
+git submodule update --init --recursive -j $(nproc)
+```
 
 You can compile and install `oh-my-dear-imgui` using the install script:
 
@@ -85,14 +93,14 @@ You can also use some or all of the built-in components by passing them to the a
 
 ```cpp
 // managers
-auto pickerDialogManager = omdi::picker::PickerManager();
-auto toastManager        = omdi::toasts::ToastManager();
-auto fontManager         = omdi::fonts::FontManager();
-auto screenshotManager   = omdi::save::ScreenshotManager();
+auto pickerDialogManager = omdi::PickerManager();
+auto toastManager        = omdi::ToastManager();
+auto fontManager         = omdi::FontManager();
+auto screenshotManager   = omdi::ScreenshotManager();
 
 // ui elements
-auto styleDialog = omdi::config::StyleDialog();
-auto menubar     = omdi::menubar::Menubar();
+auto styleDialog = omdi::StyleDialog();
+auto menubar     = omdi::Menubar();
 
 auto components = omdi::components_t {
   {      "menubar",     &menubar },
@@ -127,7 +135,6 @@ cmake --build build -j
 
 from the root of the repository.
 
-
 ## Dependencies
 
 Following depedencies are built in-tree:
@@ -157,8 +164,13 @@ Following depedencies are assumed to be installed on the system:
 
 ## TODO
 
-- [ ] documentation
+- [x] documentation
 - [x] notifications (via [`ImGuiNotify`](https://github.com/TyomaVader/ImGuiNotify))
 - [x] GPU-accelerated heatmap
 - [x] image export (via [`stb`](https://github.com/nothings/stb))
 - [ ] support for other backends
+
+## Useful links
+
+- `ImGui` [repo](https://github.com/ocornut/imgui) and [online demo](https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html)
+- `ImPlot` [repo](https://github.com/epezent/implot) and [online demo](https://traineq.org/implot_demo/src/implot_demo.html)
