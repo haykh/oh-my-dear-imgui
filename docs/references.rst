@@ -1,3 +1,5 @@
+.. _references:
+
 References
 ==========
 
@@ -66,6 +68,10 @@ Class for creating 2D scatter plots.
 
 Utilities
 --------------
+
+:doc:`Safe components <refs/safe_components>`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A function to safely create a UI component while catching all the exceptions and logging them on the fly without crashing the application.
 
 :doc:`Logger <refs/logger>`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

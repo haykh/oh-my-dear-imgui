@@ -6,7 +6,7 @@
 .. admonition:: :medium:`A bit more than minimal wrapper library for ImGui-based applications.`
   :class: important
 
-  The idea behind ``oh-my-dear-imgui`` (``omdi``) is to provide an easily extensible and wrapper around the great Dear ImGui library. ``omdi`` wraps Dear ImGui, together with several other useful extensions exposing a more idiomatic and higher-level API to build ImGui-based applications in C++.
+  The idea behind ``oh-my-dear-imgui`` (``omdi``) is to provide an easily extensible wrapper around the great Dear ImGui library. ``omdi`` builds upon ImGui itself, together with several other useful extensions exposing a more idiomatic and higher-level API to help build ImGui-based applications in C++.
 
 
 Features
@@ -23,6 +23,14 @@ Features
 
 .. |backendsbranch| replace:: ``backends`` branch
 .. _backendsbranch: https://github.com/epezent/implot/tree/backends
+
+Useful links
+---------------
+
+- `ImGui git <https://github.com/ocornut/imgui>`_
+- `ImGui live demo <https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html>`_
+- `ImPlot git <https://github.com/epezent/implot>`_
+- `ImPlot live demo <https://traineq.org/implot_demo/src/implot_demo.html>`_
 
 
 TODO

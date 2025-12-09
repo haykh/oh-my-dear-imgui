@@ -56,6 +56,7 @@ Types
    such as ``plog::debug``, ``plog::info``, ``plog::warning``,
    ``plog::error``, and ``plog::fatal``.
 
+
 Initialization
 --------------
 

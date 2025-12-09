@@ -15,7 +15,7 @@ Following dependencies are built in-tree:
 
 Following dependencies are assumed to be installed on the system:
 
-- ``glfw3``
+- ``glfw`` or ``glfw3``
 - ``OpenGL``
 
 .. _preinstall:
@@ -50,6 +50,11 @@ In which case the library will be installed in ``$HOME/.omdi``, or you can do th
   .. code-block:: shell
     
     git submodule update --init --recursive -j $(nproc)
+
+
+.. error::
+   
+  Make sure you have ``glfw`` installed on your system. On macOS, you can install it using ``brew install glfw`` (see `details here <https://formulae.brew.sh/formula/glfw>`_).
 
 
 After the library is compiled and installed, you can add it as a dependency to your app:

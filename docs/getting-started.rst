@@ -1,3 +1,5 @@
+.. _getting-started:
+
 Getting Started
 =================
 
@@ -46,7 +48,7 @@ The ``main.cpp`` file is the actual source code for our application. We start by
 
 Inside the ``main`` function, we first create an instance of :cpp:class:`omdi::State`, which represents the application state. This state can be used to store various settings and data for the application (more on that later). Next, we create an instance of :cpp:class:`omdi::App`, passing a pointer to the state we just created. This ``App`` object is responsible for managing the application lifecycle, including initialization and rendering.
 
-After creating the ``App`` object, we initialize it by calling ``app.Init(&state)``, which sets up the necessary resources and configurations for the application. Finally, we enter the rendering loop by calling ``app.Render(&state)``, which will keep the application running and rendering until it is closed.
+After creating the :cpp:class:`omdi::App` object, we initialize it by calling :cpp:func:`omdi::App::Init()`, which sets up the necessary resources and configurations for the application. Finally, we enter the rendering loop by calling :cpp:func:`omdi::App::Render()`, which will keep the application running and rendering until it is closed.
 
 To compile and run the application, navigate to the directory containing your ``CMakeLists.txt`` and ``main.cpp`` files in your terminal, and execute the following commands:
 
@@ -66,12 +68,12 @@ To test that it indeed renders ImGui, you can add a simple ``ImGui`` window in t
     ImGui::ShowDemoWindow();
   });
 
-Don't forget to recompile, and then run the application again. You should now see the classic ``ImGui`` demo window! That second argument that we passed to ``Render`` is a lambda function that gets called every frame, allowing us to add anything we like to be executed every time a frame is rendered.
+Don't forget to recompile, and then run the application again. You should now see the classic ``ImGui`` demo window! That second argument that we passed to :cpp:func:`omdi::App::Render()` is a lambda function that gets called every frame, allowing us to add anything we like to be executed every time a frame is rendered.
 
 Adding a menubar
 ----------------
 
-``omdi`` comes pre-packaged with various useful UI components, the central of which is the menubar. To add it, simply declare it somewhere before calling the ``Init()`` function:
+``omdi`` comes pre-packaged with various useful UI components, the central of which is the menubar. To add it, simply declare it somewhere before calling the :cpp:func:`omdi::App::Init()` function:
 
 .. code-block:: cpp
 
@@ -84,7 +86,7 @@ Adding a menubar
     ImGui::ShowDemoWindow();
   }, components);
 
-Because we will be adding more components later, we first create a dicitionary of components called ``components``, and add the menubar to it. Then we pass this dictionary as the third argument to the ``Render`` function. Now, when you compile and run the application, you should see an empty menubar at the top of the window.
+Because we will be adding more components later, we first create a dicitionary of components called ``components``, and add the menubar to it. Then we pass this dictionary as the third argument to the :cpp:func:`omdi::App::Render()` function. Now, when you compile and run the application, you should see an empty menubar at the top of the window.
 
 We can customize the menubar by adding menus and items to it. For instance, let's add a toggle to switch the ``ImGui`` demo window on and off. The safest way to keep track of the state of the demo window is to use our state variable, so let's add a boolean entry to it (e.g., after defining the ``state`` variable):
 
@@ -112,7 +114,7 @@ Now, let's add a "Help" menu to the left of the menubar with a toggle item for t
       });
   });
 
-Notice, that we are essentially passing a lambda function to the ``AddLeft`` method, which calls a special built-in function :cpp:class:`omdi::Component`. The component function itself takes three delta functions: the initialization (which must returns the status of ``ImGui::BeginMenu`` -- a built-in ``ImGui`` function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls ``ImGui::EndMenu``). The checkbox itself is bound to the state variable we created earlier via the :cpp:func:`omdi::State::get` call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to ``omdi`` components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.
+Notice, that we are essentially passing a lambda function to the ``AddLeft`` method, which calls a special built-in function :cpp:func:`omdi::Component()`. The component function itself takes three delta functions: the initialization (which must returns the status of ``ImGui::BeginMenu`` -- a built-in ``ImGui`` function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls ``ImGui::EndMenu``). The checkbox itself is bound to the state variable we created earlier via the :cpp:func:`omdi::State::get` call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to ``omdi`` components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.
 
 Ok, finally, we need to modify our render loop to only display the demo window when the corresponding state variable is true:
 
@@ -129,7 +131,7 @@ Note, that we are passing a pointer to the state variable so that the ``ImGui`` 
 
 .. hint::
 
-  ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ``ImGui`` element as an :cpp:class:`omdi::Component` is fairly straightforward.
+  ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ``ImGui`` element as an :cpp:func:`omdi::Component()` is fairly straightforward.
 
 Adding ``ImGui`` components
 ----------------------------
@@ -424,4 +426,4 @@ Finally, let's make the plot a bit more interesting by updating the ``z`` values
 More things to try
 -------------------
 
-
+The :ref:`references <references>` section contains a full list of alll the classes and functions available in ``omdi``. There are also examples of things you might want to try out, such as adding a :ref:`notification toast <omdi-toast-manager>`, using the :ref:`file picker <omdi-picker-manager>`, or taking a :ref:`screenshot <omdi-screenshot-manager>` of the application window.
