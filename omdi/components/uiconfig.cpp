@@ -2,9 +2,9 @@
 
 #include "components/safe.h"
 #include "components/uiconfig.h"
+#include "core/state.h"
 #include "managers/fonts.h"
 #include "managers/picker.h"
-#include "managers/state.h"
 #include "managers/toasts.h"
 #include "style/themes.h"
 #include "utils.h"
@@ -12,13 +12,13 @@
 #include <cmath>
 #include <imgui.h>
 
-namespace omdi::config {
+namespace omdi {
 
-  void StyleDialog::render(bool*                        open,
-                           omdi::state::State*          state,
-                           omdi::picker::PickerManager* pickerManager,
-                           omdi::fonts::FontManager*    fontManager,
-                           omdi::toasts::ToastManager*  toastManager) {
+  void StyleDialog::render(bool*                open,
+                           omdi::State*         state,
+                           omdi::PickerManager* pickerManager,
+                           omdi::FontManager*   fontManager,
+                           omdi::ToastManager*  toastManager) {
     if (*open) {
       ImGuiIO& io = ImGui::GetIO();
 
@@ -43,7 +43,7 @@ namespace omdi::config {
           const auto fontnames = fontManager->fontnames();
           const auto fontsizes = fontManager->SIZES;
 
-          omdi::safe::Component(
+          omdi::Component(
             []() {
               return ImGui::BeginListBox(
                 "##pickfont",
@@ -84,7 +84,7 @@ namespace omdi::config {
           ImGui::SetCursorPosX(
             ImGui::GetCursorPosX() +
             std::fmax(0.0f, ImGui::GetContentRegionAvail().x - 65.0f));
-          omdi::safe::Component(
+          omdi::Component(
             []() {
               return ImGui::BeginListBox("##pickfontsize", ImVec2(60.0f, 0.0f));
             },
@@ -127,4 +127,4 @@ namespace omdi::config {
     }
   }
 
-} // namespace omdi::config
+} // namespace omdi

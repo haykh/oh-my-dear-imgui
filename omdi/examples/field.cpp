@@ -61,12 +61,12 @@ namespace omdi::examples {
   }
 
   auto OscillatingFields::get_data() const
-    -> std::map<std::string, const omdi::plots::GridXY* const> {
-    auto field_groups = std::map<std::string, const omdi::plots::GridXY* const> {};
+    -> std::map<std::string, const omdi::GridXY* const> {
+    auto field_groups = std::map<std::string, const omdi::GridXY* const> {};
     for (auto group = 0u; group < n_groups(); ++group) {
       field_groups.insert({
         m_labels[group],
-        new omdi::plots::GridXY { m_x, m_y, m_nx, m_ny, m_fields[group] }
+        new omdi::GridXY { m_x, m_y, m_nx, m_ny, m_fields[group] }
       });
     }
     return field_groups;

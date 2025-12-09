@@ -7,8 +7,7 @@
 
 namespace omdi::safe {
 
-  void Render(const std::function<void()>& item,
-              omdi::toasts::ToastManager*  toastManager) {
+  void Render(const std::function<void()>& item, omdi::ToastManager* toastManager) {
     try {
       item();
     } catch (const std::exception& e) {
@@ -27,20 +26,24 @@ namespace omdi::safe {
   void PushPop(const std::function<void()>& push,
                const std::function<void()>& item,
                const std::function<void()>& pop,
-               omdi::toasts::ToastManager*  toastManager) {
+               omdi::ToastManager*          toastManager) {
     push();
     Render(item, toastManager);
     pop();
   }
 
+} // namespace omdi::safe
+
+namespace omdi {
+
   void Component(const std::function<bool()>& opener,
                  const std::function<void()>& item,
                  const std::function<void()>& closer,
-                 omdi::toasts::ToastManager*  toastManager) {
+                 omdi::ToastManager*          toastManager) {
     if (opener()) {
-      Render(item, toastManager);
+      omdi::safe::Render(item, toastManager);
       closer();
     }
   }
 
-} // namespace omdi::safe
+} // namespace omdi

@@ -13,7 +13,7 @@ auto main(int argc, char* argv[]) -> int {
     state.set("window_width", 1920);
     state.set("window_height", 1080);
     auto app   = omdi::App(&state);
-    auto timer = omdi::timer::Timer();
+    auto timer = omdi::utils::Timer();
 
     auto plots = std::vector<omdi::Plot*> {};
 

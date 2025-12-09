@@ -1,6 +1,6 @@
 #include "examples/pointcloud.h"
 
-#include "plots/containers.h"
+#include "containers/containers.h"
 
 #include <cmath>
 
@@ -60,12 +60,12 @@ namespace omdi::examples {
   }
 
   auto RotatingPointcloud::get_data() const
-    -> std::map<std::string, const omdi::plots::Points* const> {
-    auto point_groups = std::map<std::string, const omdi::plots::Points* const> {};
+    -> std::map<std::string, const omdi::Points* const> {
+    auto point_groups = std::map<std::string, const omdi::Points* const> {};
     for (auto group = 0u; group < n_groups(); ++group) {
       point_groups.insert({
         m_labels[group],
-        new omdi::plots::Points { m_xPos[group], m_yPos[group], m_npoints[group] }
+        new omdi::Points { m_xPos[group], m_yPos[group], m_npoints[group] }
       });
     }
     return point_groups;

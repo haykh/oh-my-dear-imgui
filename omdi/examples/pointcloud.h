@@ -1,8 +1,8 @@
 #ifndef EXAMPLES_POINTCLOUD_H
 #define EXAMPLES_POINTCLOUD_H
 
+#include "containers/containers.h"
 #include "examples/sim.h"
-#include "plots/containers.h"
 
 #include <map>
 #include <string>
@@ -28,8 +28,7 @@ namespace omdi::examples {
       return m_labels.size();
     }
 
-    auto get_data() const
-      -> std::map<std::string, const omdi::plots::Points* const>;
+    auto get_data() const -> std::map<std::string, const omdi::Points* const>;
   };
 
 } // namespace omdi::examples

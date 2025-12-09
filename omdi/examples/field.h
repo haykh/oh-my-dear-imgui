@@ -1,8 +1,8 @@
 #ifndef EXAMPLES_FIELD_H
 #define EXAMPLES_FIELD_H
 
+#include "containers/containers.h"
 #include "examples/sim.h"
-#include "plots/containers.h"
 
 #include <functional>
 #include <map>
@@ -36,8 +36,7 @@ namespace omdi::examples {
       return m_labels.size();
     }
 
-    auto get_data() const
-      -> std::map<std::string, const omdi::plots::GridXY* const>;
+    auto get_data() const -> std::map<std::string, const omdi::GridXY* const>;
   };
 
 } // namespace omdi::examples

@@ -5,7 +5,7 @@
 
 #include <filesystem>
 
-namespace omdi::save {
+namespace omdi {
 
   /**
    * @brief Manager for taking and saving screenshots of the application window.
@@ -29,7 +29,7 @@ namespace omdi::save {
       m_path                 = path;
     }
 
-    void process(omdi::toasts::ToastManager* = nullptr);
+    void process(omdi::ToastManager* = nullptr);
 
     [[nodiscard]]
     auto processing() const -> bool {
@@ -37,6 +37,6 @@ namespace omdi::save {
     }
   };
 
-} // namespace omdi::save
+} // namespace omdi
 
 #endif // MANAGERS_SCREENSHOT_H

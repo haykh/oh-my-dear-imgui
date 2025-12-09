@@ -1,9 +1,9 @@
-#include "components/app.h"
+#include "core/app.h"
 #include "implot-gpu/implot.h"
 
-#include "components/defaults.h"
 #include "components/menubar.h"
 #include "components/uiconfig.h"
+#include "core/defaults.h"
 #include "managers/fonts.h"
 #include "managers/picker.h"
 #include "managers/screenshot.h"
@@ -20,12 +20,12 @@
 #include <functional>
 #include <string>
 
-namespace omdi::app {
+namespace omdi {
 
-  App::App(omdi::state::State* state,
-           const std::string&  name,
-           int                 swapInterval,
-           bool                isResizable) {
+  App::App(omdi::State*       state,
+           const std::string& name,
+           int                swapInterval,
+           bool               isResizable) {
     state->ensure("window_width", omdi::defaults::WINDOW_WIDTH);
     state->ensure("window_height", omdi::defaults::WINDOW_HEIGHT);
     state->ensure("bg_color", omdi::defaults::BG_COLOR);
@@ -123,8 +123,7 @@ namespace omdi::app {
     return m.find(key) != m.end() and m.at(key) != nullptr;
   }
 
-  void App::Init(omdi::state::State*                 state,
-                 const std::map<std::string, void*>& managers) {
+  void App::Init(omdi::State* state, const std::map<std::string, void*>& managers) {
     state->ensure<int>("theme_idx", omdi::defaults::THEME_IDX);
     state->ensure<bool>("show_style_dialog", false);
     state->ensure<int>("main_font_idx", omdi::defaults::MAIN_FONT_IDX);
@@ -132,10 +131,10 @@ namespace omdi::app {
 
     omdi::themes::picker(omdi::themes::ALL_THEMES[state->get<int>("theme_idx")],
                          ImGui::GetStyle());
-    omdi::fonts::FontManager* fontManager = is_in_map("font_manager", managers)
-                                              ? static_cast<omdi::fonts::FontManager*>(
-                                                  managers.at("font_manager"))
-                                              : nullptr;
+    omdi::FontManager* fontManager = is_in_map("font_manager", managers)
+                                       ? static_cast<omdi::FontManager*>(
+                                           managers.at("font_manager"))
+                                       : nullptr;
     if (fontManager != nullptr) {
       fontManager->initFonts(io());
       fontManager->setActiveFont(io(),
@@ -144,35 +143,34 @@ namespace omdi::app {
     }
   }
 
-  void App::Render(omdi::state::State*                 state,
+  void App::Render(omdi::State*                        state,
                    const std::function<void()>&        custom_render,
                    const std::map<std::string, void*>& components,
                    const std::map<std::string, void*>& managers) {
-    omdi::menubar::Menubar*    menubar = is_in_map("menubar", components)
-                                           ? static_cast<omdi::menubar::Menubar*>(
-                                            components.at("menubar"))
-                                           : nullptr;
-    omdi::config::StyleDialog* styleDialog =
-      is_in_map("style_dialog", components)
-        ? static_cast<omdi::config::StyleDialog*>(components.at("style_dialog"))
-        : nullptr;
-    omdi::toasts::ToastManager* toastManager =
-      is_in_map("toast_manager", managers)
-        ? static_cast<omdi::toasts::ToastManager*>(managers.at("toast_manager"))
-        : nullptr;
-    omdi::fonts::FontManager* fontManager = is_in_map("font_manager", managers)
-                                              ? static_cast<omdi::fonts::FontManager*>(
-                                                  managers.at("font_manager"))
+    omdi::Menubar*           menubar     = is_in_map("menubar", components)
+                                             ? static_cast<omdi::Menubar*>(
+                                   components.at("menubar"))
+                                             : nullptr;
+    omdi::StyleDialog*       styleDialog = is_in_map("style_dialog", components)
+                                             ? static_cast<omdi::StyleDialog*>(
+                                           components.at("style_dialog"))
+                                             : nullptr;
+    omdi::ToastManager*      toastManager = is_in_map("toast_manager", managers)
+                                              ? static_cast<omdi::ToastManager*>(
+                                             managers.at("toast_manager"))
                                               : nullptr;
-    omdi::save::ScreenshotManager* screenshotManager =
+    omdi::FontManager*       fontManager  = is_in_map("font_manager", managers)
+                                              ? static_cast<omdi::FontManager*>(
+                                           managers.at("font_manager"))
+                                              : nullptr;
+    omdi::ScreenshotManager* screenshotManager =
       is_in_map("screenshot_manager", managers)
-        ? static_cast<omdi::save::ScreenshotManager*>(
+        ? static_cast<omdi::ScreenshotManager*>(
             managers.at("screenshot_manager"))
         : nullptr;
-    omdi::picker::PickerManager* pickerDialogManager =
+    omdi::PickerManager* pickerDialogManager =
       is_in_map("picker_manager", managers)
-        ? static_cast<omdi::picker::PickerManager*>(
-            managers.at("picker_manager"))
+        ? static_cast<omdi::PickerManager*>(managers.at("picker_manager"))
         : nullptr;
     while (not windowShouldClose()) {
       if (startFrame()) {
@@ -225,4 +223,4 @@ namespace omdi::app {
     glfwSwapBuffers(m_win);
   }
 
-} // namespace omdi::app
+} // namespace omdi

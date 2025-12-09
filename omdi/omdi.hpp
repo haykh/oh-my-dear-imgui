@@ -1,16 +1,17 @@
 #ifndef OMDI_HPP
 #define OMDI_HPP
 
-#include "components/app.h"
+#include "core/app.h"
+#include "core/state.h"
+/**/
 #include "components/menubar.h"
 #include "components/safe.h"
 #include "components/uiconfig.h"
+#include "containers/containers.h"
 #include "managers/fonts.h"
 #include "managers/picker.h"
 #include "managers/screenshot.h"
-#include "managers/state.h"
 #include "managers/toasts.h"
-#include "plots/containers.h"
 #include "plots/pcolor.h"
 #include "plots/plot.h"
 #include "plots/scatter.h"
@@ -22,8 +23,6 @@
 #include <string>
 
 namespace omdi {
-  using namespace state;
-  using namespace app;
   using namespace plots;
 
   namespace utils {

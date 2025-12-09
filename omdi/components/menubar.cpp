@@ -6,9 +6,9 @@
 
 #include <imgui.h>
 
-namespace omdi::menubar {
+namespace omdi {
 
-  void SafeMenu(omdi::toasts::ToastManager&  toastManager,
+  void SafeMenu(omdi::ToastManager&          toastManager,
                 const std::function<void()>& item,
                 const char*                  label,
                 bool                         enabled) {
@@ -50,7 +50,7 @@ namespace omdi::menubar {
     return width;
   }
 
-  void Menubar::render(omdi::toasts::ToastManager* toastManager) const {
+  void Menubar::render(omdi::ToastManager* toastManager) const {
     if (ImGui::BeginMainMenuBar()) {
       // Render left-aligned items
       for (size_t i = 0; i < m_items_left.size(); ++i) {
@@ -103,4 +103,4 @@ namespace omdi::menubar {
     }
   }
 
-} // namespace omdi::menubar
+} // namespace omdi

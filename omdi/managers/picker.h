@@ -11,13 +11,18 @@
 #include <vector>
 
 namespace omdi::picker {
+
   using callback_t = std::function<void(IGFD::FileDialog*)>;
 
+} // namespace omdi::picker
+
+namespace omdi {
+
   /**
-   * @brief Dialogues to handle file/directory picking.
+   * @brief Manager for handling file/directory picker dialogs.
    */
   class PickerManager {
-    std::vector<std::pair<std::unique_ptr<IGFD::FileDialog>, callback_t>> m_dialogs;
+    std::vector<std::pair<std::unique_ptr<IGFD::FileDialog>, omdi::picker::callback_t>> m_dialogs;
 
   public:
     /**
@@ -28,7 +33,7 @@ namespace omdi::picker {
      * @param {std::string} path - The initial path to be displayed in the dialog (default = ".")
      * @param {char*} filter - File extension filter (default = nullptr, pick directory)
      */
-    void Add(callback_t,
+    void Add(omdi::picker::callback_t,
              const std::string& = "PickerDialog",
              const std::string& = "Pick a file or directory",
              const std::string& = ".",
@@ -37,6 +42,6 @@ namespace omdi::picker {
     void render();
   };
 
-} // namespace omdi::picker
+} // namespace omdi
 
 #endif // MANAGERS_PICKER_H

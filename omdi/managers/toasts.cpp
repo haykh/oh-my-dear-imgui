@@ -10,28 +10,29 @@
   #include <stdexcept>
 #endif
 
-namespace omdi::toasts {
+namespace omdi {
 
-  void ToastManager::Add(const Type& type, unsigned int dismiss_time) {
+  void ToastManager::Add(const omdi::toasts::Type& type, unsigned int dismiss_time) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
     m_toasts.push_back(std::move(toast));
   }
 
-  void ToastManager::Add(const Type& type, const std::string& content) {
+  void ToastManager::Add(const omdi::toasts::Type& type,
+                         const std::string&        content) {
     auto toast = std::make_unique<Toast>(type);
     toast->setContent(content);
     m_toasts.push_back(std::move(toast));
   }
 
-  void ToastManager::Add(const Type&        type,
-                         unsigned int       dismiss_time,
-                         const std::string& content) {
+  void ToastManager::Add(const omdi::toasts::Type& type,
+                         unsigned int              dismiss_time,
+                         const std::string&        content) {
     auto toast = std::make_unique<Toast>(type, dismiss_time);
     toast->setContent(content);
     m_toasts.push_back(std::move(toast));
   }
 
-  void ToastManager::Add(const Type&                  type,
+  void ToastManager::Add(const omdi::toasts::Type&    type,
                          unsigned int                 dismiss_time,
                          const std::string&           content,
                          const std::string&           button_label,
@@ -55,7 +56,8 @@ namespace omdi::toasts {
       auto&      toast = *it;
       const auto idx   = it - m_toasts.begin();
 
-      if ((toast->fade_phase() == Phase::Expired) || (toast->closing())) {
+      if ((toast->fade_phase() == omdi::toasts::Phase::Expired) ||
+          (toast->closing())) {
         it = m_toasts.erase(it);
         continue;
       }
@@ -178,4 +180,4 @@ namespace omdi::toasts {
     }
   }
 
-} // namespace omdi::toasts
+} // namespace omdi

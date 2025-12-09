@@ -1,10 +1,13 @@
-#ifndef PLOTS_CONTAINERS_H
-#define PLOTS_CONTAINERS_H
+#ifndef CONTAINERS_CONTAINERS_H
+#define CONTAINERS_CONTAINERS_H
 
 #include <cstddef>
 
-namespace omdi::plots {
+namespace omdi {
 
+  /**
+   * @brief Structure to hold 2D scattered points data.
+   */
   struct Points {
     const float* const x;
     const float* const y;
@@ -16,6 +19,9 @@ namespace omdi::plots {
       , npoints { npoints } {}
   };
 
+  /**
+   * @brief Structure to hold 2D grid data.
+   */
   struct GridXY {
     const float* const x;
     const float* const y;
@@ -31,6 +37,6 @@ namespace omdi::plots {
       , z { z } {}
   };
 
-} // namespace omdi::plots
+} // namespace omdi
 
-#endif // PLOTS_CONTAINERS_H
+#endif // CONTAINERS_CONTAINERS_H

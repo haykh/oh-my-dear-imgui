@@ -1,7 +1,7 @@
 #ifndef PLOTS_PCOLOR_H
 #define PLOTS_PCOLOR_H
 
-#include "plots/containers.h"
+#include "containers/containers.h"
 #include "plots/plot.h"
 
 #include <implot.h>
@@ -11,6 +11,9 @@
 
 namespace omdi::plots {
 
+  /**
+   * @brief Class for creating 2D heatmap (pseudocolor) plots.
+   */
   class PcolorPlot : public Plot {
     bool           m_aspect_equal { true };
     int            m_which { 0 };

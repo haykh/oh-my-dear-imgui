@@ -15,9 +15,9 @@
 #include <filesystem>
 #include <vector>
 
-namespace omdi::save {
+namespace omdi {
 
-  void ScreenshotManager::process(omdi::toasts::ToastManager* toasts) {
+  void ScreenshotManager::process(omdi::ToastManager* toasts) {
     if (not processing()) {
       return;
     } else if (m_delay > 0) {
@@ -54,4 +54,4 @@ namespace omdi::save {
     }
   }
 
-} // namespace omdi::save
+} // namespace omdi

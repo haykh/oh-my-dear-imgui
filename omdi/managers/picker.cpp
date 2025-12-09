@@ -9,13 +9,13 @@
 #include <utility>
 #include <vector>
 
-namespace omdi::picker {
+namespace omdi {
 
-  void PickerManager::Add(callback_t         callback,
-                          const std::string& title,
-                          const std::string& prompt,
-                          const std::string& path,
-                          const char*        filter) {
+  void PickerManager::Add(omdi::picker::callback_t callback,
+                          const std::string&       title,
+                          const std::string&       prompt,
+                          const std::string&       path,
+                          const char*              filter) {
     IGFD::FileDialogConfig config;
     config.path = path;
 
@@ -55,4 +55,4 @@ namespace omdi::picker {
     }
   }
 
-} // namespace omdi::picker
+} // namespace omdi

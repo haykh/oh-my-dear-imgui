@@ -1,12 +1,12 @@
 #ifndef COMPONENTS_UICONFIG_H
 #define COMPONENTS_UICONFIG_H
 
+#include "core/state.h"
 #include "managers/fonts.h"
 #include "managers/picker.h"
-#include "managers/state.h"
 #include "managers/toasts.h"
 
-namespace omdi::config {
+namespace omdi {
 
   /**
    * @brief A panel to handle style changes.
@@ -15,12 +15,12 @@ namespace omdi::config {
 
   public:
     void render(bool*,
-                omdi::state::State*,
-                omdi::picker::PickerManager*,
-                omdi::fonts::FontManager*,
-                omdi::toasts::ToastManager*);
+                omdi::State*,
+                omdi::PickerManager*,
+                omdi::FontManager*,
+                omdi::ToastManager*);
   };
 
-} // namespace omdi::config
+} // namespace omdi
 
 #endif // COMPONENTS_UICONFIG_H

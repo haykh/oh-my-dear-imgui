@@ -43,6 +43,9 @@ namespace omdi::fmt {
 
 } // namespace omdi::fmt
 
+/**
+ * @brief Simple logging utility using ``plog``.
+ */
 namespace omdi::logger {
 
   using Severity = plog::Severity;
@@ -96,6 +99,9 @@ namespace omdi::logger {
 
 namespace omdi::timer {
 
+  /**
+   * @brief Timer class for measuring elapsed time and frame delta time.
+   */
   class Timer {
     std::chrono::time_point<std::chrono::high_resolution_clock>       m_now;
     const std::chrono::time_point<std::chrono::high_resolution_clock> m_start;

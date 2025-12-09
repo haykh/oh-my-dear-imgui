@@ -1,7 +1,7 @@
 #ifndef PLOTS_SCATTER_H
 #define PLOTS_SCATTER_H
 
-#include "plots/containers.h"
+#include "containers/containers.h"
 #include "plots/plot.h"
 
 #include <map>
@@ -9,6 +9,9 @@
 
 namespace omdi::plots {
 
+  /**
+   * @brief Class for creating 2D scatter plots.
+   */
   class ScatterPlot : public Plot {
     bool m_aspect_equal = true;
 

@@ -5,6 +5,9 @@
 
 namespace omdi::plots {
 
+  /**
+   * @brief Abstract base class for different types of plots.
+   */
   class Plot {
   protected:
     std::string m_label { "GenericPlot" };

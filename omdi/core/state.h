@@ -1,5 +1,5 @@
-#ifndef MANAGERS_STATE_H
-#define MANAGERS_STATE_H
+#ifndef CORE_STATE_H
+#define CORE_STATE_H
 
 #include <toml.hpp>
 
@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace omdi::state {
+namespace omdi {
 
   /**
    * @brief State manager for storing and retrieving application state variables.
@@ -72,6 +72,6 @@ namespace omdi::state {
     void        from_toml(const toml::value& v);
   };
 
-} // namespace omdi::state
+} // namespace omdi
 
-#endif // MANAGERS_STATE_H
+#endif // CORE_STATE_H

@@ -8,7 +8,7 @@
 #include <functional>
 #include <vector>
 
-namespace omdi::menubar {
+namespace omdi {
 
   struct MenuItem {
     std::function<void()> render;
@@ -38,9 +38,9 @@ namespace omdi::menubar {
       m_items_right.push_back(MenuItem { item });
     }
 
-    void render(omdi::toasts::ToastManager* = nullptr) const;
+    void render(omdi::ToastManager* = nullptr) const;
   };
 
-} // namespace omdi::menubar
+} // namespace omdi
 
 #endif // COMPONENTS_MENUBAR_H

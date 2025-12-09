@@ -24,17 +24,17 @@ auto main(int argc, char* argv[]) -> int {
     auto app = omdi::App(&state, "example-app", 1, true);
 
     // managers
-    auto pickerDialogManager = omdi::picker::PickerManager();
-    auto toastManager        = omdi::toasts::ToastManager();
-    auto fontManager         = omdi::fonts::FontManager();
-    auto screenshotManager   = omdi::save::ScreenshotManager();
+    auto pickerDialogManager = omdi::PickerManager();
+    auto toastManager        = omdi::ToastManager();
+    auto fontManager         = omdi::FontManager();
+    auto screenshotManager   = omdi::ScreenshotManager();
 
     // ui elements
-    auto styleDialog = omdi::config::StyleDialog();
-    auto menubar     = omdi::menubar::Menubar();
+    auto styleDialog = omdi::StyleDialog();
+    auto menubar     = omdi::Menubar();
 
     menubar.AddLeft([&]() {
-      omdi::safe::Component(
+      omdi::Component(
         []() {
           return ImGui::BeginMenu("File");
         },
@@ -79,7 +79,7 @@ auto main(int argc, char* argv[]) -> int {
     });
 
     menubar.AddLeft([&]() {
-      omdi::safe::Component(
+      omdi::Component(
         []() {
           return ImGui::BeginMenu("Demo");
         },

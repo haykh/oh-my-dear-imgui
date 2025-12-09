@@ -1,5 +1,5 @@
-#ifndef OMDI_COMPONENTS_DEFAULTS_H
-#define OMDI_COMPONENTS_DEFAULTS_H
+#ifndef CORE_DEFAULTS_H
+#define CORE_DEFAULTS_H
 
 #include <imgui.h>
 
@@ -14,4 +14,4 @@ namespace omdi::defaults {
 
 } // namespace omdi::defaults
 
-#endif // OMDI_COMPONENTS_DEFAULTS_H
+#endif // CORE_DEFAULTS_H

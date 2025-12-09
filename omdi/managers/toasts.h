@@ -50,6 +50,10 @@ namespace omdi::toasts {
     COUNT
   };
 
+} // namespace omdi::toasts
+
+namespace omdi {
+
   class Toast {
     ImGuiWindowFlags m_flags = ImGuiWindowFlags_AlwaysAutoResize |
                                ImGuiWindowFlags_NoDecoration |
@@ -60,7 +64,7 @@ namespace omdi::toasts {
     unsigned int m_dismiss_time { NOTIFY_DEFAULT_DISMISS };
     const std::chrono::system_clock::time_point m_creation_time;
 
-    const Type m_type;
+    const omdi::toasts::Type m_type;
 
     std::string m_title, m_content, m_button_label;
 
@@ -119,22 +123,22 @@ namespace omdi::toasts {
     }
 
     [[nodiscard]]
-    inline auto type() const -> Type {
+    inline auto type() const -> omdi::toasts::Type {
       return m_type;
     };
 
     [[nodiscard]]
     inline auto color() const -> ImVec4 {
       switch (m_type) {
-        case Type::None:
+        case omdi::toasts::Type::None:
           return { 255, 255, 255, 255 }; // White
-        case Type::Success:
+        case omdi::toasts::Type::Success:
           return { 0, 255, 0, 255 }; // Green
-        case Type::Warning:
+        case omdi::toasts::Type::Warning:
           return { 255, 255, 0, 255 }; // Yellow
-        case Type::Error:
+        case omdi::toasts::Type::Error:
           return { 255, 0, 0, 255 }; // Error
-        case Type::Info:
+        case omdi::toasts::Type::Info:
           return { 0, 157, 255, 255 }; // Blue
         default:
           return { 255, 255, 255, 255 }; // White
@@ -144,15 +148,15 @@ namespace omdi::toasts {
     [[nodiscard]]
     inline auto icon() const -> const char* {
       switch (m_type) {
-        case Type::None:
+        case omdi::toasts::Type::None:
           return nullptr;
-        case Type::Success:
+        case omdi::toasts::Type::Success:
           return ICON_FA_CIRCLE_CHECK; // Font Awesome 6
-        case Type::Warning:
+        case omdi::toasts::Type::Warning:
           return ICON_FA_TRIANGLE_EXCLAMATION; // Font Awesome 6
-        case Type::Error:
+        case omdi::toasts::Type::Error:
           return ICON_FA_CIRCLE_EXCLAMATION; // Font Awesome 6
-        case Type::Info:
+        case omdi::toasts::Type::Info:
           return ICON_FA_CIRCLE_INFO; // Font Awesome 6
         default:
           return nullptr;
@@ -168,15 +172,15 @@ namespace omdi::toasts {
     inline auto default_title() const -> std::string {
       if (m_title.empty()) {
         switch (m_type) {
-          case Type::None:
+          case omdi::toasts::Type::None:
             return "";
-          case Type::Success:
+          case omdi::toasts::Type::Success:
             return "Success";
-          case Type::Warning:
+          case omdi::toasts::Type::Warning:
             return "Warning";
-          case Type::Error:
+          case omdi::toasts::Type::Error:
             return "Error";
-          case Type::Info:
+          case omdi::toasts::Type::Info:
             return "Info";
           default:
             return "";
@@ -220,9 +224,9 @@ namespace omdi::toasts {
      *         - Phase::Expired: The notification has expired and should be removed.
      */
     [[nodiscard]]
-    inline auto fade_phase() const -> Phase {
+    inline auto fade_phase() const -> omdi::toasts::Phase {
       if (m_dismiss_time == 0u) {
-        return Phase::Wait;
+        return omdi::toasts::Phase::Wait;
       }
 
       const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -231,13 +235,13 @@ namespace omdi::toasts {
 
       if (elapsed >
           NOTIFY_FADE_IN_OUT_TIME + m_dismiss_time + NOTIFY_FADE_IN_OUT_TIME) {
-        return Phase::Expired;
+        return omdi::toasts::Phase::Expired;
       } else if (elapsed > NOTIFY_FADE_IN_OUT_TIME + m_dismiss_time) {
-        return Phase::FadeOut;
+        return omdi::toasts::Phase::FadeOut;
       } else if (elapsed > NOTIFY_FADE_IN_OUT_TIME) {
-        return Phase::Wait;
+        return omdi::toasts::Phase::Wait;
       } else {
-        return Phase::FadeIn;
+        return omdi::toasts::Phase::FadeIn;
       }
     }
 
@@ -264,9 +268,9 @@ namespace omdi::toasts {
                              elapsed_time())
                              .count();
 
-      if (phase == Phase::FadeIn) {
+      if (phase == omdi::toasts::Phase::FadeIn) {
         return ((float)elapsed / (float)NOTIFY_FADE_IN_OUT_TIME) * NOTIFY_OPACITY;
-      } else if (phase == Phase::FadeOut) {
+      } else if (phase == omdi::toasts::Phase::FadeOut) {
         return (1.f - (float)(elapsed - NOTIFY_FADE_IN_OUT_TIME - m_dismiss_time) /
                         (float)NOTIFY_FADE_IN_OUT_TIME) *
                NOTIFY_OPACITY;
@@ -281,16 +285,16 @@ namespace omdi::toasts {
     }
 
     // Constructors
-    Toast(const Type& type)
+    Toast(const omdi::toasts::Type& type)
       : m_type { type }
       , m_creation_time { std::chrono::system_clock::now() } {
-      if (type == Type::Error) {
+      if (type == omdi::toasts::Type::Error) {
         m_dismiss_time = 0u;
       }
       omdi::logger::Debug("Toast created");
     }
 
-    Toast(const Type& type, unsigned int dismiss_time)
+    Toast(const omdi::toasts::Type& type, unsigned int dismiss_time)
       : m_type { type }
       , m_dismiss_time { dismiss_time }
       , m_creation_time { std::chrono::system_clock::now() } {
@@ -314,10 +318,11 @@ namespace omdi::toasts {
     std::vector<std::unique_ptr<Toast>> m_toasts;
 
   public:
-    void Add(const Type&, unsigned int = Toast::NOTIFY_DEFAULT_DISMISS);
-    void Add(const Type&, unsigned int, const std::string&);
-    void Add(const Type&, const std::string&);
-    void Add(const Type&,
+    void Add(const omdi::toasts::Type&,
+             unsigned int = Toast::NOTIFY_DEFAULT_DISMISS);
+    void Add(const omdi::toasts::Type&, unsigned int, const std::string&);
+    void Add(const omdi::toasts::Type&, const std::string&);
+    void Add(const omdi::toasts::Type&,
              unsigned int,
              const std::string&,
              const std::string&,
@@ -325,6 +330,7 @@ namespace omdi::toasts {
 
     void render();
   };
-} // namespace omdi::toasts
+
+} // namespace omdi
 
 #endif // MANAGERS_TOASTS_H

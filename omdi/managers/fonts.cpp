@@ -18,9 +18,10 @@
 #include <algorithm>
 #include <string>
 
-namespace omdi::fonts {
+namespace omdi {
 
-  auto FontManager::font(const std::string& name, Size size) -> ImFont* {
+  auto FontManager::font(const std::string& name, omdi::fonts::Size size)
+    -> ImFont* {
     auto it = m_fonts.find(name);
     if (it != m_fonts.end()) {
       auto it2 = it->second.find(size);
@@ -36,7 +37,8 @@ namespace omdi::fonts {
     }
   }
 
-  auto FontManager::icon(const std::string& name, Size size) -> ImFont* {
+  auto FontManager::icon(const std::string& name, omdi::fonts::Size size)
+    -> ImFont* {
     auto it = m_icons.find(name);
     if (it != m_icons.end()) {
       auto it2 = it->second.find(size);
@@ -136,7 +138,7 @@ namespace omdi::fonts {
 
   void FontManager::add(ImGuiIO*           io,
                         const std::string& name,
-                        Size               size,
+                        omdi::fonts::Size  size,
                         const void*        data,
                         int                data_size,
                         const ImWchar*     ranges) {
@@ -184,7 +186,7 @@ namespace omdi::fonts {
 
   void FontManager::add(ImGuiIO*           io,
                         const std::string& name,
-                        Size               size,
+                        omdi::fonts::Size  size,
                         const std::string& fontfile,
                         const ImWchar*     ranges) {
     auto        font_config = new ImFontConfig();
@@ -297,4 +299,4 @@ namespace omdi::fonts {
   //   BuildFonts(io);
   // }
 
-} // namespace omdi::fonts
+} // namespace omdi

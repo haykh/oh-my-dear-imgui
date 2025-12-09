@@ -7,18 +7,22 @@
 
 namespace omdi::safe {
 
-  void Render(const std::function<void()>&, omdi::toasts::ToastManager* = nullptr);
+  void Render(const std::function<void()>&, omdi::ToastManager* = nullptr);
 
   void PushPop(const std::function<void()>&,
                const std::function<void()>&,
                const std::function<void()>&,
-               omdi::toasts::ToastManager* = nullptr);
+               omdi::ToastManager* = nullptr);
+
+} // namespace omdi::safe
+
+namespace omdi {
 
   void Component(const std::function<bool()>&,
                  const std::function<void()>&,
                  const std::function<void()>&,
-                 omdi::toasts::ToastManager* = nullptr);
+                 omdi::ToastManager* = nullptr);
 
-} // namespace omdi::safe
+} // namespace omdi
 
 #endif // COMPONENTS_SAFE_H
