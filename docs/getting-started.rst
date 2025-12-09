@@ -44,7 +44,7 @@ Let's break down the code. The ``CMakeLists.txt`` is a helper file for actually 
 
 The ``main.cpp`` file is the actual source code for our application. We start by including the main ``omdi`` header file, which exposes all the functionality of the library. Then we define the ``main`` function, which is the entry point of any C++ program.
 
-Inside the ``main`` function, we first create an instance of ``omdi::State``, which represents the application state. This state can be used to store various settings and data for the application (more on that later). Next, we create an instance of ``omdi::App``, passing a pointer to the state we just created. This ``App`` object is responsible for managing the application lifecycle, including initialization and rendering.
+Inside the ``main`` function, we first create an instance of :cpp:class:`omdi::State`, which represents the application state. This state can be used to store various settings and data for the application (more on that later). Next, we create an instance of :cpp:class:`omdi::App`, passing a pointer to the state we just created. This ``App`` object is responsible for managing the application lifecycle, including initialization and rendering.
 
 After creating the ``App`` object, we initialize it by calling ``app.Init(&state)``, which sets up the necessary resources and configurations for the application. Finally, we enter the rendering loop by calling ``app.Render(&state)``, which will keep the application running and rendering until it is closed.
 
@@ -75,7 +75,7 @@ Adding a menubar
 
 .. code-block:: cpp
 
-  auto menubar    = omdi::menubar::Menubar();
+  auto menubar    = omdi::Menubar();
   auto components = omdi::components_t {
     { "menubar", &menubar }
   };
@@ -98,9 +98,9 @@ Now, let's add a "Help" menu to the left of the menubar with a toggle item for t
 
 .. code-block:: cpp
 
-  auto menubar = omdi::menubar::Menubar();
+  auto menubar = omdi::Menubar();
   menubar.AddLeft([&]() {
-    omdi::safe::Component(
+    omdi::Component(
       []() {
         return ImGui::BeginMenu("Help");
       },
@@ -112,7 +112,7 @@ Now, let's add a "Help" menu to the left of the menubar with a toggle item for t
       });
   });
 
-Notice, that we are essentially passing a lambda function to the ``AddLeft`` method, which calls a special built-in function ``omdi::safe::Component``. The component function itself takes three delta functions: the initialization (which must returns the status of ``ImGui::BeginMenu`` -- a built-in ``ImGui`` function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls ``ImGui::EndMenu``). The checkbox itself is bound to the state variable we created earlier via the ``state.get<bool>`` call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to ``omdi`` components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.
+Notice, that we are essentially passing a lambda function to the ``AddLeft`` method, which calls a special built-in function :cpp:class:`omdi::Component`. The component function itself takes three delta functions: the initialization (which must returns the status of ``ImGui::BeginMenu`` -- a built-in ``ImGui`` function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls ``ImGui::EndMenu``). The checkbox itself is bound to the state variable we created earlier via the :cpp:func:`omdi::State::get` call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to ``omdi`` components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.
 
 Ok, finally, we need to modify our render loop to only display the demo window when the corresponding state variable is true:
 
@@ -129,7 +129,7 @@ Note, that we are passing a pointer to the state variable so that the ``ImGui`` 
 
 .. hint::
 
-  ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ``ImGui`` element as an ``omdi::safe::component`` is fairly straightforward.
+  ``omdi`` closely follows the design principles of Dear ImGui, so in that sense adding any ``ImGui`` element as an :cpp:class:`omdi::Component` is fairly straightforward.
 
 Adding ``ImGui`` components
 ----------------------------
@@ -171,7 +171,7 @@ Customizing the UI
 .. code-block:: cpp
   :emphasize-lines: 1, 5
 
-  auto styleDialog = omdi::config::StyleDialog();
+  auto styleDialog = omdi::StyleDialog();
 
   auto components = omdi::components_t {
     {      "menubar",     &menubar },
@@ -183,7 +183,7 @@ To control when the style dialog is shown, we can again add a toggle to the menu
 .. code-block:: cpp
 
   menubar.AddLeft([&]() {
-    omdi::safe::Component(
+    omdi::Component(
       []() {
         return ImGui::BeginMenu("UI");
       },
@@ -207,7 +207,7 @@ Let's go further and add a font picker to the style dialog. By default, this set
 
 .. code-block:: cpp
 
-  auto fontManager = omdi::fonts::FontManager();
+  auto fontManager = omdi::FontManager();
   auto managers = omdi::managers_t {
     { "font_manager", &fontManager }
   };
