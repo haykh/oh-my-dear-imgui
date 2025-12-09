@@ -1,0 +1,698 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="References" href="references.html"><link rel="prev" title="Installation &amp; Usage" href="install.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>Getting Started - Oh My Dear ImGui</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=75810a84" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/css/hacks.css?v=4854bada" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  --color-brand-primary: #c757ff;
+  --color-brand-content: #c757ff;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #282a36;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #282a36;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Oh My Dear ImGui</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation &amp; Usage</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="references.html">References</a><input aria-label="Toggle navigation of References" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="refs/app.html">App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/fontmanager.html">FontManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/gridxy.html">GridXY</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/logger.html">Logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/menubar.html">Menubar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/pcolorplot.html">PcolorPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/pickermanager.html">PickerManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/plot.html">Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/points.html">Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/safe_components.html">Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/scatterplot.html">ScatterPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/screenshotmanager.html">ScreenshotManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/state.html">State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/timer.html">Timer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="refs/toastmanager.html">ToastManager</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/haykh/oh-my-dear-imgui/blob/docs/docs/getting-started.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/haykh/oh-my-dear-imgui/edit/docs/docs/getting-started.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="getting-started">
+<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h1>
+<p>Let’s start with a minimal example of how to set up and use <code class="docutils literal notranslate"><span class="pre">oh-my-dear-imgui</span></code> in your project, assuming you have already installed the library as described in the <a class="reference internal" href="install.html#preinstall"><span class="std std-ref">preinstallation section</span></a>.</p>
+<section id="setting-up-the-project">
+<h2>Setting up the project<a class="headerlink" href="#setting-up-the-project" title="Link to this heading">¶</a></h2>
+<p>Start by making a source cpp file, <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>, and a <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file in the same directory.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">CMakeLists.txt</span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">NAME</span><span class="w"> </span><span class="s">omdi-demo</span><span class="p">)</span>
+
+<span class="nb">project</span><span class="p">(</span><span class="o">${</span><span class="nv">NAME</span><span class="o">}</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_EXPORT_COMPILE_COMMANDS</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">oh-my-dear-imgui</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">SRC</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="o">${</span><span class="nv">NAME</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">SRC</span><span class="o">}</span><span class="p">)</span>
+
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="o">${</span><span class="nv">NAME</span><span class="o">}</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">oh-my-dear-imgui::oh-my-dear-imgui</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">main.cpp</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;omdi.hpp&gt;</span><span class="c1"> // import the main omdi header</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">State</span><span class="p">();</span><span class="w"> </span><span class="c1">// define the application state</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">app</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">App</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">);</span><span class="w"> </span><span class="c1">// define the application object</span>
+
+<span class="w">  </span><span class="n">app</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">);</span><span class="w"> </span><span class="c1">// initialize the application</span>
+<span class="w">  </span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">);</span><span class="w"> </span><span class="c1">// enter the render loop</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s break down the code. The <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> is a helper file for actually compiling the project. If you have never used <code class="docutils literal notranslate"><span class="pre">CMake</span></code> before, you can read more about it <a class="reference external" href="https://cmake.org/cmake/help/latest/guide/tutorial/index.html">here</a>. The important thing here is that we create a project using a variable <code class="docutils literal notranslate"><span class="pre">NAME</span></code>, we then fetch the <code class="docutils literal notranslate"><span class="pre">oh-my-dear-imgui</span></code> package using the <code class="docutils literal notranslate"><span class="pre">find_package</span></code> function. Then we declare an executable using <code class="docutils literal notranslate"><span class="pre">add_executable</span></code>, which will be built from the source file <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>, and then tell the compiler to link against the <code class="docutils literal notranslate"><span class="pre">oh-my-dear-imgui</span></code> library using <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> file is the actual source code for our application. We start by including the main <code class="docutils literal notranslate"><span class="pre">omdi</span></code> header file, which exposes all the functionality of the library. Then we define the <code class="docutils literal notranslate"><span class="pre">main</span></code> function, which is the entry point of any C++ program.</p>
+<p>Inside the <code class="docutils literal notranslate"><span class="pre">main</span></code> function, we first create an instance of <a class="reference internal" href="refs/state.html#_CPPv4N4omdi5StateE" title="omdi::State"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">omdi::State</span></code></a>, which represents the application state. This state can be used to store various settings and data for the application (more on that later). Next, we create an instance of <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3AppE" title="omdi::App"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">omdi::App</span></code></a>, passing a pointer to the state we just created. This <code class="docutils literal notranslate"><span class="pre">App</span></code> object is responsible for managing the application lifecycle, including initialization and rendering.</p>
+<p>After creating the <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3AppE" title="omdi::App"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">omdi::App</span></code></a> object, we initialize it by calling <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3App4InitEPN4omdi5state5StateERKNSt3mapINSt6stringEPvEE" title="omdi::App::Init"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::App::Init()</span></code></a>, which sets up the necessary resources and configurations for the application. Finally, we enter the rendering loop by calling <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3App6RenderEPN4omdi5state5StateERKNSt8functionIFvvEEERKNSt3mapINSt6stringEPvEERKNSt3mapINSt6stringEPvEE" title="omdi::App::Render"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::App::Render()</span></code></a>, which will keep the application running and rendering until it is closed.</p>
+<p>To compile and run the application, navigate to the directory containing your <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> files in your terminal, and execute the following commands:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-D<span class="w"> </span><span class="nv">CMAKE_PREFIX_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.omdi/<span class="w"> </span><span class="c1"># adjust the path as needed</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>-j<span class="w"> </span><span class="k">$(</span>nproc<span class="k">)</span>
+./build/omdi-demo
+</pre></div>
+</div>
+<p>If everything goes well, you should see an empty window popping up! You can safely close it for now using the Escape key or the window’s close button.</p>
+<p>To test that it indeed renders ImGui, you can add a simple <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> window in the render loop. Modify the <code class="docutils literal notranslate"><span class="pre">Render</span></code> call as follows:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ImGui</span><span class="o">::</span><span class="n">ShowDemoWindow</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Don’t forget to recompile, and then run the application again. You should now see the classic <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> demo window! That second argument that we passed to <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3App6RenderEPN4omdi5state5StateERKNSt8functionIFvvEEERKNSt3mapINSt6stringEPvEERKNSt3mapINSt6stringEPvEE" title="omdi::App::Render"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::App::Render()</span></code></a> is a lambda function that gets called every frame, allowing us to add anything we like to be executed every time a frame is rendered.</p>
+</section>
+<section id="adding-a-menubar">
+<h2>Adding a menubar<a class="headerlink" href="#adding-a-menubar" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">omdi</span></code> comes pre-packaged with various useful UI components, the central of which is the menubar. To add it, simply declare it somewhere before calling the <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3App4InitEPN4omdi5state5StateERKNSt3mapINSt6stringEPvEE" title="omdi::App::Init"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::App::Init()</span></code></a> function:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">menubar</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">Menubar</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">components_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;menubar&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">menubar</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ImGui</span><span class="o">::</span><span class="n">ShowDemoWindow</span><span class="p">();</span>
+<span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Because we will be adding more components later, we first create a dicitionary of components called <code class="docutils literal notranslate"><span class="pre">components</span></code>, and add the menubar to it. Then we pass this dictionary as the third argument to the <a class="reference internal" href="refs/app.html#_CPPv4N4omdi3App6RenderEPN4omdi5state5StateERKNSt8functionIFvvEEERKNSt3mapINSt6stringEPvEERKNSt3mapINSt6stringEPvEE" title="omdi::App::Render"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::App::Render()</span></code></a> function. Now, when you compile and run the application, you should see an empty menubar at the top of the window.</p>
+<p>We can customize the menubar by adding menus and items to it. For instance, let’s add a toggle to switch the <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> demo window on and off. The safest way to keep track of the state of the demo window is to use our state variable, so let’s add a boolean entry to it (e.g., after defining the <code class="docutils literal notranslate"><span class="pre">state</span></code> variable):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">State</span><span class="p">();</span>
+<span class="hll"><span class="n">state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;show_imgui_demo&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+</span></pre></div>
+</div>
+<p>Now, let’s add a “Help” menu to the left of the menubar with a toggle item for the demo window:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">menubar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">Menubar</span><span class="p">();</span>
+<span class="n">menubar</span><span class="p">.</span><span class="n">AddLeft</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">omdi</span><span class="o">::</span><span class="n">Component</span><span class="p">(</span>
+<span class="w">    </span><span class="p">[]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">ImGui</span><span class="o">::</span><span class="n">BeginMenu</span><span class="p">(</span><span class="s">&quot;Help&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImGui</span><span class="o">::</span><span class="n">Checkbox</span><span class="p">(</span><span class="s">&quot;Show ``ImGui`` demo&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;show_imgui_demo&quot;</span><span class="p">));</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImGui</span><span class="o">::</span><span class="n">EndMenu</span><span class="p">();</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Notice, that we are essentially passing a lambda function to the <code class="docutils literal notranslate"><span class="pre">AddLeft</span></code> method, which calls a special built-in function <a class="reference internal" href="refs/safe_components.html#_CPPv4N4omdi9ComponentERKNSt8functionIFbvEEERKNSt8functionIFvvEEERKNSt8functionIFvvEEEPN4omdi12ToastManagerE" title="omdi::Component"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::Component()</span></code></a>. The component function itself takes three delta functions: the initialization (which must returns the status of <code class="docutils literal notranslate"><span class="pre">ImGui::BeginMenu</span></code> – a built-in <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> function to create a menu), the main rendering routine (where we add our checkbox), and the finalization (which calls <code class="docutils literal notranslate"><span class="pre">ImGui::EndMenu</span></code>). The checkbox itself is bound to the state variable we created earlier via the <a class="reference internal" href="refs/state.html#_CPPv4I0EN4omdi5State3getER1TRKNSt6stringE" title="omdi::State::get"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::State::get()</span></code></a> call, so it will automatically update the state when toggled. This is the recommended way of adding custom UI elements to <code class="docutils literal notranslate"><span class="pre">omdi</span></code> components, as it ensures that any errors during rendering are caught and displayed as notifications (toasts, coming up later) instead of crashing the application. It also ensures that any code execution does not interfere with the rest of the UI rendering.</p>
+<p>Ok, finally, we need to modify our render loop to only display the demo window when the corresponding state variable is true:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="hll"><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;show_imgui_demo&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span class="w">    </span><span class="n">ImGui</span><span class="o">::</span><span class="n">ShowDemoWindow</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;show_imgui_demo&quot;</span><span class="p">));</span>
+<span class="hll"><span class="w">  </span><span class="p">}</span>
+</span><span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note, that we are passing a pointer to the state variable so that the <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> demo window can automatically close it through its built-in close button. Now, when you compile and run the application, you should see a “Help” menu in the menubar. Clicking on it will reveal a “Show <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> demo” checkbox, which you can toggle to show or hide the <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> demo window.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p><code class="docutils literal notranslate"><span class="pre">omdi</span></code> closely follows the design principles of Dear ImGui, so in that sense adding any <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> element as an <a class="reference internal" href="refs/safe_components.html#_CPPv4N4omdi9ComponentERKNSt8functionIFbvEEERKNSt8functionIFvvEEERKNSt8functionIFvvEEEPN4omdi12ToastManagerE" title="omdi::Component"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">omdi::Component()</span></code></a> is fairly straightforward.</p>
+</div>
+</section>
+<section id="adding-imgui-components">
+<h2>Adding <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> components<a class="headerlink" href="#adding-imgui-components" title="Link to this heading">¶</a></h2>
+<p>Adding any other <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> elements to the application is as simple as putting them inside the render function. For example, let’s create a simple window with a text and a color picker which stores the color in the application state. First of all, let’s add the state variable to hold the color (after defining the <code class="docutils literal notranslate"><span class="pre">state</span></code> variable):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;my_color&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>Next, inside the render loop, let’s add a new window with the following components:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImGui</span><span class="o">::</span><span class="n">Begin</span><span class="p">(</span><span class="s">&quot;Test Window&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ImGui</span><span class="o">::</span><span class="n">Text</span><span class="p">(</span><span class="s">&quot;Pick a random color&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ImGui</span><span class="o">::</span><span class="n">ColorEdit4</span><span class="p">(</span><span class="s">&quot;Color&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">*&gt;</span><span class="p">(</span><span class="s">&quot;my_color&quot;</span><span class="p">));</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">*&gt;</span><span class="p">(</span><span class="s">&quot;my_color&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ImGui</span><span class="o">::</span><span class="n">Text</span><span class="p">(</span><span class="s">&quot;You picked: %.2f, %.2f, %.2f, %.2f&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="w">                </span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+<span class="w">                </span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="w">                </span><span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+<span class="w">    </span><span class="n">ImGui</span><span class="o">::</span><span class="n">End</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The best way to find all the components for Dear <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> is to check out their <a class="reference external" href="https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html">official interactive demo</a>, which conveniently links each component to the relevant sections of the code.</p>
+</div>
+</section>
+<section id="customizing-the-ui">
+<h2>Customizing the UI<a class="headerlink" href="#customizing-the-ui" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">omdi</span></code> comes with a set of UI configuration tools to modify the look and feel of the application at runtime. This is done through the built-in <code class="docutils literal notranslate"><span class="pre">StyleDialog</span></code> component, which can be added to the application in a similar way as the menubar.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="k">auto</span><span class="w"> </span><span class="n">styleDialog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">StyleDialog</span><span class="p">();</span>
+</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">components_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span><span class="w">      </span><span class="s">&quot;menubar&quot;</span><span class="p">,</span><span class="w">     </span><span class="o">&amp;</span><span class="n">menubar</span><span class="w"> </span><span class="p">},</span>
+<span class="hll"><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;style_dialog&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">styleDialog</span><span class="w"> </span><span class="p">}</span>
+</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>To control when the style dialog is shown, we can again add a toggle to the menubar, modifying a special attribute of the <code class="docutils literal notranslate"><span class="pre">state</span></code> variable called <code class="docutils literal notranslate"><span class="pre">show_style_dialog</span></code> when the menu item is clicked:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">menubar</span><span class="p">.</span><span class="n">AddLeft</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">omdi</span><span class="o">::</span><span class="n">Component</span><span class="p">(</span>
+<span class="w">    </span><span class="p">[]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">ImGui</span><span class="o">::</span><span class="n">BeginMenu</span><span class="p">(</span><span class="s">&quot;UI&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImGui</span><span class="o">::</span><span class="n">MenuItem</span><span class="p">(</span><span class="s">&quot;Style dialog&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;show_style_dialog&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImGui</span><span class="o">::</span><span class="n">EndMenu</span><span class="p">();</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>If you compile and run – you should be able to see a “UI” menu and a “Style dialog” item in it. Clicking on it will open the style configuration dialog, where you can pick one of the preset styles or change the background color.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Notice, that you can have multiple <code class="docutils literal notranslate"><span class="pre">AddLeft</span></code>, <code class="docutils literal notranslate"><span class="pre">AddCenter</span></code>, and <code class="docutils literal notranslate"><span class="pre">AddRight</span></code> calls to add more menus, which will automatically be stacked in the correct order.</p>
+</div>
+<p>Let’s go further and add a font picker to the style dialog. By default, this setting is disabled to avoid unnecessary use of resources, but we can easily enable it by adding a font manager to the application. First, let’s declare it before initializing the app and put it in the <code class="docutils literal notranslate"><span class="pre">managers</span></code> dictionary:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">fontManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">FontManager</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">managers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">managers_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;font_manager&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fontManager</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Again, we will be able to add more managers later. Now, we need to pass the <code class="docutils literal notranslate"><span class="pre">managers</span></code> dictionary to both the <code class="docutils literal notranslate"><span class="pre">Init</span></code> and the <code class="docutils literal notranslate"><span class="pre">Render</span></code> functions:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="n">app</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">managers</span><span class="p">);</span>
+</span>
+<span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">},</span>
+<span class="n">components</span><span class="p">,</span>
+<span class="hll"><span class="n">managers</span><span class="p">);</span>
+</span></pre></div>
+</div>
+<p>Now when you open the style dialog, you should see a new section to tweak the family and the size of the font used in the application.</p>
+</section>
+<section id="plotting-with-implot">
+<h2>Plotting with <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code><a class="headerlink" href="#plotting-with-implot" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">omdi</span></code> comes with a few built-in plotting components, but also supports default <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code> plotting functionality out of the box. For the purposes of this exercise, let’s add four side-by-side plots: a line plot, a simple shaded plot, a bar plot, and a scatter plot. First of all, let’s generate some mock data to plot:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">npointsNoisy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">noisyX</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">npointsNoisy</span><span class="p">];</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">noisyY1</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">npointsNoisy</span><span class="p">];</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">noisyY2</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">npointsNoisy</span><span class="p">];</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">npointsNoisy</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">noisyX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.05f</span><span class="p">;</span>
+<span class="w">  </span><span class="n">noisyY1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">RAND_MAX</span><span class="p">);</span>
+<span class="w">  </span><span class="n">noisyY2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">RAND_MAX</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">npointsShaded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">shadeXs</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">npointsShaded</span><span class="p">];</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">shadeYUps</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">npointsShaded</span><span class="p">];</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">shadeYDwns</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">npointsShaded</span><span class="p">];</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">npointsShaded</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">shadeXs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.001f</span><span class="p">;</span>
+<span class="w">  </span><span class="n">shadeYUps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">0.75f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.2f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sinf</span><span class="p">(</span><span class="mi">25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">shadeXs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">  </span><span class="n">shadeYDwns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.75f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cosf</span><span class="p">(</span><span class="mi">25</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">shadeXs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we’re using simple C++ pointers, but any STL container (e.g., <code class="docutils literal notranslate"><span class="pre">std::vector</span></code>, or <code class="docutils literal notranslate"><span class="pre">std::array</span></code>) would work just as well, as long as we have an access to the raw data pointer. <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code> uses a very similar workflow as <code class="docutils literal notranslate"><span class="pre">ImGui</span></code>; we first create a plotting context, the add individual plots inside it. Let’s add the following code to the render loop:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="hll"><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginSubplots</span><span class="p">(</span><span class="s">&quot;Plots&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">ImVec2</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+</span><span class="hll"><span class="w">    </span><span class="c1">// plotting functions go here</span>
+</span><span class="hll"><span class="w">    </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndSubplots</span><span class="p">();</span>
+</span><span class="hll"><span class="w">  </span><span class="p">}</span>
+</span><span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">,</span><span class="w"> </span><span class="n">managers</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, we are creating a 2x2 grid of subplots that will automatically adjust to the size of the window (<code class="docutils literal notranslate"><span class="pre">ImVec2</span></code> object is just a tuple of pixel sizes in <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>, where <code class="docutils literal notranslate"><span class="pre">-1</span></code> means auto-adjustment). Now, let’s fill in the individual plots one by one.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginSubplots</span><span class="p">(</span><span class="s">&quot;Plots&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">ImVec2</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginPlot</span><span class="p">(</span><span class="s">&quot;NoisyPlot&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PlotLine</span><span class="p">(</span><span class="s">&quot;Noisy&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">noisyX</span><span class="p">,</span><span class="w"> </span><span class="n">noisyY1</span><span class="p">,</span><span class="w"> </span><span class="n">npointsNoisy</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndPlot</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginPlot</span><span class="p">(</span><span class="s">&quot;ShadedPlot&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PushStyleVar</span><span class="p">(</span><span class="n">ImPlotStyleVar_FillAlpha</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PlotShaded</span><span class="p">(</span><span class="s">&quot;Shaded&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">shadeXs</span><span class="p">,</span><span class="w"> </span><span class="n">shadeYUps</span><span class="p">,</span><span class="w"> </span><span class="n">shadeYDwns</span><span class="p">,</span><span class="w"> </span><span class="n">npointsShaded</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PlotLine</span><span class="p">(</span><span class="s">&quot;Shaded&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">shadeXs</span><span class="p">,</span><span class="w"> </span><span class="n">shadeYUps</span><span class="p">,</span><span class="w"> </span><span class="n">npointsShaded</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PlotLine</span><span class="p">(</span><span class="s">&quot;Shaded&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">shadeXs</span><span class="p">,</span><span class="w"> </span><span class="n">shadeYDwns</span><span class="p">,</span><span class="w"> </span><span class="n">npointsShaded</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PopStyleVar</span><span class="p">();</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndPlot</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginPlot</span><span class="p">(</span><span class="s">&quot;BarPlot&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PlotBars</span><span class="p">(</span><span class="s">&quot;Bars&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">noisyY1</span><span class="p">,</span><span class="w"> </span><span class="n">npointsNoisy</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndPlot</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginPlot</span><span class="p">(</span><span class="s">&quot;ScatterPlot&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PlotScatter</span><span class="p">(</span><span class="s">&quot;Scatter&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">noisyY1</span><span class="p">,</span><span class="w"> </span><span class="n">noisyY2</span><span class="p">,</span><span class="w"> </span><span class="n">npointsNoisy</span><span class="p">);</span>
+<span class="w">      </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndPlot</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndSubplots</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">,</span><span class="w"> </span><span class="n">managers</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The usage is fairly similar to <code class="docutils literal notranslate"><span class="pre">ImGui</span></code>: you create a context (<code class="docutils literal notranslate"><span class="pre">BeginPlot</span></code>), add the plot components (<code class="docutils literal notranslate"><span class="pre">PlotLine</span></code>, <code class="docutils literal notranslate"><span class="pre">PlotShaded</span></code>, etc.), and then close the context (<code class="docutils literal notranslate"><span class="pre">EndPlot</span></code>). Note that for the shaded plot, we are also pushing and popping a style variable to adjust the transparency of the shaded area. Other stuff, like legends, axis labels, shared axes, ticks, etc can be adjusted using the relevant <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code> functions. Now, when you compile and run the application, you should see four different plots arranged in a 2x2 grid.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Again, perhaps the best way to explore all the features of <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code> is to check out their <a class="reference external" href="https://traineq.org/implot_demo/src/implot_demo.html">interactive demo</a>.</p>
+</div>
+<p>You can also mix <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> and <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code> components freely. For example, let’s adapt our previously defined color picker to change the color for all the lines in our subplots.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ImPlot</span><span class="o">::</span><span class="n">BeginSubplots</span><span class="p">(</span><span class="s">&quot;Plots&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">ImVec2</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="hll"><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">*&gt;</span><span class="p">(</span><span class="s">&quot;my_color&quot;</span><span class="p">);</span>
+</span><span class="hll"><span class="w">  </span><span class="n">ImGui</span><span class="o">::</span><span class="n">ColorEdit4</span><span class="p">(</span><span class="s">&quot;Color&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="p">);</span>
+</span><span class="hll"><span class="w">  </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PushStyleColor</span><span class="p">(</span><span class="n">ImPlotCol_Line</span><span class="p">,</span>
+</span><span class="hll"><span class="w">                         </span><span class="n">ImVec4</span><span class="p">(</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">color</span><span class="p">[</span><span class="mi">3</span><span class="p">]));</span>
+</span><span class="w">  </span><span class="c1">// plotting routines</span>
+<span class="hll"><span class="w">  </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">PopStyleColor</span><span class="p">();</span>
+</span><span class="w">  </span><span class="n">ImPlot</span><span class="o">::</span><span class="n">EndSubplots</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="gpu-accelerated-2d-rendering-with-omdi">
+<h2>GPU-accelerated 2D rendering with <code class="docutils literal notranslate"><span class="pre">omdi</span></code><a class="headerlink" href="#gpu-accelerated-2d-rendering-with-omdi" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">omdi</span></code> includes a couple of built-in plotting functions, and one of them – the 2D plotter – is an order of magnitude faster than the built-in <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code> heatmap functionality.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, there are just two built-in plotters – the <code class="docutils literal notranslate"><span class="pre">PcolorPlot</span></code> (for 2D rendering) and <code class="docutils literal notranslate"><span class="pre">ScatterPlot</span></code>. More plotters will be added in future releases.</p>
+</div>
+<p>To use it, we first need to define the plotter object outside the render loop and bind some data to it. First, let’s define some data:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">nx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512u</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">ny</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512u</span><span class="p">;</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">xs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">nx</span><span class="p">];</span>
+<span class="k">auto</span><span class="w">       </span><span class="n">ys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">ny</span><span class="p">];</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nx</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.01f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">2.56f</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ny</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ys</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.015f</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">zfunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sinf</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">M_PI</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">cosf</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">2.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">M_PI</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">expf</span><span class="p">(</span><span class="mf">-4.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">));</span>
+<span class="p">};</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">zs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">float</span><span class="p">[</span><span class="n">nx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ny</span><span class="p">];</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ny</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nx</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">ys</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+<span class="w">    </span><span class="n">zs</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zfunc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we create a 2D grid of <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> coordinates and computed the corresponding <code class="docutils literal notranslate"><span class="pre">z</span></code> values from a simple function, <code class="docutils literal notranslate"><span class="pre">zfunc</span></code>. Let’s now create the plotter object and bind the data to it:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">pcolorPlot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">PcolorPlot</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;zfunc&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">GridXY</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">xs</span><span class="p">,</span><span class="w"> </span><span class="n">ys</span><span class="p">,</span><span class="w"> </span><span class="n">nx</span><span class="p">,</span><span class="w"> </span><span class="n">ny</span><span class="p">,</span><span class="w"> </span><span class="n">zs</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="s">&quot;PcolorExample&quot;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Because the <code class="docutils literal notranslate"><span class="pre">PcolorPlot</span></code> has to know the data layout, we need to wrap the raw data pointers inside a special <code class="docutils literal notranslate"><span class="pre">omdi::GridXY</span></code> container. Now we can simply call the plotter’s <code class="docutils literal notranslate"><span class="pre">plot()</span></code> method inside the render loop to display the plot:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="hll"><span class="w">  </span><span class="n">pcolorPlot</span><span class="o">-&gt;</span><span class="n">plot</span><span class="p">();</span>
+</span><span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">,</span><span class="w"> </span><span class="n">managers</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To see how performant the plotter is, let’s add a timer object to keep track of the number of frames rendered per second. At the top of the <code class="docutils literal notranslate"><span class="pre">main</span></code> function, add the following:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">omdi</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Timer</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>While we’re there, let’s also initialize the built-in logger which adds color-coded messages for different log-levels:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">omdi</span><span class="o">::</span><span class="n">logger</span><span class="o">::</span><span class="n">Init</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>At the end of your render loop, add the following code to compute and display the FPS, and update the timer:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="n">pcolorPlot</span><span class="o">-&gt;</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="hll"><span class="w">  </span><span class="n">omdi</span><span class="o">::</span><span class="n">logger</span><span class="o">::</span><span class="n">Log</span><span class="p">(</span><span class="s">&quot;FPS: %.3f&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">timer</span><span class="p">.</span><span class="n">delta</span><span class="p">());</span>
+</span><span class="hll"><span class="w">  </span><span class="n">timer</span><span class="p">.</span><span class="n">tick</span><span class="p">();</span>
+</span><span class="p">},</span><span class="w"> </span><span class="n">components</span><span class="p">,</span><span class="w"> </span><span class="n">managers</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Finally, let’s make the plot a bit more interesting by updating the <code class="docutils literal notranslate"><span class="pre">z</span></code> values every frame based on the elapsed time. Add the following code at the end of the render loop:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ny</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nx</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">x</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">xs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">y</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">ys</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+<span class="w">    </span><span class="n">zs</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zfunc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">timer</span><span class="p">.</span><span class="n">elapsed</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="more-things-to-try">
+<h2>More things to try<a class="headerlink" href="#more-things-to-try" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="references.html#references"><span class="std std-ref">references</span></a> section contains a full list of alll the classes and functions available in <code class="docutils literal notranslate"><span class="pre">omdi</span></code>. There are also examples of things you might want to try out, such as adding a <a class="reference internal" href="refs/toastmanager.html#omdi-toast-manager"><span class="std std-ref">notification toast</span></a>, using the <a class="reference internal" href="refs/pickermanager.html#omdi-picker-manager"><span class="std std-ref">file picker</span></a>, or taking a <a class="reference internal" href="refs/screenshotmanager.html#omdi-screenshot-manager"><span class="std std-ref">screenshot</span></a> of the application window.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="references.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">References</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="install.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Installation &amp; Usage</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, hayk
+            </div>
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/haykh/oh-my-dear-imgui/" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512">
+                    <path d="M216.3 158.4l-79.3 0c-40-10.5-130.5-7.8-130.5 74.8 0 30.1 15 51.2 35 61-25.1 23-37 33.8-37 49.2 0 11 4.5 21.1 17.9 26.8-14.3 13.4-22.4 23.1-22.4 41.4 0 32.1 28 50.8 101.6 50.8 70.8 0 111.8-26.4 111.8-73.2 0-58.7-45.2-56.5-151.6-63l13.4-21.6c27.3 7.6 118.7 10 118.7-67.9 0-18.7-7.7-31.7-15-41.1l37.4-2.8 0-34.5zM152.9 400.3c0 32.1-104.9 32.1-104.9 2.4 0-8.1 5.3-15 10.6-21.5 77.7 5.3 94.3 3.4 94.3 19.1zM102.1 265.7c-52.8 0-50.5-71.2 1.2-71.2 49.5 0 50.8 71.2-1.2 71.2zM235.4 366.2l0-32.1c26.7-3.7 27.2-2 27.2-11l0-119.5c0-8.5-2.1-7.4-27.2-16.3l4.5-32.9 84.2 0 0 168.7c0 6.5 .4 7.3 6.5 8.1l20.7 2.8 0 32.1-115.9 0zm52.5-244.3c-23.2 0-36.6-13.4-36.6-36.6s13.4-35.8 36.6-35.8c23.6 0 37 12.6 37 35.8s-13.4 36.6-37 36.6zM512 350.5c-17.5 8.5-43.1 16.3-66.3 16.3-48.4 0-66.7-19.5-66.7-65.5l0-106.5c0-5.4 1-4.1-31.7-4.1l0-36.2c35.8-4.1 50-22 54.5-66.3l38.6 0c0 65.8-1.3 61.8 3.3 61.8l57.3 0 0 40.6-60.6 0 0 97.1c0 6.9-4.9 51.4 60.6 26.8l11 35.8z"/>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#setting-up-the-project">Setting up the project</a></li>
+<li><a class="reference internal" href="#adding-a-menubar">Adding a menubar</a></li>
+<li><a class="reference internal" href="#adding-imgui-components">Adding <code class="docutils literal notranslate"><span class="pre">ImGui</span></code> components</a></li>
+<li><a class="reference internal" href="#customizing-the-ui">Customizing the UI</a></li>
+<li><a class="reference internal" href="#plotting-with-implot">Plotting with <code class="docutils literal notranslate"><span class="pre">ImPlot</span></code></a></li>
+<li><a class="reference internal" href="#gpu-accelerated-2d-rendering-with-omdi">GPU-accelerated 2D rendering with <code class="docutils literal notranslate"><span class="pre">omdi</span></code></a></li>
+<li><a class="reference internal" href="#more-things-to-try">More things to try</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>
