@@ -14,19 +14,18 @@ namespace omdi::plots {
   /**
    * @brief Class for creating 2D heatmap (pseudocolor) plots.
    */
-  class PcolorPlot : public Plot {
+  class PcolorPlot : public Plot,
+                     public DataPlot<GridXY> {
     bool           m_aspect_equal { true };
     int            m_which { 0 };
     ImPlotColormap m_colormap { ImPlotColormap_Viridis };
-
-    std::map<std::string, const GridXY* const> m_data;
 
   public:
     PcolorPlot(const std::map<std::string, const GridXY* const>& data,
                const std::string& label        = "PcolorPlot",
                bool               aspect_equal = true)
       : Plot { label }
-      , m_data { data }
+      , DataPlot { data }
       , m_aspect_equal { aspect_equal } {}
 
     void plot() override;

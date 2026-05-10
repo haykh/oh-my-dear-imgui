@@ -9,7 +9,11 @@ namespace omdi::plots {
                           ImVec2(-1, -1),
                           m_aspect_equal ? ImPlotFlags_Equal : ImPlotFlags_None)) {
       for (const auto& [lbl, points] : m_data) {
-        ImPlot::PlotScatter(lbl.c_str(), points->x, points->y, points->npoints);
+        ImPlot::PlotScatter(lbl.c_str(),
+                            points->x,
+                            points->y,
+                            points->npoints,
+                            get_spec(lbl));
       }
       ImPlot::EndPlot();
     }

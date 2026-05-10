@@ -489,10 +489,9 @@ namespace omdi::implot {
                    double             scale_max,
                    const ImPlotPoint& bounds_min,
                    const ImPlotPoint& bounds_max,
-                   ImPlotHeatmapFlags flags) {
-    if (ImPlot::BeginItemEx(label_id,
-                            FitterRect(bounds_min, bounds_max),
-                            ImPlotSpec())) {
+                   ImPlotHeatmapFlags flags,
+                   const ImPlotSpec&  spec) {
+    if (ImPlot::BeginItemEx(label_id, FitterRect(bounds_min, bounds_max), spec)) {
       if (rows <= 0 || cols <= 0) {
         ImPlot::EndItem();
         return;
@@ -522,7 +521,8 @@ namespace omdi::implot {
                                           double             scale_max,        \
                                           const ImPlotPoint& bounds_min,       \
                                           const ImPlotPoint& bounds_max,       \
-                                          ImPlotHeatmapFlags flags);
+                                          ImPlotHeatmapFlags flags,            \
+                                          const ImPlotSpec&  spec);
   CALL_INSTANTIATE_FOR_NUMERIC_TYPES()
 #undef INSTANTIATE_MACRO
 

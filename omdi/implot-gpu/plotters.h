@@ -14,7 +14,8 @@ namespace omdi::implot {
                    double             scale_max  = 0,
                    const ImPlotPoint& bounds_min = ImPlotPoint(0, 0),
                    const ImPlotPoint& bounds_max = ImPlotPoint(1, 1),
-                   ImPlotHeatmapFlags flags      = 0);
+                   ImPlotHeatmapFlags flags      = 0,
+                   const ImPlotSpec&  spec       = {});
 
 } // namespace omdi::implot
 
