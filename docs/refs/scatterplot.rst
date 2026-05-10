@@ -6,7 +6,7 @@ ScatterPlot
 Overview
 --------
 
-.. cpp:class:: omdi::ScatterPlot : public omdi::Plot
+.. cpp:class:: omdi::ScatterPlot : public omdi::Plot, public omdi::plots::DataPlot<omdi::Points>
 
    Class for creating 2D scatter plots.
 
@@ -15,11 +15,12 @@ Overview
 
    - plotting one or more named point datasets,
    - an option to enforce equal aspect ratio for X and Y axes,
+   - per-series visual customization via :cpp:class:`ImPlotSpec`,
    - reuse of the common :cpp:class:`omdi::Plot` interface.
 
-   Datasets are stored as a map from string names to non-owning pointers to
-   :cpp:struct:`omdi::Points`, allowing you to share point data across
-   multiple plots without copying.
+   Datasets are stored **by value** inside the inherited
+   :cpp:class:`omdi::plots::DataPlot\<omdi::Points\>` base, so no external
+   data lifetime management is required.
 
 
 Usage example
@@ -27,13 +28,21 @@ Usage example
 
 Basic usage with two point sets:
 
-.. code-block:: cpp 
+.. code-block:: cpp
 
-  // Assume pts1 and pts2 are existing omdi::Points
-  auto scatter = omdi::ScatterPlot({
-    {"set A", &pts1},
-    {"set B", &pts2}
-  }, "Scatter Example", /*aspect_equal=*/true);
+  // Create scatter plot with just a label — no data yet
+  auto scatter = omdi::ScatterPlot { "Scatter Example" };
+
+  // Add or replace all datasets at once
+  scatter.update_all({
+    { "set A", omdi::Points { {0.0f, 1.0f, 2.0f}, {1.0f, 0.5f, 0.25f}, 3 } },
+    { "set B", omdi::Points { xs_vec, ys_vec, n } }
+  });
+
+  // Or construct with initial data directly:
+  auto scatter2 = omdi::ScatterPlot { "Scatter Example", {
+    { "set A", omdi::Points { xs_vec, ys_vec, n } }
+  }};
 
   // Inside your ImGui/ImPlot drawing code:
   scatter.plot();
@@ -50,33 +59,59 @@ Data members
    one unit in Y, which is useful for geometric or spatial data. When
    ``false``, the aspect ratio is free.
 
-.. cpp:member:: std::map<std::string, const omdi::Points* const> omdi::ScatterPlot::m_data
-
-   Map of named point sets to display.
-
-   The keys are dataset names (e.g. ``"points_a"``, ``"points_b"``), and
-   the values are non-owning pointers to :cpp:struct:`omdi::Points`
-   instances representing scattered points.
-
 Constructor
 -----------
 
 .. cpp:function:: omdi::ScatterPlot::ScatterPlot( \
-                     const std::map<std::string, const omdi::Points* const>& data, \
                      const std::string& label = "ScatterPlot", \
+                     const std::map<std::string, omdi::Points>& data = {}, \
                      bool aspect_equal = true)
 
-   Construct a scatter plot from a set of point datasets.
+   Construct a scatter plot with an optional label and initial datasets.
 
-   :param data: Map from dataset names to non-owning pointers to
-                :cpp:struct:`omdi::Points` structures.
-   :param label: Plot label / title (used in ImPlot).
+   :param label: Plot label / title (used in ImPlot). Defaults to
+                 ``"ScatterPlot"``.
+   :param data: Map from dataset names to :cpp:struct:`omdi::Points` values.
+                Data is copied into the plot on construction. Defaults to an
+                empty map.
    :param aspect_equal: Whether to enforce equal aspect ratio for the axes
                         (defaults to ``true``).
 
-   The :cpp:class:`omdi::ScatterPlot` does not take ownership of the
-   :cpp:struct:`omdi::Points` instances; the caller must ensure that
-   the underlying point data outlives the plot.
+Inherited from DataPlot<Points>
+---------------------------------
+
+The following methods are inherited from
+:cpp:class:`omdi::plots::DataPlot\<omdi::Points\>` and can be called directly
+on a :cpp:class:`omdi::ScatterPlot` instance.
+
+.. cpp:function:: void omdi::ScatterPlot::update(const std::string& label, omdi::Points data)
+
+   Replace or insert a single named point dataset.
+
+   :param label: Name of the dataset to update.
+   :param data: New :cpp:struct:`omdi::Points` value (copied by value).
+
+.. cpp:function:: void omdi::ScatterPlot::update_all(std::map<std::string, omdi::Points> new_data)
+
+   Replace all datasets at once.
+
+   :param new_data: Map of new datasets. Replaces the entire contents of the
+                    internal data store.
+
+.. cpp:function:: auto omdi::ScatterPlot::set_spec(const std::string& label, const ImPlotSpec& spec) -> void
+
+   Set the per-series plot specification for a named dataset.
+
+   :param label: Dataset label to associate the spec with.
+   :param spec: :cpp:class:`ImPlotSpec` controlling the visual appearance of
+                the series.
+
+.. cpp:function:: auto omdi::ScatterPlot::get_spec(const std::string& label) const -> ImPlotSpec
+
+   Get the per-series plot specification for a named dataset.
+
+   :param label: Dataset label whose spec to retrieve.
+   :returns: The :cpp:class:`ImPlotSpec` associated with ``label``.
 
 Plotting
 --------
@@ -87,9 +122,11 @@ Plotting
 
    This method overrides :cpp:func:`omdi::Plot::plot` and:
 
-   - iterates over the entries in :cpp:member:`omdi::ScatterPlot::m_data`,
+   - iterates over the entries in the internal data map,
    - for each dataset, retrieves the X/Y arrays and point count from the
      corresponding :cpp:struct:`omdi::Points`,
+   - applies the per-series :cpp:class:`ImPlotSpec` (retrieved via
+     :cpp:func:`omdi::ScatterPlot::get_spec`) to control visual style,
    - draws the points using ImPlot's scatter/marker primitives,
    - applies equal aspect ratio if
      :cpp:member:`omdi::ScatterPlot::m_aspect_equal` is ``true``.
@@ -99,8 +136,10 @@ Plotting
 Notes
 -----
 
-- :cpp:class:`omdi::ScatterPlot` assumes that all :cpp:struct:`omdi::Points`
-  instances in :cpp:member:`omdi::ScatterPlot::m_data` remain valid while
-  the plot is being used.
+- :cpp:class:`omdi::ScatterPlot` **owns** all dataset copies; no external
+  :cpp:struct:`omdi::Points` instances need to remain alive.
 - Enabling equal aspect ratio is recommended for spatial data where Euclidean
   distances and angles should not be visually distorted.
+- Use :cpp:func:`omdi::ScatterPlot::update` to refresh a single series and
+  :cpp:func:`omdi::ScatterPlot::update_all` to replace all series at once,
+  for example when integrating with a simulation or background thread.

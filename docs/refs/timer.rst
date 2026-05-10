@@ -32,7 +32,7 @@ Data members
    This value is constant for the lifetime of the timer and is used as the
    reference for computing total elapsed time.
 
-.. cpp:member:: std::size_t omdi::Timer::m_frame
+.. cpp:member:: size_t omdi::Timer::m_frame
 
    Current frame counter.
 
@@ -83,7 +83,7 @@ Public interface
 
    Typically called once per frame in the main loop.
 
-.. cpp:function:: std::size_t omdi::Timer::frame() const
+.. cpp:function:: size_t omdi::Timer::frame() const
 
    Get the current frame count.
 

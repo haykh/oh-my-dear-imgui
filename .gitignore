@@ -60,3 +60,4 @@ imgui.ini
 screenshots/
 install/
 _build/
+.claude/

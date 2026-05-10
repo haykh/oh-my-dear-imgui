@@ -334,53 +334,47 @@ GPU-accelerated 2D rendering with ``omdi``
 
   Currently, there are just two built-in plotters -- the ``PcolorPlot`` (for 2D rendering) and ``ScatterPlot``. More plotters will be added in future releases.
 
-To use it, we first need to define the plotter object outside the render loop and bind some data to it. First, let's define some data:
+To use it, we first need to define the plotter object outside the render loop and provide some data. First, let's define the coordinate axes and the scalar field:
 
 .. code-block:: cpp
 
   const auto nx = 512u;
   const auto ny = 512u;
-  auto       xs = new float[nx];
-  auto       ys = new float[ny];
-
-  for (auto i = 0u; i < nx; ++i) {
-    xs[i] = i * 0.01f - 2.56f;
-  }
-  for (auto j = 0u; j < ny; ++j) {
-    ys[j] = j * 0.015f;
-  }
+  auto xs = std::vector<float>(nx);
+  auto ys = std::vector<float>(ny);
+  for (auto i = 0u; i < nx; ++i) { xs[i] = i * 0.01f - 2.56f; }
+  for (auto j = 0u; j < ny; ++j) { ys[j] = j * 0.015f; }
 
   auto zfunc = [](float x, float y, float t) {
     return std::sinf(x * (2.0 * M_PI) + t) *
            std::cosf(y * (2.0 * M_PI) + 1.5 * t) * std::expf(-4.0 * (x * x));
   };
 
-  auto zs = new float[nx * ny];
+  auto zs = std::vector<float>(nx * ny);
   for (auto j = 0u; j < ny; ++j) {
     for (auto i = 0u; i < nx; ++i) {
-      auto x         = xs[i];
-      auto y         = ys[j];
-      zs[j * nx + i] = zfunc(x, y, 0.0f);
+      zs[j * nx + i] = zfunc(xs[i], ys[j], 0.0f);
     }
   }
 
-Here we create a 2D grid of ``(x, y)`` coordinates and computed the corresponding ``z`` values from a simple function, ``zfunc``. Let's now create the plotter object and bind the data to it:
+Here we create a 2D grid of ``(x, y)`` coordinates and compute the corresponding ``z`` values from a simple function, ``zfunc``. Because :cpp:struct:`omdi::GridXY` copies data on construction, you do not need to worry about the lifetime of the source vectors after building the plot.
+
+Let's now create the plotter object. The constructor takes the label first and an optional map of initial datasets second:
 
 .. code-block:: cpp
 
-  auto pcolorPlot = new omdi::PcolorPlot {
-    { { "zfunc", new omdi::GridXY { xs, ys, nx, ny, zs } } },
-    "PcolorExample"
-  };
+  auto pcolorPlot = omdi::PcolorPlot { "PcolorExample", {
+    { "zfunc", omdi::GridXY { xs, ys, nx, ny, zs } }
+  }};
 
-Because the ``PcolorPlot`` has to know the data layout, we need to wrap the raw data pointers inside a special ``omdi::GridXY`` container. Now we can simply call the plotter's ``plot()`` method inside the render loop to display the plot:
+We wrap the data in a :cpp:struct:`omdi::GridXY` container so that ``PcolorPlot`` knows the grid layout. Now we can call the plotter's ``plot()`` method inside the render loop:
 
 .. code-block:: cpp
   :emphasize-lines: 3
 
   app.Render(&state, [&]() {
     // ...
-    pcolorPlot->plot();
+    pcolorPlot.plot();
   }, components, managers);
 
 
@@ -403,24 +397,34 @@ At the end of your render loop, add the following code to compute and display th
 
   app.Render(&state, [&]() {
     // ...
-    pcolorPlot->plot();
+    pcolorPlot.plot();
 
     omdi::logger::Log("FPS: %.3f", 1.0f / timer.delta());
     timer.tick();
   }, components, managers);
 
 
-Finally, let's make the plot a bit more interesting by updating the ``z`` values every frame based on the elapsed time. Add the following code at the end of the render loop:
+Finally, let's make the plot more interesting by updating the ``z`` values every frame based on the elapsed time. Use :cpp:func:`omdi::PcolorPlot::update` to push a freshly computed grid to the named series:
 
 .. code-block:: cpp
 
-  for (auto j = 0u; j < ny; ++j) {
-    for (auto i = 0u; i < nx; ++i) {
-      auto x         = xs[i];
-      auto y         = ys[j];
-      zs[j * nx + i] = zfunc(x, y, timer.elapsed());
+  app.Render(&state, [&]() {
+    // ...
+    // Recompute z values for the current time
+    for (auto j = 0u; j < ny; ++j) {
+      for (auto i = 0u; i < nx; ++i) {
+        zs[j * nx + i] = zfunc(xs[i], ys[j], (float)timer.elapsed());
+      }
     }
-  }
+    // Push updated data to the plot (replaces the "zfunc" series)
+    pcolorPlot.update("zfunc", omdi::GridXY { xs, ys, nx, ny, zs });
+
+    pcolorPlot.plot();
+    omdi::logger::Log("FPS: %.3f", 1.0f / timer.delta());
+    timer.tick();
+  }, components, managers);
+
+:cpp:func:`omdi::PcolorPlot::update` replaces the data for a single named series. To replace all series at once use :cpp:func:`omdi::PcolorPlot::update_all`, which accepts the same ``std::map<std::string, omdi::GridXY>`` format as the constructor.
 
 
 More things to try
