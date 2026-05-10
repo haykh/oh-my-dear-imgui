@@ -490,7 +490,9 @@ namespace omdi::implot {
                    const ImPlotPoint& bounds_min,
                    const ImPlotPoint& bounds_max,
                    ImPlotHeatmapFlags flags) {
-    if (ImPlot::BeginItemEx(label_id, FitterRect(bounds_min, bounds_max))) {
+    if (ImPlot::BeginItemEx(label_id,
+                            FitterRect(bounds_min, bounds_max),
+                            ImPlotSpec())) {
       if (rows <= 0 || cols <= 0) {
         ImPlot::EndItem();
         return;
