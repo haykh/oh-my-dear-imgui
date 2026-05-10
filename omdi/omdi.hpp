@@ -20,6 +20,10 @@
 #include "style/icons.h"
 #include "style/themes.h"
 #include "utils.h"
+/**/
+#include "examples/field.h"
+#include "examples/pointcloud.h"
+#include "examples/sim.h"
 
 #include <map>
 #include <string>

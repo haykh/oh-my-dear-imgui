@@ -63,3 +63,4 @@ imgui.ini
 *.toml
 screenshots/
 install/
+.claude

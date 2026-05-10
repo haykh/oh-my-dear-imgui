@@ -24,13 +24,13 @@ namespace omdi::plots {
                                              : ImPlotFlags_None)) {
           omdi::implot::PlotHeatmap(
             name.c_str(),
-            grid->z,
-            grid->ny,
-            grid->nx,
+            grid.z.data(),
+            grid.ny,
+            grid.nx,
             -1.0,
             1.0,
-            ImPlotPoint(grid->x[0], grid->y[0]),
-            ImPlotPoint(grid->x[grid->nx - 1], grid->y[grid->ny - 1]),
+            ImPlotPoint(grid.x[0], grid.y[0]),
+            ImPlotPoint(grid.x[grid.nx - 1], grid.y[grid.ny - 1]),
             ImPlotAxisFlags_NoGridLines,
             get_spec(name));
           ImPlot::EndPlot();

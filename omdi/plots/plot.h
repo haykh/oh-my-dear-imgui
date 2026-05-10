@@ -31,8 +31,8 @@ namespace omdi::plots {
   template <typename T>
   class DataPlot {
   protected:
-    std::map<std::string, const T* const> m_data;
-    std::map<std::string, ImPlotSpec>     m_specs;
+    std::map<std::string, T>          m_data;
+    std::map<std::string, ImPlotSpec> m_specs;
 
   public:
     auto set_spec(const std::string& label, const ImPlotSpec& spec) -> void {
@@ -47,8 +47,15 @@ namespace omdi::plots {
       return ImPlotSpec();
     }
 
-    DataPlot(const std::map<std::string, const T* const>& data = {})
-      : m_data { data } {}
+    DataPlot(const std::map<std::string, T>& data = {}) : m_data { data } {}
+
+    void update(const std::string& label, T data) {
+      m_data[label] = std::move(data);
+    }
+
+    void update_all(std::map<std::string, T> new_data) {
+      m_data = std::move(new_data);
+    }
   };
 
 } // namespace omdi::plots

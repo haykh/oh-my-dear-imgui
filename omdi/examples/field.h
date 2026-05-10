@@ -14,29 +14,27 @@ namespace omdi::examples {
 
   class OscillatingFields : public Sim {
     std::vector<std::function<float(float, float, double)>> m_functions;
-    std::vector<float*>                                     m_fields;
+    std::vector<std::vector<float>>                         m_fields;
     std::vector<std::string>                                m_labels;
-    float*                                                  m_x;
-    float*                                                  m_y;
-    std::size_t                                             m_nx;
-    std::size_t                                             m_ny;
+    size_t                                                  m_nx;
+    size_t                                                  m_ny;
+    std::vector<float>                                      m_x;
+    std::vector<float>                                      m_y;
 
   public:
     // takes in string -> function (x, y) -> float
     OscillatingFields(
       const std::vector<std::pair<std::string, std::function<float(float, float, double)>>>&,
-      const std::tuple<float, float, std::size_t>&,
-      const std::tuple<float, float, std::size_t>&);
-
-    ~OscillatingFields();
+      const std::tuple<float, float, size_t>&,
+      const std::tuple<float, float, size_t>&);
 
     void update(double, double) override;
 
-    auto n_groups() const -> std::size_t {
+    auto n_groups() const -> size_t {
       return m_labels.size();
     }
 
-    auto get_data() const -> std::map<std::string, const omdi::GridXY* const>;
+    auto get_data() const -> std::map<std::string, omdi::GridXY>;
   };
 
 } // namespace omdi::examples

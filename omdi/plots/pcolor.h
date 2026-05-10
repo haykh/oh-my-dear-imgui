@@ -21,9 +21,9 @@ namespace omdi::plots {
     ImPlotColormap m_colormap { ImPlotColormap_Viridis };
 
   public:
-    PcolorPlot(const std::map<std::string, const GridXY* const>& data,
-               const std::string& label        = "PcolorPlot",
-               bool               aspect_equal = true)
+    PcolorPlot(const std::string&                   label        = "PcolorPlot",
+               const std::map<std::string, GridXY>& data         = {},
+               bool                                 aspect_equal = true)
       : Plot { label }
       , DataPlot { data }
       , m_aspect_equal { aspect_equal } {}

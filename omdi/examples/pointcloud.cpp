@@ -13,12 +13,12 @@
 namespace omdi::examples {
 
   RotatingPointcloud::RotatingPointcloud(
-    const std::vector<std::pair<std::string, std::size_t>>& settings) {
+    const std::vector<std::pair<std::string, size_t>>& settings) {
     for (const auto& [label, npoints] : settings) {
       m_labels.push_back(label);
       m_npoints.push_back(npoints);
-      m_xPos.push_back(new float[npoints]);
-      m_yPos.push_back(new float[npoints]);
+      m_xPos.emplace_back(npoints);
+      m_yPos.emplace_back(npoints);
     }
 
     std::random_device               rd;
@@ -37,13 +37,6 @@ namespace omdi::examples {
     }
   }
 
-  RotatingPointcloud::~RotatingPointcloud() {
-    for (auto group = 0u; group < n_groups(); ++group) {
-      delete[] m_xPos[group];
-      delete[] m_yPos[group];
-    }
-  }
-
   void RotatingPointcloud::update(double, double delta) {
     for (auto group = 0u; group < n_groups(); ++group) {
       const auto npoints = m_npoints[group];
@@ -59,16 +52,15 @@ namespace omdi::examples {
     }
   }
 
-  auto RotatingPointcloud::get_data() const
-    -> std::map<std::string, const omdi::Points* const> {
-    auto point_groups = std::map<std::string, const omdi::Points* const> {};
+  auto RotatingPointcloud::get_data() const -> std::map<std::string, omdi::Points> {
+    std::map<std::string, omdi::Points> result;
     for (auto group = 0u; group < n_groups(); ++group) {
-      point_groups.insert({
-        m_labels[group],
-        new omdi::Points { m_xPos[group], m_yPos[group], m_npoints[group] }
-      });
+      result.emplace(
+        std::piecewise_construct,
+        std::forward_as_tuple(m_labels[group]),
+        std::forward_as_tuple(m_xPos[group], m_yPos[group], m_npoints[group]));
     }
-    return point_groups;
+    return result;
   }
 
 } // namespace omdi::examples

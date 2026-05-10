@@ -1,10 +1,8 @@
-#include "examples/field.h"
-#include "examples/pointcloud.h"
-#include "examples/sim.h"
-
 #include <imgui.h>
 #include <implot.h>
 #include <omdi.hpp>
+
+#include <vector>
 
 auto main(int argc, char* argv[]) -> int {
   try {
@@ -34,11 +32,17 @@ auto main(int argc, char* argv[]) -> int {
       { -2.0f, 2.0f, 128 },
       { -3.0f, 3.0f, 256 });
 
-    plots.push_back(new omdi::ScatterPlot { sim1.get_data(), "ScatterExample" });
-    plots.push_back(new omdi::PcolorPlot { sim2.get_data(), "PcolorExample" });
+    auto scatter = omdi::ScatterPlot { "ScatterExample" };
+    auto pcolor  = omdi::PcolorPlot { "PcolorExample" };
+
+    plots.push_back(&scatter);
+    plots.push_back(&pcolor);
 
     app.Init(&state);
     app.Render(&state, [&]() {
+      scatter.update_all(sim1.get_data());
+      pcolor.update_all(sim2.get_data());
+
       for (auto& plot : plots) {
         if (ImGui::Begin(plot->label().c_str())) {
           plot->plot();
@@ -50,8 +54,6 @@ auto main(int argc, char* argv[]) -> int {
       }
       omdi::logger::Log("FPS: %.3f", 1.0 / timer.delta());
       timer.tick();
-      // ImGui::ShowDemoWindow();
-      // ImPlot::ShowDemoWindow();
     });
 
   } catch (const std::exception& e) {

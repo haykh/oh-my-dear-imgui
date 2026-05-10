@@ -19,9 +19,9 @@ namespace omdi::plots {
     bool m_aspect_equal = true;
 
   public:
-    ScatterPlot(const std::map<std::string, const Points* const>& data,
-                const std::string& label        = "ScatterPlot",
-                bool               aspect_equal = true)
+    ScatterPlot(const std::string&                   label = "ScatterPlot",
+                const std::map<std::string, Points>& data  = {},
+                bool                                 aspect_equal = true)
       : Plot { label }
       , DataPlot { data }
       , m_aspect_equal { aspect_equal } {}

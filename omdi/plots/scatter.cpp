@@ -10,9 +10,9 @@ namespace omdi::plots {
                           m_aspect_equal ? ImPlotFlags_Equal : ImPlotFlags_None)) {
       for (const auto& [lbl, points] : m_data) {
         ImPlot::PlotScatter(lbl.c_str(),
-                            points->x,
-                            points->y,
-                            points->npoints,
+                            points.x.data(),
+                            points.y.data(),
+                            points.npoints,
                             get_spec(lbl));
       }
       ImPlot::EndPlot();

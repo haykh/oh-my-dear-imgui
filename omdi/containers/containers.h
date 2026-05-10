@@ -2,6 +2,7 @@
 #define CONTAINERS_CONTAINERS_H
 
 #include <cstddef>
+#include <vector>
 
 namespace omdi {
 
@@ -9,11 +10,10 @@ namespace omdi {
    * @brief Structure to hold 2D scattered points data.
    */
   struct Points {
-    const float* const x;
-    const float* const y;
-    std::size_t        npoints;
+    std::vector<float> x, y;
+    size_t             npoints;
 
-    Points(const float* x, const float* y, std::size_t npoints)
+    Points(const std::vector<float>& x, const std::vector<float>& y, size_t npoints)
       : x { x }
       , y { y }
       , npoints { npoints } {}
@@ -23,13 +23,16 @@ namespace omdi {
    * @brief Structure to hold 2D grid data.
    */
   struct GridXY {
-    const float* const x;
-    const float* const y;
-    std::size_t        nx;
-    std::size_t        ny;
-    const float* const z;
+    std::vector<float> x, y;
+    size_t             nx;
+    size_t             ny;
+    std::vector<float> z;
 
-    GridXY(const float* x, const float* y, std::size_t nx, std::size_t ny, const float* z)
+    GridXY(const std::vector<float>& x,
+           const std::vector<float>& y,
+           size_t                    nx,
+           size_t                    ny,
+           const std::vector<float>& z)
       : x { x }
       , y { y }
       , nx { nx }

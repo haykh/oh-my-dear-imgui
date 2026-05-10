@@ -105,9 +105,9 @@ namespace omdi::timer {
   class Timer {
     std::chrono::time_point<std::chrono::high_resolution_clock>       m_now;
     const std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
-    std::size_t m_frame { 0u };
-    double      m_delta { 1.0 };
-    double      m_elapsed { 0.0 };
+    size_t m_frame { 0u };
+    double m_delta { 1.0 };
+    double m_elapsed { 0.0 };
 
   public:
     Timer()
@@ -122,7 +122,7 @@ namespace omdi::timer {
       ++m_frame;
     }
 
-    auto frame() const -> std::size_t {
+    auto frame() const -> size_t {
       return m_frame;
     }
 
